@@ -2,23 +2,43 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     /**
-     * Get the attributes that should be cast.
+     * Champs pouvant être remplis automatiquement.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'is_active',
+    ];
+
+    /**
+     * Champs cachés lors de la conversion en tableau ou JSON.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Conversion automatique des types.
      *
      * @return array<string, string>
      */
@@ -27,6 +47,69 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * Profil associé à l’utilisateur.
+     */
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    /**
+     * Rôles associés à l’utilisateur.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class)
+            ->withTimestamps();
+    }
+
+    /**
+     * Historique des activités de l’utilisateur.
+     */
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    /**
+     * Vérifier si l’utilisateur possède un rôle.
+     */
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()
+            ->where('roles.name', $roleName)
+            ->where('roles.is_active', true)
+            ->exists();
+    }
+
+    /**
+     * Vérifier si l’utilisateur possède au moins un rôle donné.
+     *
+     * @param array<int, string> $roleNames
+     */
+    public function hasAnyRole(array $roleNames): bool
+    {
+        return $this->roles()
+            ->whereIn('roles.name', $roleNames)
+            ->where('roles.is_active', true)
+            ->exists();
+    }
+
+    /**
+     * Vérifier si l’utilisateur possède une permission.
+     */
+    public function hasPermission(string $permissionSlug): bool
+    {
+        return $this->roles()
+            ->where('roles.is_active', true)
+            ->whereHas('permissions', function ($query) use ($permissionSlug) {
+                $query->where('permissions.slug', $permissionSlug);
+            })
+            ->exists();
     }
 }
