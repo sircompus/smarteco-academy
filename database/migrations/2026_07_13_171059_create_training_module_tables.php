@@ -174,10 +174,10 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique([
-                'training_enrollment_id',
-                'training_lesson_id',
-            ]);
+            $table->unique(
+                ['training_enrollment_id', 'training_lesson_id'],
+                'training_progress_enrollment_lesson_unique'
+            );
         });
     }
 
