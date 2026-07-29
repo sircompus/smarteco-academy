@@ -12,21 +12,45 @@ class AcademicSeeder extends Seeder
     public function run(): void
     {
         $structure = [
+            'Bac' => [
+                'programs' => [],
+                'duration_semesters' => null,
+            ],
+            'DEUG' => [
+                'programs' => [
+                    'Tronc commun en économie',
+                    'Tronc commun en gestion',
+                ],
+                'duration_semesters' => 4,
+            ],
             'Licence' => [
-                'programs' => ['Informatique de gestion', 'Génie logiciel', 'Réseaux et systèmes'],
+                'programs' => [
+                    'Comptabilité Finance et Fiscalité',
+                    'Commerce et Marketing',
+                    'Management Ressources Humaines',
+                    'Économétrie',
+                ],
                 'duration_semesters' => 6,
             ],
             'Master' => [
-                'programs' => ['Intelligence artificielle', 'Cybersécurité', 'Data Engineering'],
+                'programs' => [],
                 'duration_semesters' => 4,
             ],
+            'Formation professionnelle' => [
+                'programs' => [],
+                'duration_semesters' => null,
+            ],
             'Formation continue' => [
-                'programs' => ['Développement web', 'Analyse de données'],
-                'duration_semesters' => 2,
+                'programs' => [],
+                'duration_semesters' => null,
+            ],
+            'Formation pratique' => [
+                'programs' => [],
+                'duration_semesters' => null,
             ],
         ];
 
-        $sortOrder = 0;
+        $levelSortOrder = 0;
 
         foreach ($structure as $levelName => $data) {
             $level = AcademicLevel::query()->updateOrCreate(
@@ -36,7 +60,7 @@ class AcademicSeeder extends Seeder
                     'name' => $levelName,
                     'description' => "Programmes de niveau {$levelName}.",
                     'is_active' => true,
-                    'sort_order' => $sortOrder,
+                    'sort_order' => $levelSortOrder,
                 ]
             );
 
@@ -59,7 +83,7 @@ class AcademicSeeder extends Seeder
                 $programSortOrder++;
             }
 
-            $sortOrder++;
+            $levelSortOrder++;
         }
     }
 }
