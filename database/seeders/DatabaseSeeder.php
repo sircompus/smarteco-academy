@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             ModuleSeeder::class,
             AcademicSeeder::class,
+            SemesterSubjectSeeder::class,
         ]);
     }
 }
