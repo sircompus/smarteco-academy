@@ -319,26 +319,35 @@
                             </td>
 
                             <td class="px-3 py-4">
-                                @if ($course->status !== 'published')
-                                    <form
-                                        method="POST"
-                                        action="{{ route(
-                                            'admin.centre.courses.publish',
-                                            $course
-                                        ) }}"
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <a
+                                        href="{{ route('admin.centre.courses.content', $course) }}"
+                                        class="rounded-lg bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-700"
                                     >
-                                        @csrf
-                                        @method('PATCH')
+                                        Gérer le contenu
+                                    </a>
 
-                                        <button class="rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white">
-                                            Publier
-                                        </button>
-                                    </form>
-                                @else
-                                    <span class="text-sm text-green-700">
-                                        Déjà publié
-                                    </span>
-                                @endif
+                                    @if ($course->status !== 'published')
+                                        <form
+                                            method="POST"
+                                            action="{{ route(
+                                                'admin.centre.courses.publish',
+                                                $course
+                                            ) }}"
+                                        >
+                                            @csrf
+                                            @method('PATCH')
+
+                                            <button class="rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white">
+                                                Publier
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="text-sm text-green-700">
+                                            Déjà publié
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty

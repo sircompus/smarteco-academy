@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CentreController;
+use App\Http\Controllers\Admin\CourseContentController;
 use App\Http\Controllers\Admin\CurriculumController;
 use App\Http\Controllers\Admin\PackController as AdminPackController;
 use App\Http\Controllers\Student\CourseController;
@@ -67,6 +68,21 @@ Route::middleware([
 
         Route::post('/curriculum', [CurriculumController::class, 'sync'])
             ->name('curriculum.sync');
+
+        Route::get('/courses/{course}/content', [CourseContentController::class, 'edit'])
+            ->name('courses.content');
+
+        Route::post('/courses/{course}/sections', [CourseContentController::class, 'storeSection'])
+            ->name('courses.sections.store');
+
+        Route::post('/courses/{course}/lessons', [CourseContentController::class, 'storeLesson'])
+            ->name('courses.lessons.store');
+
+        Route::patch('/lessons/{lesson}/toggle-publish', [CourseContentController::class, 'togglePublishLesson'])
+            ->name('lessons.toggle-publish');
+
+        Route::delete('/lessons/{lesson}', [CourseContentController::class, 'destroyLesson'])
+            ->name('lessons.destroy');
     });
 
 Route::middleware([

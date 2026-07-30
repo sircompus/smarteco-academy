@@ -35,12 +35,24 @@ class CourseController extends Controller
         $course->load([
             'subject.semester.program.level',
             'teacher',
-            'sections',
-            'lessons',
+            'sections' => function ($query) {
+                $query->where('is_active', true)->orderBy('sort_order');
+            },
+            'sections.lessons' => function ($query) {
+                $query->where('is_published', true)->orderBy('sort_order');
+            },
+            'lessons' => function ($query) {
+                $query->whereNull('course_section_id')
+                    ->where('is_published', true)
+                    ->orderBy('sort_order');
+            },
         ]);
+
+        $hasAccess = auth()->user()->hasAccessToSubject($course->subject);
 
         return view('student.courses.show', [
             'course' => $course,
+            'hasAccess' => $hasAccess,
         ]);
     }
 }
