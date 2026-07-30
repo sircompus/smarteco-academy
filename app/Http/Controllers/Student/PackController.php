@@ -53,6 +53,7 @@ class PackController extends Controller
             'uuid' => (string) Str::uuid(),
             'user_id' => $user->id,
             'pack_id' => $pack->id,
+            'amount_due' => $pack->price,
             'status' => 'en_attente',
         ]);
 

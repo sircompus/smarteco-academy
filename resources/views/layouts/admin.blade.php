@@ -152,6 +152,31 @@
                     Packs (semestres / modules)
                 </a>
 
+                {{-- Inscriptions & paiements --}}
+                <a
+                    href="{{ route('admin.centre.pack-enrollments.index') }}"
+                    class="{{ request()->routeIs('admin.centre.pack-enrollments.*')
+                        ? 'bg-indigo-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 7h6m0 10v-3m-3 3v-6m-3 6v-1m-6-4h18M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
+                        />
+                    </svg>
+
+                    Inscriptions & paiements
+                </a>
+
                 {{-- Générateur de cursus --}}
                 <a
                     href="{{ route('admin.centre.curriculum.index') }}"
@@ -175,6 +200,31 @@
                     </svg>
 
                     Générateur de cursus
+                </a>
+
+                {{-- Comptes Prof / Superviseur / Admin --}}
+                <a
+                    href="{{ route('admin.users.index') }}"
+                    class="{{ request()->routeIs('admin.users.*')
+                        ? 'bg-indigo-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4"
+                        />
+                    </svg>
+
+                    Comptes Prof / Superviseur / Admin
                 </a>
 
                 {{-- Module Inscriptions --}}
