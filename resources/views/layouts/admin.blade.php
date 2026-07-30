@@ -101,11 +101,17 @@
 
                     Statistiques
                 </a>
+            </div>
 
+            <p class="mb-3 mt-8 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Centre de formation
+            </p>
+
+            <div class="space-y-1">
                 {{-- Module Centre --}}
                 <a
                     href="{{ route('admin.centre.index') }}"
-                    class="{{ request()->routeIs('admin.centre.*')
+                    class="{{ request()->routeIs('admin.centre.index')
                         ? 'bg-indigo-600 text-white'
                         : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
                         flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
@@ -124,7 +130,32 @@
                         />
                     </svg>
 
-                    Gestion du centre
+                    Niveaux, filières & cours
+                </a>
+
+                {{-- Générateur de cursus --}}
+                <a
+                    href="{{ route('admin.centre.curriculum.index') }}"
+                    class="{{ request()->routeIs('admin.centre.curriculum.*')
+                        ? 'bg-indigo-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                    </svg>
+
+                    Générateur de cursus
                 </a>
 
                 {{-- Packs (semestres / modules) --}}
@@ -174,60 +205,16 @@
                         />
                     </svg>
 
-                    Inscriptions & paiements
+                    Inscriptions & paiements aux packs
                 </a>
+            </div>
 
-                {{-- Générateur de cursus --}}
-                <a
-                    href="{{ route('admin.centre.curriculum.index') }}"
-                    class="{{ request()->routeIs('admin.centre.curriculum.*')
-                        ? 'bg-indigo-600 text-white'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
-                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
-                >
-                    <svg
-                        class="mr-3 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                    </svg>
+            <p class="mb-3 mt-8 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Autres modules
+            </p>
 
-                    Générateur de cursus
-                </a>
-
-                {{-- Comptes Prof / Superviseur / Admin --}}
-                <a
-                    href="{{ route('admin.users.index') }}"
-                    class="{{ request()->routeIs('admin.users.*')
-                        ? 'bg-indigo-600 text-white'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
-                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
-                >
-                    <svg
-                        class="mr-3 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4"
-                        />
-                    </svg>
-
-                    Comptes Prof / Superviseur / Admin
-                </a>
-
-                {{-- Module Inscriptions --}}
+            <div class="space-y-1">
+                {{-- Module Inscriptions (dossiers d'admission) --}}
                 <a
                     href="{{ route('admin.registrations.index') }}"
                     class="{{ request()->routeIs('admin.registrations.*')
@@ -249,7 +236,7 @@
                         />
                     </svg>
 
-                    Gestion des inscriptions
+                    Dossiers d’admission
                 </a>
 
                 {{-- Module Formations --}}
@@ -274,19 +261,22 @@
                         />
                     </svg>
 
-                    Gestion des formations
+                    Formations courtes
                 </a>
             </div>
 
             <p class="mb-3 mt-8 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Gestion
+                Comptes
             </p>
 
             <div class="space-y-1">
-                {{-- Utilisateurs --}}
+                {{-- Comptes Prof / Superviseur / Admin --}}
                 <a
-                    href="#"
-                    class="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
+                    href="{{ route('admin.users.index') }}"
+                    class="{{ request()->routeIs('admin.users.*')
+                        ? 'bg-indigo-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
                 >
                     <svg
                         class="mr-3 h-5 w-5"
@@ -298,105 +288,11 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="2"
-                            d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m6-4a4 4 0 11-8 0 4 4 0 018 0z"
+                            d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4"
                         />
                     </svg>
 
-                    Utilisateurs
-                </a>
-
-                {{-- Rôles --}}
-                <a
-                    href="#"
-                    class="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
-                >
-                    <svg
-                        class="mr-3 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 11c0-1.657 1.343-3 3-3s3 1.343 3 3-1.343 3-3 3-3-1.343-3-3zm-8 9v-1a5 5 0 015-5h1"
-                        />
-                    </svg>
-
-                    Rôles et permissions
-                </a>
-
-                {{-- Modules --}}
-                <a
-                    href="#"
-                    class="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
-                >
-                    <svg
-                        class="mr-3 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h6v6H4V6zm10 0h6v6h-6V6zM4 16h6v4H4v-4zm10 0h6v4h-6v-4z"
-                        />
-                    </svg>
-
-                    Gestion des modules
-                </a>
-            </div>
-
-            <p class="mb-3 mt-8 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Système
-            </p>
-
-            <div class="space-y-1">
-                {{-- Paramètres --}}
-                <a
-                    href="#"
-                    class="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
-                >
-                    <svg
-                        class="mr-3 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 15.5A3.5 3.5 0 1012 8a3.5 3.5 0 000 7.5z"
-                        />
-                    </svg>
-
-                    Paramètres
-                </a>
-
-                {{-- Journaux --}}
-                <a
-                    href="#"
-                    class="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
-                >
-                    <svg
-                        class="mr-3 h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 17v-6m4 6V7m4 10v-3M5 4h14a2 2 0 012 2v14H3V6a2 2 0 012-2z"
-                        />
-                    </svg>
-
-                    Journaux d’activité
+                    Utilisateurs & rôles
                 </a>
             </div>
         </nav>
