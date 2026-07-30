@@ -22,19 +22,34 @@ class PackController extends Controller
                 'subject.semester.program.level',
             ])
             ->get()
-            ->sortBy([
-                fn ($pack) => $pack->isTypeSemestre()
+            ->sortBy(function ($pack) {
+                $semesterNumber = $pack->isTypeSemestre()
                     ? $pack->semester?->number
-                    : $pack->subject?->semester?->number,
-                fn ($pack) => $pack->isTypeSemestre()
+                    : $pack->subject?->semester?->number;
+
+                $levelOrder = $pack->isTypeSemestre()
                     ? $pack->semester?->program?->level?->sort_order
-                    : $pack->subject?->semester?->program?->level?->sort_order,
-                fn ($pack) => $pack->isTypeSemestre()
+                    : $pack->subject?->semester?->program?->level?->sort_order;
+
+                $programName = $pack->isTypeSemestre()
                     ? $pack->semester?->program?->name
-                    : $pack->subject?->semester?->program?->name,
-                fn ($pack) => $pack->isTypeSemestre() ? 0 : 1,
-                fn ($pack) => $pack->isTypeSemestre() ? '' : $pack->subject?->sort_order,
-            ])
+                    : $pack->subject?->semester?->program?->name;
+
+                $typeOrder = $pack->isTypeSemestre() ? 0 : 1;
+
+                $subjectOrder = $pack->isTypeSemestre()
+                    ? 0
+                    : ($pack->subject?->sort_order ?? 0);
+
+                return sprintf(
+                    '%03d-%03d-%s-%d-%03d',
+                    $semesterNumber ?? 999,
+                    $levelOrder ?? 999,
+                    $programName ?? '',
+                    $typeOrder,
+                    $subjectOrder
+                );
+            })
             ->values();
 
         return view('admin.centre.packs.index', [
