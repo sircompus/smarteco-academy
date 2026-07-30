@@ -21,7 +21,26 @@
     @endif
 
     <section class="rounded-2xl bg-white p-6 shadow-sm">
-        <h2 class="text-lg font-bold">Créer un pack</h2>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h2 class="text-lg font-bold">Génération automatique</h2>
+                <p class="mt-1 text-sm text-gray-500">
+                    Crée en un clic un pack "semestre" pour chaque semestre existant,
+                    et un pack "module" pour chaque matière — sans dupliquer ceux déjà créés.
+                </p>
+            </div>
+
+            <form method="POST" action="{{ route('admin.centre.packs.generate') }}">
+                @csrf
+                <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700">
+                    Générer automatiquement les packs
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-bold">Créer un pack manuellement</h2>
 
         <form
             method="POST"

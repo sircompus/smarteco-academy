@@ -86,4 +86,60 @@ class PackController extends Controller
 
         return back()->with('success', 'Le statut de l’inscription a été mis à jour.');
     }
+
+    /**
+     * Génère automatiquement un pack "semestre" pour chaque semestre actif
+     * et un pack "module" pour chaque matière active, sans dupliquer
+     * les packs déjà créés manuellement.
+     */
+    public function generate(): RedirectResponse
+    {
+        $semesterCount = 0;
+        $moduleCount = 0;
+
+        foreach (Semester::with('program.level')->where('is_active', true)->get() as $semester) {
+            $pack = Pack::firstOrNew([
+                'type' => 'semestre',
+                'semester_id' => $semester->id,
+            ]);
+
+            if (! $pack->exists) {
+                $pack->uuid = (string) Str::uuid();
+                $pack->name = trim(sprintf(
+                    '%s — %s — %s',
+                    $semester->program?->level?->name,
+                    $semester->program?->name,
+                    $semester->name
+                ), ' —');
+                $pack->is_active = true;
+                $pack->save();
+                $semesterCount++;
+            }
+        }
+
+        foreach (Subject::with('semester.program.level')->where('is_active', true)->get() as $subject) {
+            $pack = Pack::firstOrNew([
+                'type' => 'module',
+                'subject_id' => $subject->id,
+            ]);
+
+            if (! $pack->exists) {
+                $pack->uuid = (string) Str::uuid();
+                $pack->name = trim(sprintf(
+                    '%s — %s — %s',
+                    $subject->semester?->program?->level?->name,
+                    $subject->semester?->name,
+                    $subject->name
+                ), ' —');
+                $pack->is_active = true;
+                $pack->save();
+                $moduleCount++;
+            }
+        }
+
+        return back()->with(
+            'success',
+            "Génération automatique terminée : {$semesterCount} pack(s) semestre et {$moduleCount} pack(s) module créés (les packs existants n'ont pas été dupliqués)."
+        );
+    }
 }

@@ -44,6 +44,9 @@ Route::middleware([
         Route::post('/packs', [AdminPackController::class, 'store'])
             ->name('packs.store');
 
+        Route::post('/packs/generate', [AdminPackController::class, 'generate'])
+            ->name('packs.generate');
+
         Route::patch(
             '/pack-enrollments/{packEnrollment}/status',
             [AdminPackController::class, 'updateEnrollmentStatus']
