@@ -59,24 +59,17 @@ Route::middleware([
         Route::delete('/packs/{pack}', [AdminPackController::class, 'destroy'])
             ->name('packs.destroy');
 
-        Route::patch(
-            '/pack-enrollments/{packEnrollment}/status',
-            [AdminPackController::class, 'updateEnrollmentStatus']
-        )->name('pack-enrollments.status');
-
-        Route::get('/pack-enrollments', [PackEnrollmentController::class, 'index'])
-            ->name('pack-enrollments.index');
-
-        Route::post(
-            '/pack-enrollments/{packEnrollment}/payments',
-            [PackEnrollmentController::class, 'storePayment']
-        )->name('pack-enrollments.payments.store');
+        Route::delete('/packs', [AdminPackController::class, 'destroyBulk'])
+            ->name('packs.destroy-bulk');
 
         Route::get('/curriculum', [CurriculumController::class, 'index'])
             ->name('curriculum.index');
 
         Route::post('/curriculum', [CurriculumController::class, 'sync'])
             ->name('curriculum.sync');
+
+        Route::delete('/curriculum/programs/{program}', [CurriculumController::class, 'destroyProgram'])
+            ->name('curriculum.programs.destroy');
 
         Route::get('/courses/{course}/content', [CourseContentController::class, 'edit'])
             ->name('courses.content');
@@ -92,6 +85,30 @@ Route::middleware([
 
         Route::delete('/lessons/{lesson}', [CourseContentController::class, 'destroyLesson'])
             ->name('lessons.destroy');
+    });
+
+// Validation des inscriptions/paiements : ouverte à l'admin ET au superviseur.
+Route::middleware([
+    'auth',
+    'verified',
+    'role:admin,superviseur',
+    'module.active:centre',
+])
+    ->prefix('admin/centre')
+    ->name('admin.centre.')
+    ->group(function () {
+        Route::get('/pack-enrollments', [PackEnrollmentController::class, 'index'])
+            ->name('pack-enrollments.index');
+
+        Route::patch(
+            '/pack-enrollments/{packEnrollment}/status',
+            [AdminPackController::class, 'updateEnrollmentStatus']
+        )->name('pack-enrollments.status');
+
+        Route::post(
+            '/pack-enrollments/{packEnrollment}/payments',
+            [PackEnrollmentController::class, 'storePayment']
+        )->name('pack-enrollments.payments.store');
     });
 
 Route::middleware([

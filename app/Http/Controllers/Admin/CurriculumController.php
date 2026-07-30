@@ -17,6 +17,7 @@ class CurriculumController extends Controller
     {
         $programs = AcademicProgram::query()
             ->with('level')
+            ->withCount(['semesters'])
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
@@ -37,6 +38,19 @@ class CurriculumController extends Controller
             'selectedProgram' => $selectedProgram,
             'textValue' => $textValue,
         ]);
+    }
+
+    public function destroyProgram(AcademicProgram $program): RedirectResponse
+    {
+        $name = $program->name;
+
+        // forceDelete (et non delete) car AcademicProgram utilise le soft delete :
+        // seule une suppression réelle déclenche la cascade SQL vers semestres/matières/cours/packs.
+        $program->forceDelete();
+
+        return redirect()
+            ->route('admin.centre.curriculum.index')
+            ->with('success', "La filière « {$name} » et tout son contenu (semestres, modules, packs) ont été supprimés.");
     }
 
     public function sync(Request $request): RedirectResponse

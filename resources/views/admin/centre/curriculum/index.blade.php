@@ -21,6 +21,44 @@
     @endif
 
     <section class="rounded-2xl bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-bold">Filières existantes</h2>
+
+        <p class="mt-1 text-sm text-gray-500">
+            Si une filière est en double (créée par erreur, doublon d'un ancien essai),
+            supprime-la ici : ça retire aussi tous ses semestres, modules, cours et packs associés.
+        </p>
+
+        <div class="mt-4 divide-y divide-gray-100">
+            @foreach ($programs as $program)
+                <div class="flex flex-wrap items-center justify-between gap-3 py-3">
+                    <div>
+                        <p class="font-medium">
+                            {{ $program->level?->name }} — {{ $program->name }}
+                            <span class="text-xs font-normal text-gray-400">(id {{ $program->id }})</span>
+                        </p>
+
+                        <p class="text-xs text-gray-400">
+                            {{ $program->semesters_count }} semestre(s)
+                        </p>
+                    </div>
+
+                    <form
+                        method="POST"
+                        action="{{ route('admin.centre.curriculum.programs.destroy', $program) }}"
+                        onsubmit="return confirm('Supprimer définitivement « {{ $program->name }} » et TOUT son contenu (semestres, modules, cours, packs) ? Cette action est irréversible.');"
+                    >
+                        @csrf
+                        @method('DELETE')
+                        <button class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
+                            Supprimer cette filière
+                        </button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
         <h2 class="text-lg font-bold">1. Choisir la filière</h2>
 
         <form method="GET" action="{{ route('admin.centre.curriculum.index') }}" class="mt-4">

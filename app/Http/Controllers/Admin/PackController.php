@@ -16,15 +16,29 @@ class PackController extends Controller
 {
     public function index(): View
     {
+        $packs = Pack::query()
+            ->with([
+                'semester.program.level',
+                'subject.semester.program.level',
+            ])
+            ->get()
+            ->sortBy([
+                fn ($pack) => $pack->isTypeSemestre()
+                    ? $pack->semester?->program?->level?->sort_order
+                    : $pack->subject?->semester?->program?->level?->sort_order,
+                fn ($pack) => $pack->isTypeSemestre()
+                    ? $pack->semester?->program?->name
+                    : $pack->subject?->semester?->program?->name,
+                fn ($pack) => $pack->isTypeSemestre()
+                    ? $pack->semester?->number
+                    : $pack->subject?->semester?->number,
+                fn ($pack) => $pack->isTypeSemestre() ? 0 : 1,
+                fn ($pack) => $pack->isTypeSemestre() ? '' : $pack->subject?->sort_order,
+            ])
+            ->values();
+
         return view('admin.centre.packs.index', [
-            'packs' => Pack::query()
-                ->with([
-                    'semester.program.level',
-                    'subject.semester.program.level',
-                ])
-                ->orderBy('sort_order')
-                ->latest()
-                ->get(),
+            'packs' => $packs,
 
             'semesters' => Semester::query()
                 ->with('program.level')
@@ -54,7 +68,7 @@ class PackController extends Controller
             'subject_id' => ['nullable', 'required_if:type,module', 'exists:subjects,id'],
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:2000'],
-            'price' => ['nullable', 'numeric', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0.01'],
         ]);
 
         Pack::create([
@@ -64,7 +78,7 @@ class PackController extends Controller
             'subject_id' => $data['type'] === 'module' ? $data['subject_id'] : null,
             'name' => $data['name'],
             'description' => $data['description'] ?? null,
-            'price' => $data['price'] ?? null,
+            'price' => $data['price'],
             'is_active' => true,
         ]);
 
@@ -83,7 +97,7 @@ class PackController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:2000'],
-            'price' => ['nullable', 'numeric', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0.01'],
             'is_active' => ['required', 'boolean'],
         ]);
 
@@ -130,8 +144,13 @@ class PackController extends Controller
      * et un pack "module" pour chaque matière active, sans dupliquer
      * les packs déjà créés manuellement.
      */
-    public function generate(): RedirectResponse
+    public function generate(Request $request): RedirectResponse
     {
+        $data = $request->validate([
+            'default_semester_price' => ['required', 'numeric', 'min:0.01'],
+            'default_module_price' => ['required', 'numeric', 'min:0.01'],
+        ]);
+
         $semesterCount = 0;
         $moduleCount = 0;
 
@@ -149,6 +168,7 @@ class PackController extends Controller
                     $semester->program?->name,
                     $semester->name
                 ), ' —');
+                $pack->price = $data['default_semester_price'];
                 $pack->is_active = true;
                 $pack->save();
                 $semesterCount++;
@@ -169,6 +189,7 @@ class PackController extends Controller
                     $subject->semester?->name,
                     $subject->name
                 ), ' —');
+                $pack->price = $data['default_module_price'];
                 $pack->is_active = true;
                 $pack->save();
                 $moduleCount++;
@@ -179,5 +200,19 @@ class PackController extends Controller
             'success',
             "Génération automatique terminée : {$semesterCount} pack(s) semestre et {$moduleCount} pack(s) module créés (les packs existants n'ont pas été dupliqués)."
         );
+    }
+
+    public function destroyBulk(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'pack_ids' => ['required', 'array'],
+            'pack_ids.*' => ['exists:packs,id'],
+        ]);
+
+        $count = Pack::whereIn('id', $data['pack_ids'])->count();
+
+        Pack::whereIn('id', $data['pack_ids'])->delete();
+
+        return back()->with('success', "{$count} pack(s) supprimé(s).");
     }
 }

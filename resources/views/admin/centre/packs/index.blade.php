@@ -21,22 +21,30 @@
     @endif
 
     <section class="rounded-2xl bg-white p-6 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-4">
+        <h2 class="text-lg font-bold">Génération automatique</h2>
+        <p class="mt-1 text-sm text-gray-500">
+            Crée en un clic un pack "semestre" pour chaque semestre existant,
+            et un pack "module" pour chaque matière — sans dupliquer ceux déjà créés.
+            Un prix est obligatoire (aucun pack gratuit).
+        </p>
+
+        <form method="POST" action="{{ route('admin.centre.packs.generate') }}" class="mt-4 flex flex-wrap items-end gap-4">
+            @csrf
+
             <div>
-                <h2 class="text-lg font-bold">Génération automatique</h2>
-                <p class="mt-1 text-sm text-gray-500">
-                    Crée en un clic un pack "semestre" pour chaque semestre existant,
-                    et un pack "module" pour chaque matière — sans dupliquer ceux déjà créés.
-                </p>
+                <label class="text-xs font-medium text-gray-500">Prix par défaut — pack semestre (DH)</label>
+                <input type="number" step="0.01" min="0.01" name="default_semester_price" class="mt-1 block w-40 rounded-lg border-gray-300" required>
             </div>
 
-            <form method="POST" action="{{ route('admin.centre.packs.generate') }}">
-                @csrf
-                <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700">
-                    Générer automatiquement les packs
-                </button>
-            </form>
-        </div>
+            <div>
+                <label class="text-xs font-medium text-gray-500">Prix par défaut — pack module (DH)</label>
+                <input type="number" step="0.01" min="0.01" name="default_module_price" class="mt-1 block w-40 rounded-lg border-gray-300" required>
+            </div>
+
+            <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700">
+                Générer automatiquement les packs
+            </button>
+        </form>
     </section>
 
     <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
@@ -97,8 +105,8 @@
             </div>
 
             <div>
-                <label class="text-sm font-medium">Prix (DH, optionnel)</label>
-                <input type="number" step="0.01" name="price" class="mt-1 block w-full rounded-lg border-gray-300">
+                <label class="text-sm font-medium">Prix (DH)</label>
+                <input type="number" step="0.01" min="0.01" name="price" class="mt-1 block w-full rounded-lg border-gray-300" required>
             </div>
 
             <div class="md:col-span-2">
@@ -115,70 +123,91 @@
     </section>
 
     <section class="mt-8 overflow-hidden rounded-2xl bg-white shadow-sm">
-        <div class="border-b border-gray-100 p-6">
-            <h2 class="text-lg font-bold">Packs existants</h2>
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 p-6">
+            <h2 class="text-lg font-bold">Packs existants ({{ $packs->count() }})</h2>
+
+            <button
+                type="submit"
+                form="bulk-delete-packs-form"
+                onclick="return confirm('Supprimer tous les packs cochés ? Cette action est irréversible.');"
+                class="rounded-lg bg-red-50 px-4 py-2 text-sm font-semibold text-red-600"
+            >
+                Supprimer la sélection
+            </button>
         </div>
 
-        <table class="w-full text-left text-sm">
-            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
-                <tr>
-                    <th class="px-6 py-4">Nom</th>
-                    <th class="px-6 py-4">Type</th>
-                    <th class="px-6 py-4">Contenu</th>
-                    <th class="px-6 py-4">Prix</th>
-                    <th class="px-6 py-4">Inscrits</th>
-                    <th class="px-6 py-4">Action</th>
-                </tr>
-            </thead>
+        <form id="bulk-delete-packs-form" method="POST" action="{{ route('admin.centre.packs.destroy-bulk') }}">
+            @csrf
+            @method('DELETE')
 
-            <tbody class="divide-y divide-gray-100">
-                @forelse ($packs as $pack)
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50 text-xs uppercase text-gray-500">
                     <tr>
-                        <td class="px-6 py-4 font-medium">{{ $pack->name }}</td>
-
-                        <td class="px-6 py-4">
-                            <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-                                {{ $pack->type === 'semestre' ? 'Semestre' : 'Module' }}
-                            </span>
-                        </td>
-
-                        <td class="px-6 py-4 text-gray-600">
-                            @if ($pack->isTypeSemestre())
-                                {{ $pack->semester?->program?->level?->name }}
-                                — {{ $pack->semester?->program?->name }}
-                                — {{ $pack->semester?->name }}
-                            @else
-                                {{ $pack->subject?->semester?->program?->level?->name }}
-                                — {{ $pack->subject?->name }}
-                            @endif
-                        </td>
-
-                        <td class="px-6 py-4">
-                            {{ $pack->price ? number_format($pack->price, 2).' DH' : '—' }}
-                        </td>
-
-                        <td class="px-6 py-4">
-                            {{ $pack->enrollments()->where('status', 'active')->count() }}
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <a
-                                href="{{ route('admin.centre.packs.edit', $pack) }}"
-                                class="text-sm font-semibold text-indigo-600 hover:underline"
-                            >
-                                Modifier
-                            </a>
-                        </td>
+                        <th class="px-6 py-4">
+                            <input type="checkbox" onclick="document.querySelectorAll('.pack-checkbox').forEach(c => c.checked = this.checked)">
+                        </th>
+                        <th class="px-6 py-4">Nom</th>
+                        <th class="px-6 py-4">Type</th>
+                        <th class="px-6 py-4">Contenu</th>
+                        <th class="px-6 py-4">Prix</th>
+                        <th class="px-6 py-4">Inscrits</th>
+                        <th class="px-6 py-4">Action</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-10 text-center text-gray-500">
-                            Aucun pack créé pour le moment.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody class="divide-y divide-gray-100">
+                    @forelse ($packs as $pack)
+                        <tr>
+                            <td class="px-6 py-4">
+                                <input type="checkbox" name="pack_ids[]" value="{{ $pack->id }}" class="pack-checkbox">
+                            </td>
+
+                            <td class="px-6 py-4 font-medium">{{ $pack->name }}</td>
+
+                            <td class="px-6 py-4">
+                                <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+                                    {{ $pack->type === 'semestre' ? 'Semestre' : 'Module' }}
+                                </span>
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-600">
+                                @if ($pack->isTypeSemestre())
+                                    {{ $pack->semester?->program?->level?->name }}
+                                    — {{ $pack->semester?->program?->name }}
+                                    — {{ $pack->semester?->name }}
+                                @else
+                                    {{ $pack->subject?->semester?->program?->level?->name }}
+                                    — {{ $pack->subject?->name }}
+                                @endif
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $pack->price ? number_format($pack->price, 2).' DH' : '—' }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $pack->enrollments()->where('status', 'active')->count() }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                <a
+                                    href="{{ route('admin.centre.packs.edit', $pack) }}"
+                                    class="text-sm font-semibold text-indigo-600 hover:underline"
+                                >
+                                    Modifier
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                                Aucun pack créé pour le moment.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </form>
     </section>
 
     <section class="mt-8 overflow-hidden rounded-2xl bg-white shadow-sm">
