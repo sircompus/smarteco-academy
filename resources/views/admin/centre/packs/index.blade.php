@@ -127,6 +127,7 @@
                     <th class="px-6 py-4">Contenu</th>
                     <th class="px-6 py-4">Prix</th>
                     <th class="px-6 py-4">Inscrits</th>
+                    <th class="px-6 py-4">Action</th>
                 </tr>
             </thead>
 
@@ -159,10 +160,19 @@
                         <td class="px-6 py-4">
                             {{ $pack->enrollments()->where('status', 'active')->count() }}
                         </td>
+
+                        <td class="px-6 py-4">
+                            <a
+                                href="{{ route('admin.centre.packs.edit', $pack) }}"
+                                class="text-sm font-semibold text-indigo-600 hover:underline"
+                            >
+                                Modifier
+                            </a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                        <td colspan="6" class="px-6 py-10 text-center text-gray-500">
                             Aucun pack créé pour le moment.
                         </td>
                     </tr>

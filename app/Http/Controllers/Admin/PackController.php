@@ -71,6 +71,44 @@ class PackController extends Controller
         return back()->with('success', 'Le pack a été créé.');
     }
 
+    public function edit(Pack $pack): View
+    {
+        return view('admin.centre.packs.edit', [
+            'pack' => $pack->load(['semester.program.level', 'subject.semester.program.level']),
+        ]);
+    }
+
+    public function update(Request $request, Pack $pack): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:150'],
+            'description' => ['nullable', 'string', 'max:2000'],
+            'price' => ['nullable', 'numeric', 'min:0'],
+            'is_active' => ['required', 'boolean'],
+        ]);
+
+        $pack->update($data);
+
+        return redirect()
+            ->route('admin.centre.packs.index')
+            ->with('success', 'Le pack a été mis à jour.');
+    }
+
+    public function destroy(Pack $pack): RedirectResponse
+    {
+        $activeCount = $pack->enrollments()->where('status', 'active')->count();
+
+        $pack->delete();
+
+        $message = $activeCount > 0
+            ? "Le pack a été supprimé (attention : {$activeCount} étudiant(s) avaient une inscription active dessus)."
+            : 'Le pack a été supprimé.';
+
+        return redirect()
+            ->route('admin.centre.packs.index')
+            ->with('success', $message);
+    }
+
     public function updateEnrollmentStatus(
         Request $request,
         PackEnrollment $packEnrollment

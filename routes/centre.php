@@ -48,6 +48,15 @@ Route::middleware([
         Route::post('/packs/generate', [AdminPackController::class, 'generate'])
             ->name('packs.generate');
 
+        Route::get('/packs/{pack}/edit', [AdminPackController::class, 'edit'])
+            ->name('packs.edit');
+
+        Route::patch('/packs/{pack}', [AdminPackController::class, 'update'])
+            ->name('packs.update');
+
+        Route::delete('/packs/{pack}', [AdminPackController::class, 'destroy'])
+            ->name('packs.destroy');
+
         Route::patch(
             '/pack-enrollments/{packEnrollment}/status',
             [AdminPackController::class, 'updateEnrollmentStatus']
