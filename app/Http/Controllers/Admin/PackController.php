@@ -24,14 +24,14 @@ class PackController extends Controller
             ->get()
             ->sortBy([
                 fn ($pack) => $pack->isTypeSemestre()
+                    ? $pack->semester?->number
+                    : $pack->subject?->semester?->number,
+                fn ($pack) => $pack->isTypeSemestre()
                     ? $pack->semester?->program?->level?->sort_order
                     : $pack->subject?->semester?->program?->level?->sort_order,
                 fn ($pack) => $pack->isTypeSemestre()
                     ? $pack->semester?->program?->name
                     : $pack->subject?->semester?->program?->name,
-                fn ($pack) => $pack->isTypeSemestre()
-                    ? $pack->semester?->number
-                    : $pack->subject?->semester?->number,
                 fn ($pack) => $pack->isTypeSemestre() ? 0 : 1,
                 fn ($pack) => $pack->isTypeSemestre() ? '' : $pack->subject?->sort_order,
             ])
