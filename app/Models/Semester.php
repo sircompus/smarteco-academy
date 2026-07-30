@@ -35,7 +35,7 @@ class Semester extends Model
 
     public function program(): BelongsTo
     {
-        return $this->belongsTo(AcademicProgram::class);
+        return $this->belongsTo(AcademicProgram::class, 'academic_program_id');
     }
 
     public function subjects(): HasMany
