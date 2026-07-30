@@ -50,6 +50,14 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if (! Auth::user()->is_active) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Votre compte est en attente de validation par l’administration. Vous recevrez un accès dès qu’il sera approuvé.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

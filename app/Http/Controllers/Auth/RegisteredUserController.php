@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
             'name' => $request->string('name')->toString(),
             'email' => $request->string('email')->lower()->toString(),
             'password' => Hash::make($request->password),
-            'is_active' => true,
+            'is_active' => false,
         ]);
 
         $user->profile()->create([
@@ -69,8 +69,9 @@ class RegisteredUserController extends Controller
 
     event(new Registered($user));
 
-    Auth::login($user);
-
-    return redirect()->route('student.dashboard');
+    return redirect()->route('login')->with(
+        'status',
+        'Votre compte a été créé. Il doit être validé par l’administration avant que vous puissiez vous connecter.'
+    );
 }
 }

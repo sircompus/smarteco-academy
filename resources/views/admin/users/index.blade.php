@@ -20,6 +20,40 @@
         </div>
     @endif
 
+    @if ($pendingStudents->isNotEmpty())
+        <section class="mb-8 rounded-2xl border border-amber-200 bg-amber-50 p-6">
+            <h2 class="text-lg font-bold text-amber-900">
+                Comptes en attente de validation ({{ $pendingStudents->count() }})
+            </h2>
+
+            <p class="mt-1 text-sm text-amber-700">
+                Ces étudiants/stagiaires se sont inscrits mais ne peuvent pas encore se connecter.
+            </p>
+
+            <div class="mt-4 space-y-2">
+                @foreach ($pendingStudents as $student)
+                    <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-4">
+                        <div>
+                            <p class="font-medium">{{ $student->name }}</p>
+                            <p class="text-xs text-gray-400">
+                                {{ $student->email }}
+                                · inscrit le {{ $student->created_at->format('d/m/Y') }}
+                            </p>
+                        </div>
+
+                        <form method="POST" action="{{ route('admin.users.toggle-active', $student) }}">
+                            @csrf
+                            @method('PATCH')
+                            <button class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white">
+                                Valider ce compte
+                            </button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
     <section class="rounded-2xl bg-white p-6 shadow-sm">
         <h2 class="text-lg font-bold">Créer un compte</h2>
 

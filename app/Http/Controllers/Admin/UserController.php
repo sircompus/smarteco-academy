@@ -20,6 +20,15 @@ class UserController extends Controller
 
     public function index(): View
     {
+        $pendingStudents = User::query()
+            ->with('roles')
+            ->where('is_active', false)
+            ->whereHas('roles', function ($query) {
+                $query->whereIn('name', ['etudiant', 'stagiaire']);
+            })
+            ->orderBy('created_at')
+            ->get();
+
         $users = User::query()
             ->with('roles')
             ->orderByDesc('created_at')
@@ -31,6 +40,7 @@ class UserController extends Controller
             ->get();
 
         return view('admin.users.index', [
+            'pendingStudents' => $pendingStudents,
             'users' => $users,
             'roles' => $roles,
         ]);
