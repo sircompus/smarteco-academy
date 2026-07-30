@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CentreController;
+use App\Http\Controllers\Admin\CurriculumController;
 use App\Http\Controllers\Admin\PackController as AdminPackController;
 use App\Http\Controllers\Student\CourseController;
 use App\Http\Controllers\Student\PackController as StudentPackController;
@@ -51,6 +52,12 @@ Route::middleware([
             '/pack-enrollments/{packEnrollment}/status',
             [AdminPackController::class, 'updateEnrollmentStatus']
         )->name('pack-enrollments.status');
+
+        Route::get('/curriculum', [CurriculumController::class, 'index'])
+            ->name('curriculum.index');
+
+        Route::post('/curriculum', [CurriculumController::class, 'sync'])
+            ->name('curriculum.sync');
     });
 
 Route::middleware([
