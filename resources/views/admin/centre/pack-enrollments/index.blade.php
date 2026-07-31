@@ -77,6 +77,16 @@
                         <p class="mt-2 text-xs text-gray-400">
                             {{ $enrollment->created_at->format('d/m/Y') }}
                         </p>
+
+                        @if ($enrollment->payments->isNotEmpty())
+                            <a
+                                href="{{ route('admin.centre.pack-enrollments.payments.receipt', [$enrollment, $enrollment->payments->sortByDesc('paid_at')->first()]) }}"
+                                target="_blank"
+                                class="mt-2 inline-block rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-200"
+                            >
+                                Imprimer le reçu
+                            </a>
+                        @endif
                     </div>
                 </div>
 
