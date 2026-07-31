@@ -57,6 +57,7 @@ class PaymentReportController extends Controller
             })
             ->map(function ($group) {
                 return [
+                    'enrollments' => $group->values(),
                     'count' => $group->count(),
                     'total_due' => $group->sum(fn (PackEnrollment $e) => $e->current_amount_due),
                     'total_paid' => $group->sum(fn (PackEnrollment $e) => $e->amount_paid),
