@@ -49,7 +49,7 @@ class TrainingEnrollmentController extends Controller
             'note' => ['nullable', 'string', 'max:255'],
         ]);
 
-        TrainingPayment::create([
+        $payment = TrainingPayment::create([
             'uuid' => (string) Str::uuid(),
             'training_enrollment_id' => $enrollment->id,
             'recorded_by' => Auth::id(),
@@ -58,7 +58,9 @@ class TrainingEnrollmentController extends Controller
             'note' => $data['note'] ?? null,
         ]);
 
-        return back()->with('success', 'Versement enregistré.');
+        return back()
+            ->with('success', 'Versement enregistré.')
+            ->with('receiptUrl', route('admin.trainings.enrollments.payments.receipt', [$enrollment, $payment]));
     }
 
     public function sendReminder(TrainingEnrollment $enrollment): RedirectResponse

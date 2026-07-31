@@ -56,7 +56,7 @@ class PackEnrollmentController extends Controller
             'note' => ['nullable', 'string', 'max:255'],
         ]);
 
-        PackPayment::create([
+        $payment = PackPayment::create([
             'uuid' => (string) Str::uuid(),
             'pack_enrollment_id' => $packEnrollment->id,
             'recorded_by' => Auth::id(),
@@ -65,7 +65,9 @@ class PackEnrollmentController extends Controller
             'note' => $data['note'] ?? null,
         ]);
 
-        return back()->with('success', 'Versement enregistré.');
+        return back()
+            ->with('success', 'Versement enregistré.')
+            ->with('receiptUrl', route('admin.centre.pack-enrollments.payments.receipt', [$packEnrollment, $payment]));
     }
 
     public function sendReminder(PackEnrollment $packEnrollment): RedirectResponse

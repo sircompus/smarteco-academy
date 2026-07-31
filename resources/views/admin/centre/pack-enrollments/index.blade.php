@@ -5,8 +5,18 @@
 
 @section('content')
     @if (session('success'))
-        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
-            {{ session('success') }}
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+            <span>{{ session('success') }}</span>
+
+            @if (session('receiptUrl'))
+                <a
+                    href="{{ session('receiptUrl') }}"
+                    target="_blank"
+                    class="rounded-lg bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700"
+                >
+                    Voir / Imprimer le reçu
+                </a>
+            @endif
         </div>
     @endif
 
