@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CourseContentController;
 use App\Http\Controllers\Admin\CurriculumController;
 use App\Http\Controllers\Admin\PackController as AdminPackController;
 use App\Http\Controllers\Admin\PackEnrollmentController;
+use App\Http\Controllers\Admin\PaymentReportController;
 use App\Http\Controllers\Student\CourseController;
 use App\Http\Controllers\Student\PackController as StudentPackController;
 use Illuminate\Support\Facades\Route;
@@ -119,6 +120,14 @@ Route::middleware([
             '/pack-enrollments/{packEnrollment}/toggle-pause',
             [PackEnrollmentController::class, 'togglePause']
         )->name('pack-enrollments.toggle-pause');
+
+        Route::get(
+            '/pack-enrollments/{packEnrollment}/payments/{payment}/receipt',
+            [PackEnrollmentController::class, 'receipt']
+        )->name('pack-enrollments.payments.receipt');
+
+        Route::get('/reports', [PaymentReportController::class, 'index'])
+            ->name('reports.index');
     });
 
 Route::middleware([

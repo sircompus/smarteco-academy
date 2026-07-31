@@ -71,6 +71,20 @@
                 </a>
 
                 <a
+                    href="{{ route('admin.centre.reports.index') }}"
+                    class="{{ request()->routeIs('admin.centre.reports.*')
+                        ? 'bg-indigo-50 text-indigo-700'
+                        : 'text-gray-700 hover:bg-gray-100' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6m4 6V7m4 10v-3M5 4h14a2 2 0 012 2v14H3V6a2 2 0 012-2z"/>
+                    </svg>
+
+                    État financier (imprimable)
+                </a>
+
+                <a
                     href="{{ route('admin.registrations.index') }}"
                     class="{{ request()->routeIs('admin.registrations.*')
                         ? 'bg-indigo-50 text-indigo-700'

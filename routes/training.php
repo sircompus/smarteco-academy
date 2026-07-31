@@ -74,6 +74,11 @@ Route::middleware([
                 '/enrollments/{enrollment}/toggle-pause',
                 [TrainingEnrollmentController::class, 'togglePause']
             )->name('enrollments.toggle-pause');
+
+            Route::get(
+                '/enrollments/{enrollment}/payments/{payment}/receipt',
+                [TrainingEnrollmentController::class, 'receipt']
+            )->name('enrollments.payments.receipt');
         });
 
     Route::prefix('formations')

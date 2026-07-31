@@ -44,7 +44,7 @@
     {{-- Menu latéral administrateur --}}
     <aside
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-slate-900 text-white shadow-xl transition-transform duration-300 lg:translate-x-0"
+        class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-slate-900 text-white shadow-xl transition-transform duration-300 lg:translate-x-0 print:hidden"
     >
         {{-- Logo --}}
         <div class="flex h-16 items-center border-b border-slate-800 px-6">
@@ -216,6 +216,30 @@
                     Inscriptions & paiements aux packs
                 </a>
 
+                <a
+                    href="{{ route('admin.centre.reports.index') }}"
+                    class="{{ request()->routeIs('admin.centre.reports.*')
+                        ? 'bg-indigo-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 17v-6m4 6V7m4 10v-3M5 4h14a2 2 0 012 2v14H3V6a2 2 0 012-2z"
+                        />
+                    </svg>
+
+                    État financier (imprimable)
+                </a>
+
                 {{-- Module Inscriptions (dossiers d'admission) --}}
                 <a
                     href="{{ route('admin.registrations.index') }}"
@@ -358,10 +382,10 @@
     </aside>
 
     {{-- Zone principale --}}
-    <div class="min-h-screen lg:pl-72">
+    <div class="min-h-screen lg:pl-72 print:pl-0">
         {{-- Barre supérieure --}}
         <header
-            class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6"
+            class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6 print:hidden"
         >
             <div class="flex items-center gap-4">
                 {{-- Bouton mobile --}}

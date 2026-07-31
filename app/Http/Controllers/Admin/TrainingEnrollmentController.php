@@ -95,4 +95,14 @@ class TrainingEnrollmentController extends Controller
 
         return back()->with('success', $message);
     }
+
+    public function receipt(TrainingEnrollment $enrollment, TrainingPayment $payment): View
+    {
+        abort_unless($payment->training_enrollment_id === $enrollment->id, 404);
+
+        return view('admin.trainings.enrollments.receipt', [
+            'enrollment' => $enrollment->load('user', 'training', 'session'),
+            'payment' => $payment,
+        ]);
+    }
 }

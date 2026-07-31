@@ -102,4 +102,14 @@ class PackEnrollmentController extends Controller
 
         return back()->with('success', $message);
     }
+
+    public function receipt(PackEnrollment $packEnrollment, PackPayment $payment): View
+    {
+        abort_unless($payment->pack_enrollment_id === $packEnrollment->id, 404);
+
+        return view('admin.centre.pack-enrollments.receipt', [
+            'enrollment' => $packEnrollment->load('user', 'pack'),
+            'payment' => $payment,
+        ]);
+    }
 }

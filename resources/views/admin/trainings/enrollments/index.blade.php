@@ -141,7 +141,18 @@
                                                     — {{ $payment->note }}
                                                 @endif
                                             </span>
-                                            <span class="font-semibold">{{ number_format($payment->amount, 2) }} DH</span>
+
+                                            <div class="flex items-center gap-3">
+                                                <span class="font-semibold">{{ number_format($payment->amount, 2) }} DH</span>
+
+                                                <a
+                                                    href="{{ route('admin.trainings.enrollments.payments.receipt', [$enrollment, $payment]) }}"
+                                                    target="_blank"
+                                                    class="text-xs font-semibold text-indigo-600 hover:underline"
+                                                >
+                                                    Reçu
+                                                </a>
+                                            </div>
                                         </div>
                                     @endforeach
                                 </div>
