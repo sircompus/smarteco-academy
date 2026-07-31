@@ -109,6 +109,11 @@ Route::middleware([
             '/pack-enrollments/{packEnrollment}/payments',
             [PackEnrollmentController::class, 'storePayment']
         )->name('pack-enrollments.payments.store');
+
+        Route::post(
+            '/pack-enrollments/{packEnrollment}/reminder',
+            [PackEnrollmentController::class, 'sendReminder']
+        )->name('pack-enrollments.reminder');
     });
 
 Route::middleware([

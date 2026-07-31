@@ -49,6 +49,16 @@ class PackEnrollment extends Model
         return $this->hasMany(PackPayment::class);
     }
 
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(PackPaymentReminder::class);
+    }
+
+    public function lastReminder(): ?PackPaymentReminder
+    {
+        return $this->reminders()->latest('sent_at')->first();
+    }
+
     public function getStatusLabelAttribute(): string
     {
         return self::STATUSES[$this->status] ?? $this->status;

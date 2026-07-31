@@ -31,6 +31,18 @@
                     <option value="annulee" @selected($statusFilter === 'annulee')>Annulée</option>
                 </select>
             </div>
+
+            <label class="flex items-center gap-2 pb-2 text-sm">
+                <input
+                    type="checkbox"
+                    name="unpaid"
+                    value="1"
+                    onchange="this.form.submit()"
+                    @checked($unpaidFilter)
+                    class="rounded border-gray-300"
+                >
+                Impayés uniquement (à relancer)
+            </label>
         </form>
     </section>
 
@@ -82,8 +94,23 @@
                                 <span class="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">
                                     Soldé
                                 </span>
+                            @else
+                                <form method="POST" action="{{ route('admin.centre.pack-enrollments.reminder', $enrollment) }}">
+                                    @csrf
+                                    <button class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100">
+                                        Envoyer une relance
+                                    </button>
+                                </form>
                             @endif
                         </div>
+
+                        @if ($enrollment->reminders->isNotEmpty())
+                            <p class="mt-2 text-xs text-gray-400">
+                                Dernière relance :
+                                {{ $enrollment->lastReminder()->sent_at->format('d/m/Y') }}
+                                ({{ $enrollment->reminders->count() }} au total)
+                            </p>
+                        @endif
 
                         <button
                             type="button"
