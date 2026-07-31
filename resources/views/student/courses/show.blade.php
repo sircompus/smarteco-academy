@@ -82,4 +82,43 @@
             </div>
         @endif
     </section>
+
+    @if ($resourcesByType->isNotEmpty())
+        <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-bold">Documents à télécharger</h2>
+
+            <div class="mt-5 space-y-5">
+                @foreach (\App\Models\CourseResource::TYPES as $typeKey => $typeLabel)
+                    @if ($resourcesByType->has($typeKey))
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-700">{{ $typeLabel }}</h3>
+
+                            <div class="mt-2 space-y-2">
+                                @foreach ($resourcesByType->get($typeKey) as $resource)
+                                    <div class="flex items-center justify-between rounded-xl border border-gray-100 p-3 {{ $hasAccess ? '' : 'opacity-60' }}">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">{{ $resource->title }}</p>
+                                            <p class="text-xs text-gray-400">{{ $resource->size_for_humans }}</p>
+                                        </div>
+
+                                        @if ($hasAccess)
+                                            <a
+                                                href="{{ $resource->download_url }}"
+                                                target="_blank"
+                                                class="rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white"
+                                            >
+                                                Télécharger
+                                            </a>
+                                        @else
+                                            <span class="text-xs font-semibold text-gray-400">🔒 Verrouillé</span>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        </section>
+    @endif
 @endsection

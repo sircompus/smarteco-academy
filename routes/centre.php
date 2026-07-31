@@ -86,6 +86,12 @@ Route::middleware([
 
         Route::delete('/lessons/{lesson}', [CourseContentController::class, 'destroyLesson'])
             ->name('lessons.destroy');
+
+        Route::post('/courses/{course}/resources', [CourseContentController::class, 'storeResource'])
+            ->name('courses.resources.store');
+
+        Route::delete('/resources/{resource}', [CourseContentController::class, 'destroyResource'])
+            ->name('resources.destroy');
     });
 
 // Validation des inscriptions/paiements : ouverte à l'admin ET au superviseur.

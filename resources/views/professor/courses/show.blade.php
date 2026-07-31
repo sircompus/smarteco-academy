@@ -1,22 +1,12 @@
-@extends('layouts.admin')
+@extends('layouts.professor')
 
-@section('title', 'Contenu du cours')
-@section('page-title', 'Contenu du cours')
+@section('title', $course->title)
+@section('page-title', $course->title)
 
 @section('content')
     @if (session('success'))
         <div class="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
             {{ session('success') }}
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
-            <ul class="list-disc pl-5 text-sm text-red-700">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
         </div>
     @endif
 
@@ -26,23 +16,34 @@
             — {{ $course->subject?->name }}
         </p>
 
-        <h2 class="mt-1 text-xl font-bold">
-            {{ $course->title }}
-        </h2>
+        <h2 class="mt-1 text-xl font-bold">{{ $course->title }}</h2>
 
-        <span class="mt-2 inline-block rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+        <span class="mt-2 inline-block rounded-full px-3 py-1 text-xs font-semibold {{ $course->status === 'published' ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500' }}">
             {{ $course->status === 'published' ? 'Publié' : 'Brouillon' }}
         </span>
     </section>
 
     <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <h3 class="font-bold">
+            Étudiants inscrits ({{ $students->count() }})
+        </h3>
+
+        <div class="mt-4 space-y-2">
+            @forelse ($students as $student)
+                <div class="flex items-center justify-between rounded-xl border border-gray-100 p-3 text-sm">
+                    <span class="font-medium">{{ $student->name }}</span>
+                    <span class="text-gray-400">{{ $student->email }}</span>
+                </div>
+            @empty
+                <p class="text-sm text-gray-400">Aucun étudiant inscrit pour le moment sur ce module.</p>
+            @endforelse
+        </div>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
         <h3 class="font-bold">Ajouter une section (optionnel)</h3>
 
-        <p class="mt-1 text-sm text-gray-500">
-            Les sections permettent de regrouper des leçons (ex : "Chapitre 1"). Une leçon peut aussi rester hors section.
-        </p>
-
-        <form method="POST" action="{{ route('admin.centre.courses.sections.store', $course) }}" class="mt-4 flex flex-wrap gap-3">
+        <form method="POST" action="{{ route('professor.courses.sections.store', $course) }}" class="mt-4 flex flex-wrap gap-3">
             @csrf
             <input name="title" placeholder="Titre de la section" class="flex-1 min-w-[200px] rounded-lg border-gray-300" required>
             <button class="rounded-lg bg-gray-800 px-4 py-2 text-sm font-semibold text-white">
@@ -54,7 +55,7 @@
     <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
         <h3 class="font-bold">Ajouter une leçon</h3>
 
-        <form method="POST" action="{{ route('admin.centre.courses.lessons.store', $course) }}" class="mt-4 space-y-4">
+        <form method="POST" action="{{ route('professor.courses.lessons.store', $course) }}" class="mt-4 space-y-4">
             @csrf
 
             <div class="grid gap-4 md:grid-cols-2">
@@ -118,7 +119,7 @@
 
                 <div class="mt-2 space-y-2">
                     @forelse ($section->lessons as $lesson)
-                        @include('admin.centre.courses._lesson-row', ['lesson' => $lesson])
+                        @include('professor.courses._lesson-row', ['lesson' => $lesson])
                     @empty
                         <p class="text-sm text-gray-400">Aucune leçon dans cette section.</p>
                     @endforelse
@@ -133,7 +134,7 @@
 
             <div class="mt-2 space-y-2">
                 @forelse ($course->lessons as $lesson)
-                    @include('admin.centre.courses._lesson-row', ['lesson' => $lesson])
+                    @include('professor.courses._lesson-row', ['lesson' => $lesson])
                 @empty
                     @if ($course->sections->isEmpty())
                         <p class="text-sm text-gray-400">Aucune leçon pour ce cours.</p>
@@ -148,7 +149,7 @@
 
         <form
             method="POST"
-            action="{{ route('admin.centre.courses.resources.store', $course) }}"
+            action="{{ route('professor.courses.resources.store', $course) }}"
             enctype="multipart/form-data"
             class="mt-4 grid gap-3 md:grid-cols-2"
         >
@@ -187,15 +188,12 @@
                                     </a>
                                     <p class="text-xs text-gray-400">
                                         {{ $resource->original_name }} · {{ $resource->size_for_humans }}
-                                        @if ($resource->uploader)
-                                            · par {{ $resource->uploader->name }}
-                                        @endif
                                     </p>
                                 </div>
 
                                 <form
                                     method="POST"
-                                    action="{{ route('admin.centre.resources.destroy', $resource) }}"
+                                    action="{{ route('professor.resources.destroy', $resource) }}"
                                     onsubmit="return confirm('Supprimer ce fichier ?');"
                                 >
                                     @csrf

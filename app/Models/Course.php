@@ -61,6 +61,11 @@ class Course extends Model
         return $this->hasMany(Lesson::class);
     }
 
+    public function resources(): HasMany
+    {
+        return $this->hasMany(CourseResource::class);
+    }
+
     public function scopePublished(Builder $query): Builder
     {
         return $query

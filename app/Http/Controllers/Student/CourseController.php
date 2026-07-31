@@ -46,6 +46,9 @@ class CourseController extends Controller
                     ->where('is_published', true)
                     ->orderBy('sort_order');
             },
+            'resources' => function ($query) {
+                $query->where('is_published', true)->orderBy('sort_order');
+            },
         ]);
 
         $hasAccess = auth()->user()->hasAccessToSubject($course->subject);
@@ -53,6 +56,7 @@ class CourseController extends Controller
         return view('student.courses.show', [
             'course' => $course,
             'hasAccess' => $hasAccess,
+            'resourcesByType' => $course->resources->groupBy('type'),
         ]);
     }
 }
