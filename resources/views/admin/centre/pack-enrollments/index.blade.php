@@ -77,10 +77,26 @@
                         </span>
                     @else
                         @if ($enrollment->pack->isMonthly())
-                            <p class="mb-2 text-xs text-gray-400">
-                                Facturation mensuelle — {{ $enrollment->monthsElapsed() }} mois écoulé(s)
-                                depuis le {{ ($enrollment->activated_at ?? $enrollment->created_at)->format('d/m/Y') }}
-                                × {{ number_format($enrollment->pack->price, 2) }} DH/mois
+                            <p class="mb-2 flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                                <span>
+                                    Facturation mensuelle — {{ $enrollment->monthsElapsed() }} mois écoulé(s)
+                                    depuis le {{ ($enrollment->activated_at ?? $enrollment->created_at)->format('d/m/Y') }}
+                                    × {{ number_format($enrollment->pack->price, 2) }} DH/mois
+                                </span>
+
+                                @if ($enrollment->isPaused())
+                                    <span class="rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-blue-700">
+                                        En pause depuis le {{ $enrollment->paused_at->format('d/m/Y') }}
+                                    </span>
+                                @endif
+
+                                <form method="POST" action="{{ route('admin.centre.pack-enrollments.toggle-pause', $enrollment) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button class="font-semibold text-indigo-600 hover:underline">
+                                        {{ $enrollment->isPaused() ? 'Reprendre le compteur' : 'Mettre en pause (vacances/interruption)' }}
+                                    </button>
+                                </form>
                             </p>
                         @endif
 

@@ -69,6 +69,11 @@ Route::middleware([
                 '/enrollments/{enrollment}/reminder',
                 [TrainingEnrollmentController::class, 'sendReminder']
             )->name('enrollments.reminder');
+
+            Route::patch(
+                '/enrollments/{enrollment}/toggle-pause',
+                [TrainingEnrollmentController::class, 'togglePause']
+            )->name('enrollments.toggle-pause');
         });
 
     Route::prefix('formations')

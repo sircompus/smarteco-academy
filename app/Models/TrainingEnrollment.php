@@ -19,6 +19,8 @@ class TrainingEnrollment extends Model
         'user_id',
         'status',
         'amount_due',
+        'paused_at',
+        'paused_days',
         'progress_percentage',
         'enrolled_at',
         'completed_at',
@@ -31,6 +33,8 @@ class TrainingEnrollment extends Model
             'enrolled_at' => 'datetime',
             'completed_at' => 'datetime',
             'amount_due' => 'decimal:2',
+            'paused_at' => 'datetime',
+            'paused_days' => 'integer',
         ];
     }
 
@@ -93,11 +97,42 @@ class TrainingEnrollment extends Model
         return $this->amount_due !== null && (float) $this->amount_due > 0;
     }
 
+    public function isPaused(): bool
+    {
+        return $this->paused_at !== null;
+    }
+
+    public function pause(): void
+    {
+        if (! $this->isPaused()) {
+            $this->update(['paused_at' => now()]);
+        }
+    }
+
+    public function resume(): void
+    {
+        if ($this->isPaused()) {
+            $this->update([
+                'paused_days' => $this->paused_days + $this->paused_at->diffInDays(now()),
+                'paused_at' => null,
+            ]);
+        }
+    }
+
     public function monthsElapsed(): int
     {
         $start = $this->enrolled_at ?? $this->created_at;
 
-        return max(1, (int) $start->diffInMonths(now()) + 1);
+        $totalPausedDays = $this->paused_days
+            + ($this->isPaused() ? $this->paused_at->diffInDays(now()) : 0);
+
+        $effectiveNow = now()->subDays($totalPausedDays);
+
+        if ($effectiveNow->lessThan($start)) {
+            return 1;
+        }
+
+        return max(1, (int) $start->diffInMonths($effectiveNow) + 1);
     }
 
     public function getCurrentAmountDueAttribute(): float

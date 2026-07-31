@@ -82,4 +82,17 @@ class TrainingEnrollmentController extends Controller
 
         return back()->with('success', "Relance envoyée à {$enrollment->user->name}.");
     }
+
+    public function togglePause(TrainingEnrollment $enrollment): RedirectResponse
+    {
+        if ($enrollment->isPaused()) {
+            $enrollment->resume();
+            $message = 'Le compteur mensuel a repris.';
+        } else {
+            $enrollment->pause();
+            $message = 'Le compteur mensuel est en pause — le temps qui passe ne sera pas facturé.';
+        }
+
+        return back()->with('success', $message);
+    }
 }

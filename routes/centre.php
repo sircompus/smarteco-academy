@@ -114,6 +114,11 @@ Route::middleware([
             '/pack-enrollments/{packEnrollment}/reminder',
             [PackEnrollmentController::class, 'sendReminder']
         )->name('pack-enrollments.reminder');
+
+        Route::patch(
+            '/pack-enrollments/{packEnrollment}/toggle-pause',
+            [PackEnrollmentController::class, 'togglePause']
+        )->name('pack-enrollments.toggle-pause');
     });
 
 Route::middleware([

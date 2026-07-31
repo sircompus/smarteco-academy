@@ -48,6 +48,26 @@ class PackEnrollmentController extends Controller
         ]);
     }
 
+    public function storePayment(Request $request, PackEnrollment $packEnrollment): RedirectResponse
+    {
+        $data = $request->validate([
+            'amount' => ['required', 'numeric', 'min:0.01'],
+            'paid_at' => ['required', 'date'],
+            'note' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        PackPayment::create([
+            'uuid' => (string) Str::uuid(),
+            'pack_enrollment_id' => $packEnrollment->id,
+            'recorded_by' => Auth::id(),
+            'amount' => $data['amount'],
+            'paid_at' => $data['paid_at'],
+            'note' => $data['note'] ?? null,
+        ]);
+
+        return back()->with('success', 'Versement enregistré.');
+    }
+
     public function sendReminder(PackEnrollment $packEnrollment): RedirectResponse
     {
         abort_if(
@@ -70,23 +90,16 @@ class PackEnrollmentController extends Controller
         return back()->with('success', "Relance envoyée à {$packEnrollment->user->name}.");
     }
 
-    public function storePayment(Request $request, PackEnrollment $packEnrollment): RedirectResponse
+    public function togglePause(PackEnrollment $packEnrollment): RedirectResponse
     {
-        $data = $request->validate([
-            'amount' => ['required', 'numeric', 'min:0.01'],
-            'paid_at' => ['required', 'date'],
-            'note' => ['nullable', 'string', 'max:255'],
-        ]);
+        if ($packEnrollment->isPaused()) {
+            $packEnrollment->resume();
+            $message = 'Le compteur mensuel a repris.';
+        } else {
+            $packEnrollment->pause();
+            $message = 'Le compteur mensuel est en pause — le temps qui passe ne sera pas facturé.';
+        }
 
-        PackPayment::create([
-            'uuid' => (string) Str::uuid(),
-            'pack_enrollment_id' => $packEnrollment->id,
-            'recorded_by' => Auth::id(),
-            'amount' => $data['amount'],
-            'paid_at' => $data['paid_at'],
-            'note' => $data['note'] ?? null,
-        ]);
-
-        return back()->with('success', 'Versement enregistré.');
+        return back()->with('success', $message);
     }
 }
