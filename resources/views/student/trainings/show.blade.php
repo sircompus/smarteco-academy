@@ -42,6 +42,10 @@
                                 {{ $session->starts_at->format('d/m/Y H:i') }}
                             </p>
 
+                            <p class="mt-1 text-sm font-semibold text-gray-900">
+                                {{ $session->price ? number_format($session->price, 2).' DH' : 'Gratuit' }}{{ $session->isMonthly() ? '/mois' : '' }}
+                            </p>
+
                             <form
                                 method="POST"
                                 action="{{ route(

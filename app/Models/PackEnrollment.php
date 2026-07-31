@@ -70,7 +70,35 @@ class PackEnrollment extends Model
      */
     public function requiresPayment(): bool
     {
+        if ($this->pack?->isMonthly()) {
+            return (float) ($this->pack->price ?? 0) > 0;
+        }
+
         return $this->amount_due !== null && (float) $this->amount_due > 0;
+    }
+
+    /**
+     * Nombre de mois "dus" depuis le début de l'inscription (mois en cours inclus).
+     * Ex : inscrit le 5 juillet, on est le 20 août -> 2 mois dus (juillet + août).
+     */
+    public function monthsElapsed(): int
+    {
+        $start = $this->activated_at ?? $this->created_at;
+
+        return max(1, (int) $start->diffInMonths(now()) + 1);
+    }
+
+    /**
+     * Montant total dû à date : fixe pour un pack "unique",
+     * cumulé (prix mensuel × mois écoulés) pour un pack "mensuel".
+     */
+    public function getCurrentAmountDueAttribute(): float
+    {
+        if ($this->pack?->isMonthly()) {
+            return round((float) ($this->pack->price ?? 0) * $this->monthsElapsed(), 2);
+        }
+
+        return (float) ($this->amount_due ?? 0);
     }
 
     public function getAmountPaidAttribute(): float
@@ -84,7 +112,7 @@ class PackEnrollment extends Model
             return 0.0;
         }
 
-        return max(0, (float) $this->amount_due - $this->amount_paid);
+        return max(0, $this->current_amount_due - $this->amount_paid);
     }
 
     public function isFullyPaid(): bool

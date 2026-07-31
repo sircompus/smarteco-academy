@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Inscriptions & paiements')
-@section('page-title', 'Inscriptions & paiements')
+@section('title', 'Inscriptions & paiements formations')
+@section('page-title', 'Inscriptions & paiements formations')
 
 @section('content')
     @if (session('success'))
@@ -22,16 +22,6 @@
 
     <section class="rounded-2xl bg-white p-6 shadow-sm">
         <form method="GET" class="flex flex-wrap items-end gap-4">
-            <div>
-                <label class="text-sm font-medium">Statut</label>
-                <select name="status" class="mt-1 block rounded-lg border-gray-300" onchange="this.form.submit()">
-                    <option value="">Tous les statuts</option>
-                    <option value="en_attente" @selected($statusFilter === 'en_attente')>En attente</option>
-                    <option value="active" @selected($statusFilter === 'active')>Active</option>
-                    <option value="annulee" @selected($statusFilter === 'annulee')>Annulée</option>
-                </select>
-            </div>
-
             <label class="flex items-center gap-2 pb-2 text-sm">
                 <input
                     type="checkbox"
@@ -55,38 +45,33 @@
                         <p class="text-xs text-gray-400">{{ $enrollment->user->email }}</p>
 
                         <p class="mt-2 text-sm text-gray-600">
-                            {{ $enrollment->pack->name }}
+                            {{ $enrollment->training->title }}
+                            — {{ $enrollment->session->title }}
                         </p>
                     </div>
 
-                    <div class="text-right">
-                        <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-                            {{ $enrollment->status_label }}
-                        </span>
-
-                        <p class="mt-2 text-xs text-gray-400">
-                            {{ $enrollment->created_at->format('d/m/Y') }}
-                        </p>
-                    </div>
+                    <p class="text-xs text-gray-400">
+                        {{ $enrollment->created_at->format('d/m/Y') }}
+                    </p>
                 </div>
 
                 <div class="mt-4 border-t border-gray-100 pt-4">
                     @if (! $enrollment->requiresPayment())
                         <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-500">
-                            Pack gratuit — aucun paiement requis
+                            Formation gratuite — aucun paiement requis
                         </span>
                     @else
-                        @if ($enrollment->pack->isMonthly())
+                        @if ($enrollment->session->isMonthly())
                             <p class="mb-2 text-xs text-gray-400">
                                 Facturation mensuelle — {{ $enrollment->monthsElapsed() }} mois écoulé(s)
-                                depuis le {{ ($enrollment->activated_at ?? $enrollment->created_at)->format('d/m/Y') }}
-                                × {{ number_format($enrollment->pack->price, 2) }} DH/mois
+                                depuis le {{ ($enrollment->enrolled_at ?? $enrollment->created_at)->format('d/m/Y') }}
+                                × {{ number_format($enrollment->session->price, 2) }} DH/mois
                             </p>
                         @endif
 
                         <div class="flex flex-wrap items-center gap-4 text-sm">
                             <span>
-                                Montant dû{{ $enrollment->pack->isMonthly() ? ' (cumulé)' : '' }} :
+                                Montant dû{{ $enrollment->session->isMonthly() ? ' (cumulé)' : '' }} :
                                 <strong>{{ number_format($enrollment->current_amount_due, 2) }} DH</strong>
                             </span>
 
@@ -103,7 +88,7 @@
                                     Soldé
                                 </span>
                             @else
-                                <form method="POST" action="{{ route('admin.centre.pack-enrollments.reminder', $enrollment) }}">
+                                <form method="POST" action="{{ route('admin.trainings.enrollments.reminder', $enrollment) }}">
                                     @csrf
                                     <button class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100">
                                         Envoyer une relance
@@ -148,7 +133,7 @@
 
                             <form
                                 method="POST"
-                                action="{{ route('admin.centre.pack-enrollments.payments.store', $enrollment) }}"
+                                action="{{ route('admin.trainings.enrollments.payments.store', $enrollment) }}"
                                 class="flex flex-wrap items-end gap-3"
                             >
                                 @csrf
@@ -165,7 +150,7 @@
 
                                 <div class="flex-1 min-w-[160px]">
                                     <label class="text-xs font-medium text-gray-500">Note (optionnel)</label>
-                                    <input name="note" placeholder="Ex : 1ère tranche" class="mt-1 block w-full rounded-lg border-gray-300">
+                                    <input name="note" placeholder="Ex : mois de septembre" class="mt-1 block w-full rounded-lg border-gray-300">
                                 </div>
 
                                 <button class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">
@@ -175,28 +160,6 @@
                         </div>
                     @endif
                 </div>
-
-                @if ($enrollment->status === 'en_attente')
-                    <div class="mt-4 flex gap-2 border-t border-gray-100 pt-4">
-                        <form method="POST" action="{{ route('admin.centre.pack-enrollments.status', $enrollment) }}">
-                            @csrf
-                            @method('PATCH')
-                            <input type="hidden" name="status" value="active">
-                            <button class="rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white">
-                                Valider l'inscription
-                            </button>
-                        </form>
-
-                        <form method="POST" action="{{ route('admin.centre.pack-enrollments.status', $enrollment) }}">
-                            @csrf
-                            @method('PATCH')
-                            <input type="hidden" name="status" value="annulee">
-                            <button class="rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700">
-                                Refuser
-                            </button>
-                        </form>
-                    </div>
-                @endif
             </div>
         @empty
             <div class="rounded-2xl bg-white p-10 text-center shadow-sm">

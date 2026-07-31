@@ -28,6 +28,8 @@ class TrainingSession extends Model
         'capacity',
         'location',
         'meeting_url',
+        'price',
+        'billing_type',
     ];
 
     protected function casts(): array
@@ -38,7 +40,13 @@ class TrainingSession extends Model
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
             'capacity' => 'integer',
+            'price' => 'decimal:2',
         ];
+    }
+
+    public function isMonthly(): bool
+    {
+        return $this->billing_type === 'mensuel';
     }
 
     protected static function booted(): void

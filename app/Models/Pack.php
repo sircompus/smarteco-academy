@@ -22,6 +22,7 @@ class Pack extends Model
         'name',
         'description',
         'price',
+        'billing_type',
         'is_active',
         'sort_order',
     ];
@@ -33,6 +34,11 @@ class Pack extends Model
             'is_active' => 'boolean',
             'sort_order' => 'integer',
         ];
+    }
+
+    public function isMonthly(): bool
+    {
+        return $this->billing_type === 'mensuel';
     }
 
     public function semester(): BelongsTo

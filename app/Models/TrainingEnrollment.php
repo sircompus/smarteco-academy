@@ -18,6 +18,7 @@ class TrainingEnrollment extends Model
         'training_session_id',
         'user_id',
         'status',
+        'amount_due',
         'progress_percentage',
         'enrolled_at',
         'completed_at',
@@ -29,6 +30,7 @@ class TrainingEnrollment extends Model
             'progress_percentage' => 'decimal:2',
             'enrolled_at' => 'datetime',
             'completed_at' => 'datetime',
+            'amount_due' => 'decimal:2',
         ];
     }
 
@@ -65,5 +67,64 @@ class TrainingEnrollment extends Model
             TrainingProgress::class,
             'training_enrollment_id'
         );
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(TrainingPayment::class);
+    }
+
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(TrainingPaymentReminder::class);
+    }
+
+    public function lastReminder(): ?TrainingPaymentReminder
+    {
+        return $this->reminders()->latest('sent_at')->first();
+    }
+
+    public function requiresPayment(): bool
+    {
+        if ($this->session?->isMonthly()) {
+            return (float) ($this->session->price ?? 0) > 0;
+        }
+
+        return $this->amount_due !== null && (float) $this->amount_due > 0;
+    }
+
+    public function monthsElapsed(): int
+    {
+        $start = $this->enrolled_at ?? $this->created_at;
+
+        return max(1, (int) $start->diffInMonths(now()) + 1);
+    }
+
+    public function getCurrentAmountDueAttribute(): float
+    {
+        if ($this->session?->isMonthly()) {
+            return round((float) ($this->session->price ?? 0) * $this->monthsElapsed(), 2);
+        }
+
+        return (float) ($this->amount_due ?? 0);
+    }
+
+    public function getAmountPaidAttribute(): float
+    {
+        return (float) $this->payments()->sum('amount');
+    }
+
+    public function getAmountRemainingAttribute(): float
+    {
+        if (! $this->requiresPayment()) {
+            return 0.0;
+        }
+
+        return max(0, $this->current_amount_due - $this->amount_paid);
+    }
+
+    public function isFullyPaid(): bool
+    {
+        return ! $this->requiresPayment() || $this->amount_remaining <= 0;
     }
 }

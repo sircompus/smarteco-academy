@@ -45,7 +45,7 @@
                 @endif
 
                 <p class="mt-4 text-xl font-bold text-gray-900">
-                    {{ $pack->price ? number_format($pack->price, 2).' DH' : 'Gratuit' }}
+                    {{ $pack->price ? number_format($pack->price, 2).' DH' : 'Gratuit' }}{{ $pack->isMonthly() ? '/mois' : '' }}
                 </p>
 
                 <div class="mt-5">

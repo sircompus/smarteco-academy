@@ -105,7 +105,15 @@
             </div>
 
             <div>
-                <label class="text-sm font-medium">Prix (DH)</label>
+                <label class="text-sm font-medium">Facturation</label>
+                <select name="billing_type" class="mt-1 block w-full rounded-lg border-gray-300" required>
+                    <option value="unique">Paiement unique (une fois)</option>
+                    <option value="mensuel">Mensuel (récurrent, cumulé chaque mois depuis l'inscription)</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="text-sm font-medium">Prix (DH) — mensuel si facturation mensuelle</label>
                 <input type="number" step="0.01" min="0.01" name="price" class="mt-1 block w-full rounded-lg border-gray-300" required>
             </div>
 

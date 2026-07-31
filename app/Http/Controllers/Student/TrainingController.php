@@ -99,10 +99,12 @@ class TrainingController extends Controller
         }
 
         TrainingEnrollment::create([
+            'uuid' => (string) \Illuminate\Support\Str::uuid(),
             'training_id' => $training->id,
             'training_session_id' => $session->id,
             'user_id' => $request->user()->id,
             'status' => 'active',
+            'amount_due' => $session->price,
             'progress_percentage' => 0,
             'enrolled_at' => now(),
         ]);

@@ -84,6 +84,7 @@ class PackController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:2000'],
             'price' => ['required', 'numeric', 'min:0.01'],
+            'billing_type' => ['required', 'in:unique,mensuel'],
         ]);
 
         Pack::create([
@@ -94,6 +95,7 @@ class PackController extends Controller
             'name' => $data['name'],
             'description' => $data['description'] ?? null,
             'price' => $data['price'],
+            'billing_type' => $data['billing_type'],
             'is_active' => true,
         ]);
 
@@ -113,6 +115,7 @@ class PackController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:2000'],
             'price' => ['required', 'numeric', 'min:0.01'],
+            'billing_type' => ['required', 'in:unique,mensuel'],
             'is_active' => ['required', 'boolean'],
         ]);
 

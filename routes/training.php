@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\TrainingController as AdminTrainingController;
+use App\Http\Controllers\Admin\TrainingEnrollmentController;
 use App\Http\Controllers\Student\TrainingController as StudentTrainingController;
 use App\Http\Middleware\EnsureModuleIsActive;
 use App\Http\Middleware\EnsureUserHasRole;
@@ -46,6 +47,28 @@ Route::middleware([
                 '/{training}/publish',
                 [AdminTrainingController::class, 'publish']
             )->name('publish');
+        });
+
+    Route::middleware([
+        EnsureUserHasRole::class . ':admin,superviseur',
+    ])
+        ->prefix('admin/formations')
+        ->name('admin.trainings.')
+        ->group(function (): void {
+            Route::get(
+                '/enrollments',
+                [TrainingEnrollmentController::class, 'index']
+            )->name('enrollments.index');
+
+            Route::post(
+                '/enrollments/{enrollment}/payments',
+                [TrainingEnrollmentController::class, 'storePayment']
+            )->name('enrollments.payments.store');
+
+            Route::post(
+                '/enrollments/{enrollment}/reminder',
+                [TrainingEnrollmentController::class, 'sendReminder']
+            )->name('enrollments.reminder');
         });
 
     Route::prefix('formations')

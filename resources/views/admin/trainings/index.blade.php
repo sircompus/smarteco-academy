@@ -155,6 +155,27 @@
                                 placeholder="Lieu ou salle"
                             >
 
+                            <div class="grid grid-cols-2 gap-3">
+                                <input
+                                    name="price"
+                                    type="number"
+                                    step="0.01"
+                                    min="0.01"
+                                    class="block w-full rounded-lg border-gray-300"
+                                    placeholder="Prix (DH)"
+                                    required
+                                >
+
+                                <select
+                                    name="billing_type"
+                                    class="block w-full rounded-lg border-gray-300"
+                                    required
+                                >
+                                    <option value="unique">Paiement unique</option>
+                                    <option value="mensuel">Mensuel (récurrent)</option>
+                                </select>
+                            </div>
+
                             <button
                                 class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white"
                             >

@@ -48,7 +48,15 @@
                 <textarea name="description" rows="3" class="mt-1 block w-full rounded-lg border-gray-300">{{ old('description', $pack->description) }}</textarea>
             </div>
 
-            <div class="grid gap-4 md:grid-cols-2">
+            <div class="grid gap-4 md:grid-cols-3">
+                <div>
+                    <label class="text-sm font-medium">Facturation</label>
+                    <select name="billing_type" class="mt-1 block w-full rounded-lg border-gray-300">
+                        <option value="unique" @selected(old('billing_type', $pack->billing_type) === 'unique')>Paiement unique</option>
+                        <option value="mensuel" @selected(old('billing_type', $pack->billing_type) === 'mensuel')>Mensuel (récurrent)</option>
+                    </select>
+                </div>
+
                 <div>
                     <label class="text-sm font-medium">Prix (DH)</label>
                     <input type="number" step="0.01" name="price" value="{{ old('price', $pack->price) }}" class="mt-1 block w-full rounded-lg border-gray-300">
@@ -62,6 +70,13 @@
                     </select>
                 </div>
             </div>
+
+            @if ($pack->isMonthly())
+                <p class="rounded-lg bg-amber-50 p-3 text-xs text-amber-700">
+                    Facturation mensuelle : chaque étudiant inscrit voit son montant dû augmenter
+                    automatiquement chaque mois depuis sa date d'inscription (pas d'action requise de ta part).
+                </p>
+            @endif
 
             <div class="flex items-center justify-between pt-4">
                 <a href="{{ route('admin.centre.packs.index') }}" class="text-sm text-gray-600 underline">
