@@ -8,137 +8,146 @@
         @media print {
             @page { size: A4; margin: 15mm; }
         }
+
+        .cv-classique, .cv-classique * {
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .cv-classique {
+            font-size: 12pt;
+            line-height: 1.5;
+        }
+
+        .cv-classique h1 {
+            font-size: 16pt;
+        }
+
+        .cv-classique h2 {
+            font-size: 16pt;
+        }
     </style>
 @endpush
 
 @section('content')
-    <div class="mb-6 flex justify-center print:hidden">
+    <div class="mb-4 flex justify-center print:hidden">
         <button onclick="window.print()" class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
             Imprimer / Enregistrer en PDF
         </button>
     </div>
 
-    <div class="mx-auto max-w-3xl rounded-2xl border border-gray-200 bg-white p-10 text-sm print:border-0 print:p-0 print:shadow-none">
+    <div class="cv-classique mx-auto max-w-3xl bg-white p-10 text-gray-900 print:p-0 print:shadow-none">
 
-        <div class="flex items-center gap-6 border-b-2 border-gray-800 pb-6">
-            @if ($profile->photo_url)
-                <img src="{{ $profile->photo_url }}" class="h-24 w-24 rounded-full object-cover">
+        <div class="border-b-2 border-gray-800 pb-4">
+            <h1 class="font-bold text-gray-900">{{ $profile->full_name }}</h1>
+
+            @if ($profile->headline)
+                <p class="mt-1">{{ $profile->headline }}</p>
             @endif
 
-            <div>
-                <h1 class="text-2xl font-extrabold text-gray-900">{{ $profile->full_name }}</h1>
-                @if ($profile->headline)
-                    <p class="mt-1 text-base text-gray-600">{{ $profile->headline }}</p>
-                @endif
+            <p class="mt-2">
+                @if ($profile->email) {{ $profile->email }} @endif
+                @if ($profile->phone) — {{ $profile->phone }} @endif
+                @if ($profile->address) — {{ $profile->address }} @endif
+            </p>
 
-                <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
-                    @if ($profile->email) <span>{{ $profile->email }}</span> @endif
-                    @if ($profile->phone) <span>{{ $profile->phone }}</span> @endif
-                    @if ($profile->address) <span>{{ $profile->address }}</span> @endif
-                    @if ($profile->linkedin_url) <span>{{ $profile->linkedin_url }}</span> @endif
-                </div>
-            </div>
+            @if ($profile->linkedin_url)
+                <p>{{ $profile->linkedin_url }}</p>
+            @endif
         </div>
 
         @if (filled($profile->effective_summary))
-            <div class="mt-6">
-                <h2 class="text-sm font-bold uppercase tracking-wide text-gray-900">Profil</h2>
-                <p class="mt-2 leading-6 text-gray-700">{{ $profile->effective_summary }}</p>
+            <div class="mt-4">
+                <h2 class="font-bold uppercase text-gray-900">Profil</h2>
+                <p class="mt-1">{{ $profile->effective_summary }}</p>
             </div>
         @endif
 
         @if ($profile->experiences->isNotEmpty())
-            <div class="mt-6">
-                <h2 class="text-sm font-bold uppercase tracking-wide text-gray-900">Expérience professionnelle</h2>
-                <div class="mt-2 space-y-4">
-                    @foreach ($profile->experiences as $exp)
-                        <div>
-                            <div class="flex items-baseline justify-between">
-                                <p class="font-semibold text-gray-900">{{ $exp->position }} — {{ $exp->company }}</p>
-                                <p class="text-xs text-gray-400">
-                                    {{ $exp->start_date?->format('m/Y') }} – {{ $exp->is_current ? 'Présent' : $exp->end_date?->format('m/Y') }}
-                                </p>
-                            </div>
-                            @if ($exp->location)
-                                <p class="text-xs text-gray-400">{{ $exp->location }}</p>
-                            @endif
-                            @if ($exp->description)
-                                <p class="mt-1 text-gray-700">{{ $exp->description }}</p>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
+            <div class="mt-4">
+                <h2 class="font-bold uppercase text-gray-900">Expérience professionnelle</h2>
+
+                @foreach ($profile->experiences as $exp)
+                    <div class="mt-2">
+                        <p class="font-bold">
+                            {{ $exp->position }} — {{ $exp->company }}
+                            <span class="font-normal">
+                                ({{ $exp->start_date?->format('m/Y') }} – {{ $exp->is_current ? 'Présent' : $exp->end_date?->format('m/Y') }})
+                            </span>
+                        </p>
+
+                        @if ($exp->location)
+                            <p>{{ $exp->location }}</p>
+                        @endif
+
+                        @if ($exp->description)
+                            <p>{{ $exp->description }}</p>
+                        @endif
+                    </div>
+                @endforeach
             </div>
         @endif
 
         @if ($profile->educations->isNotEmpty())
-            <div class="mt-6">
-                <h2 class="text-sm font-bold uppercase tracking-wide text-gray-900">Formation</h2>
-                <div class="mt-2 space-y-3">
-                    @foreach ($profile->educations as $edu)
-                        <div>
-                            <div class="flex items-baseline justify-between">
-                                <p class="font-semibold text-gray-900">{{ $edu->degree }} — {{ $edu->institution }}</p>
-                                <p class="text-xs text-gray-400">
-                                    {{ $edu->start_date?->format('Y') }} – {{ $edu->is_current ? 'Présent' : $edu->end_date?->format('Y') }}
-                                </p>
-                            </div>
-                            @if ($edu->field_of_study)
-                                <p class="text-xs text-gray-400">{{ $edu->field_of_study }}</p>
-                            @endif
-                            @if ($edu->description)
-                                <p class="mt-1 text-gray-700">{{ $edu->description }}</p>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
+            <div class="mt-4">
+                <h2 class="font-bold uppercase text-gray-900">Formation</h2>
+
+                @foreach ($profile->educations as $edu)
+                    <div class="mt-2">
+                        <p class="font-bold">
+                            {{ $edu->degree }} — {{ $edu->institution }}
+                            <span class="font-normal">
+                                ({{ $edu->start_date?->format('Y') }} – {{ $edu->is_current ? 'Présent' : $edu->end_date?->format('Y') }})
+                            </span>
+                        </p>
+
+                        @if ($edu->field_of_study)
+                            <p>{{ $edu->field_of_study }}</p>
+                        @endif
+
+                        @if ($edu->description)
+                            <p>{{ $edu->description }}</p>
+                        @endif
+                    </div>
+                @endforeach
             </div>
         @endif
 
-        <div class="mt-6 grid grid-cols-2 gap-6">
-            @if ($profile->skills->isNotEmpty())
-                <div>
-                    <h2 class="text-sm font-bold uppercase tracking-wide text-gray-900">Compétences</h2>
+        @if ($profile->skills->isNotEmpty())
+            <div class="mt-4">
+                <h2 class="font-bold uppercase text-gray-900">Compétences</h2>
 
-                    @php
-                        $skillsByCategory = $profile->skills->groupBy(fn ($s) => $s->category ?: 'Autres');
-                    @endphp
+                @php
+                    $skillsByCategory = $profile->skills->groupBy(fn ($s) => $s->category ?: 'Autres');
+                @endphp
 
-                    @foreach ($skillsByCategory as $category => $categorySkills)
-                        <p class="mt-2 text-xs font-semibold text-indigo-600">{{ $category }}</p>
-                        <ul class="mt-1 space-y-1 text-gray-700">
-                            @foreach ($categorySkills as $skill)
-                                <li>{{ $skill->name }}</li>
-                            @endforeach
-                        </ul>
+                @foreach ($skillsByCategory as $category => $categorySkills)
+                    <p class="mt-2 font-bold">{{ $category }} :</p>
+                    <p>{{ $categorySkills->pluck('name')->implode(', ') }}</p>
+                @endforeach
+            </div>
+        @endif
+
+        @if ($profile->languages->isNotEmpty())
+            <div class="mt-4">
+                <h2 class="font-bold uppercase text-gray-900">Langues</h2>
+                <p>
+                    @foreach ($profile->languages as $lang)
+                        {{ $lang->name }} ({{ $lang->level_label }}){{ ! $loop->last ? ' — ' : '' }}
                     @endforeach
-                </div>
-            @endif
-
-            @if ($profile->languages->isNotEmpty())
-                <div>
-                    <h2 class="text-sm font-bold uppercase tracking-wide text-gray-900">Langues</h2>
-                    <ul class="mt-2 space-y-1 text-gray-700">
-                        @foreach ($profile->languages as $lang)
-                            <li>{{ $lang->name }} — <span class="text-xs text-gray-400">{{ $lang->level_label }}</span></li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-        </div>
+                </p>
+            </div>
+        @endif
 
         @if ($profile->certifications->isNotEmpty())
-            <div class="mt-6">
-                <h2 class="text-sm font-bold uppercase tracking-wide text-gray-900">Certifications</h2>
-                <ul class="mt-2 space-y-1 text-gray-700">
-                    @foreach ($profile->certifications as $cert)
-                        <li>
-                            {{ $cert->name }}
-                            @if ($cert->issuer) — {{ $cert->issuer }} @endif
-                            @if ($cert->date_obtained) <span class="text-xs text-gray-400">({{ $cert->date_obtained->format('Y') }})</span> @endif
-                        </li>
-                    @endforeach
-                </ul>
+            <div class="mt-4">
+                <h2 class="font-bold uppercase text-gray-900">Certifications</h2>
+                @foreach ($profile->certifications as $cert)
+                    <p>
+                        {{ $cert->name }}
+                        @if ($cert->issuer) — {{ $cert->issuer }} @endif
+                        @if ($cert->date_obtained) ({{ $cert->date_obtained->format('Y') }}) @endif
+                    </p>
+                @endforeach
             </div>
         @endif
     </div>
