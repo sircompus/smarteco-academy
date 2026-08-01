@@ -27,7 +27,7 @@
     </div>
 
     {{-- Bandeau d'en-tête --}}
-    <header class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 py-16 text-white">
+    <header class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 py-16 text-white" style="background: linear-gradient(to bottom right, #4f46e5, #4338ca, #6b21a8); color: #ffffff;">
         <div class="mx-auto max-w-4xl px-6 text-center">
             @if ($profile->photo_url)
                 <img
