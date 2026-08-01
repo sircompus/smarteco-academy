@@ -1,71 +1,75 @@
-<section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+<section id="skills" class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
     <h2 class="text-lg font-bold">Compétences</h2>
 
-    <div class="mt-4 flex flex-wrap gap-2">
-        @foreach ($profile->skills as $skill)
-            <div class="flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-sm">
-                <span class="font-medium text-indigo-700">{{ $skill->name }}</span>
-                <span class="text-xs text-indigo-400">({{ $skill->level_label }})</span>
-                <form method="POST" action="{{ route('student.cv.skills.destroy', $skill) }}">
-                    @csrf @method('DELETE')
-                    <button class="text-indigo-400 hover:text-red-600">×</button>
-                </form>
-            </div>
-        @endforeach
-    </div>
+    @if ($profile->skills->isNotEmpty())
+        <p class="mt-3 text-xs font-medium uppercase tracking-wide text-gray-400">Déjà ajoutées</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+            @foreach ($profile->skills as $skill)
+                <div class="flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-sm">
+                    <span class="font-medium text-indigo-700">{{ $skill->name }}</span>
+                    <span class="text-xs text-indigo-400">({{ $skill->level_label }})</span>
+                    <form method="POST" action="{{ route('student.cv.skills.destroy', $skill) }}">
+                        @csrf @method('DELETE')
+                        <button class="text-indigo-400 hover:text-red-600">×</button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
-    <form method="POST" action="{{ route('student.cv.skills.store') }}" class="mt-4 flex flex-wrap gap-2">
+    <form method="POST" action="{{ route('student.cv.skills.store') }}" class="mt-5 rounded-xl border border-dashed border-gray-300 p-4">
         @csrf
-        <input name="name" list="skills-suggestions" placeholder="Ex : Excel, Comptabilité..." class="rounded-lg border-gray-300" required>
 
-        <datalist id="skills-suggestions">
-            {{-- Bureautique / gestion --}}
-            <option value="Excel avancé">
-            <option value="Word">
-            <option value="PowerPoint">
-            <option value="Sage Comptabilité">
-            <option value="SAP">
-            <option value="Comptabilité générale">
-            <option value="Comptabilité analytique">
-            <option value="Fiscalité">
-            <option value="Contrôle de gestion">
-            <option value="Analyse financière">
-            <option value="Gestion budgétaire">
-            <option value="Audit">
-            {{-- Commerce / marketing --}}
-            <option value="Marketing digital">
-            <option value="Négociation commerciale">
-            <option value="Relation client">
-            <option value="Étude de marché">
-            <option value="Réseaux sociaux">
-            <option value="SEO / référencement">
-            {{-- RH --}}
-            <option value="Gestion de la paie">
-            <option value="Recrutement">
-            <option value="Droit du travail">
-            <option value="Gestion des conflits">
-            {{-- Économétrie / data --}}
-            <option value="Statistiques">
-            <option value="Analyse de données">
-            <option value="Python">
-            <option value="R (langage statistique)">
-            <option value="SPSS">
-            <option value="Économétrie appliquée">
-            {{-- Transversal --}}
-            <option value="Gestion de projet">
-            <option value="Travail d'équipe">
-            <option value="Communication">
-            <option value="Rédaction professionnelle">
-            <option value="Intelligence artificielle (bases)">
-            <option value="Anglais des affaires">
-        </datalist>
+        <p class="text-sm font-medium text-gray-700">
+            Coche toutes les compétences qui te concernent, choisis un niveau, puis valide en une seule fois.
+        </p>
 
-        <select name="level" class="rounded-lg border-gray-300">
-            <option value="debutant">Débutant</option>
-            <option value="intermediaire" selected>Intermédiaire</option>
-            <option value="avance">Avancé</option>
-            <option value="expert">Expert</option>
-        </select>
-        <button class="rounded-lg bg-gray-800 px-4 py-2 text-xs font-semibold text-white">+ Ajouter</button>
+        <div class="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3 md:grid-cols-4">
+            @php
+                $suggestedSkills = [
+                    'Excel avancé', 'Word', 'PowerPoint', 'Sage Comptabilité', 'SAP',
+                    'Comptabilité générale', 'Comptabilité analytique', 'Fiscalité',
+                    'Contrôle de gestion', 'Analyse financière', 'Gestion budgétaire', 'Audit',
+                    'Marketing digital', 'Négociation commerciale', 'Relation client',
+                    'Étude de marché', 'Réseaux sociaux', 'SEO / référencement',
+                    'Gestion de la paie', 'Recrutement', 'Droit du travail', 'Gestion des conflits',
+                    'Statistiques', 'Analyse de données', 'Python', 'R (langage statistique)',
+                    'SPSS', 'Économétrie appliquée',
+                    'Gestion de projet', "Travail d'équipe", 'Communication',
+                    'Rédaction professionnelle', 'Intelligence artificielle (bases)', 'Anglais des affaires',
+                ];
+                $alreadyHave = $profile->skills->pluck('name')->map(fn ($n) => mb_strtolower($n))->all();
+            @endphp
+
+            @foreach ($suggestedSkills as $suggestedSkill)
+                @unless (in_array(mb_strtolower($suggestedSkill), $alreadyHave, true))
+                    <label class="flex items-center gap-2 text-sm text-gray-700">
+                        <input type="checkbox" name="skills[]" value="{{ $suggestedSkill }}" class="rounded border-gray-300">
+                        {{ $suggestedSkill }}
+                    </label>
+                @endunless
+            @endforeach
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-end gap-3">
+            <div>
+                <label class="text-xs font-medium text-gray-500">Niveau (appliqué à tout ce que tu coches)</label>
+                <select name="level" class="mt-1 block rounded-lg border-gray-300">
+                    <option value="debutant">Débutant</option>
+                    <option value="intermediaire" selected>Intermédiaire</option>
+                    <option value="avance">Avancé</option>
+                    <option value="expert">Expert</option>
+                </select>
+            </div>
+
+            <div class="flex-1 min-w-[200px]">
+                <label class="text-xs font-medium text-gray-500">Autre compétence (non listée)</label>
+                <input name="custom_skill" placeholder="Ex : Une compétence spécifique" class="mt-1 block w-full rounded-lg border-gray-300">
+            </div>
+
+            <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
+                Ajouter les compétences cochées
+            </button>
+        </div>
     </form>
 </section>

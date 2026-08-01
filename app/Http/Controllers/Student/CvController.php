@@ -48,6 +48,15 @@ class CvController extends Controller
         );
     }
 
+    /**
+     * Redirige vers le CV builder en restant sur la section concernée
+     * (ancre HTML), au lieu de revenir tout en haut de la page.
+     */
+    private function toSection(string $anchor, string $message): RedirectResponse
+    {
+        return redirect(route('student.cv.edit').'#'.$anchor)->with('success', $message);
+    }
+
     // --- Profil principal ---
 
     public function updateProfile(Request $request): RedirectResponse
@@ -75,7 +84,7 @@ class CvController extends Controller
 
         $profile->update($data);
 
-        return back()->with('success', 'Profil mis à jour.');
+        return $this->toSection('profile-info', 'Profil mis à jour.');
     }
 
     public function togglePublic(Request $request): RedirectResponse
@@ -89,8 +98,8 @@ class CvController extends Controller
         $profile->is_public = ! $profile->is_public;
         $profile->save();
 
-        return back()->with(
-            'success',
+        return $this->toSection(
+            'exports',
             $profile->is_public
                 ? 'Ton portfolio est maintenant public : '.$profile->public_url
                 : 'Ton portfolio est de nouveau privé.'
@@ -106,7 +115,7 @@ class CvController extends Controller
 
         $profile->educations()->create($data + ['sort_order' => $profile->educations()->count()]);
 
-        return back()->with('success', 'Formation ajoutée.');
+        return $this->toSection('educations', 'Formation ajoutée.');
     }
 
     public function updateEducation(Request $request, CvEducation $education): RedirectResponse
@@ -115,7 +124,7 @@ class CvController extends Controller
 
         $education->update($this->validateEducation($request));
 
-        return back()->with('success', 'Formation mise à jour.');
+        return $this->toSection('educations', 'Formation mise à jour.');
     }
 
     public function destroyEducation(CvEducation $education): RedirectResponse
@@ -123,7 +132,7 @@ class CvController extends Controller
         $this->authorizeOwnership($education->profile);
         $education->delete();
 
-        return back()->with('success', 'Formation supprimée.');
+        return $this->toSection('educations', 'Formation supprimée.');
     }
 
     private function validateEducation(Request $request): array
@@ -148,7 +157,7 @@ class CvController extends Controller
 
         $profile->experiences()->create($data + ['sort_order' => $profile->experiences()->count()]);
 
-        return back()->with('success', 'Expérience ajoutée.');
+        return $this->toSection('experiences', 'Expérience ajoutée.');
     }
 
     public function updateExperience(Request $request, CvExperience $experience): RedirectResponse
@@ -157,7 +166,7 @@ class CvController extends Controller
 
         $experience->update($this->validateExperience($request));
 
-        return back()->with('success', 'Expérience mise à jour.');
+        return $this->toSection('experiences', 'Expérience mise à jour.');
     }
 
     public function destroyExperience(CvExperience $experience): RedirectResponse
@@ -165,7 +174,7 @@ class CvController extends Controller
         $this->authorizeOwnership($experience->profile);
         $experience->delete();
 
-        return back()->with('success', 'Expérience supprimée.');
+        return $this->toSection('experiences', 'Expérience supprimée.');
     }
 
     private function validateExperience(Request $request): array
@@ -181,19 +190,46 @@ class CvController extends Controller
         ]);
     }
 
-    // --- Compétences ---
+    // --- Compétences (sélection multiple par cases à cocher) ---
 
     public function storeSkill(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:100'],
+            'skills' => ['nullable', 'array'],
+            'skills.*' => ['string', 'max:100'],
             'level' => ['required', 'in:debutant,intermediaire,avance,expert'],
+            'custom_skill' => ['nullable', 'string', 'max:100'],
         ]);
 
         $profile = $this->currentProfile();
-        $profile->skills()->create($data + ['sort_order' => $profile->skills()->count()]);
+        $existingNames = $profile->skills()->pluck('name')->map(fn ($n) => mb_strtolower($n))->all();
 
-        return back()->with('success', 'Compétence ajoutée.');
+        $namesToAdd = collect($data['skills'] ?? []);
+
+        if (! empty($data['custom_skill'])) {
+            $namesToAdd->push($data['custom_skill']);
+        }
+
+        $count = 0;
+
+        foreach ($namesToAdd->unique() as $name) {
+            if (in_array(mb_strtolower($name), $existingNames, true)) {
+                continue; // déjà ajoutée, on évite les doublons
+            }
+
+            $profile->skills()->create([
+                'name' => $name,
+                'level' => $data['level'],
+                'sort_order' => $profile->skills()->count(),
+            ]);
+
+            $count++;
+        }
+
+        return $this->toSection(
+            'skills',
+            $count > 0 ? "{$count} compétence(s) ajoutée(s)." : 'Aucune nouvelle compétence à ajouter (déjà présentes).'
+        );
     }
 
     public function destroySkill(CvSkill $skill): RedirectResponse
@@ -201,22 +237,58 @@ class CvController extends Controller
         $this->authorizeOwnership($skill->profile);
         $skill->delete();
 
-        return back()->with('success', 'Compétence supprimée.');
+        return $this->toSection('skills', 'Compétence supprimée.');
     }
 
-    // --- Langues ---
+    // --- Langues (sélection multiple par cases à cocher, avec niveau par langue) ---
 
     public function storeLanguage(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:100'],
-            'level' => ['required', 'in:debutant,intermediaire,courant,bilingue,natif'],
+            'languages' => ['nullable', 'array'],
+            'languages.*.checked' => ['nullable', 'boolean'],
+            'languages.*.level' => ['nullable', 'in:debutant,intermediaire,courant,bilingue,natif'],
+            'custom_language' => ['nullable', 'string', 'max:100'],
+            'custom_language_level' => ['nullable', 'in:debutant,intermediaire,courant,bilingue,natif'],
         ]);
 
         $profile = $this->currentProfile();
-        $profile->languages()->create($data + ['sort_order' => $profile->languages()->count()]);
+        $existingNames = $profile->languages()->pluck('name')->map(fn ($n) => mb_strtolower($n))->all();
 
-        return back()->with('success', 'Langue ajoutée.');
+        $count = 0;
+
+        foreach ($data['languages'] ?? [] as $name => $entry) {
+            if (empty($entry['checked'])) {
+                continue;
+            }
+
+            if (in_array(mb_strtolower($name), $existingNames, true)) {
+                continue;
+            }
+
+            $profile->languages()->create([
+                'name' => $name,
+                'level' => $entry['level'] ?? 'intermediaire',
+                'sort_order' => $profile->languages()->count(),
+            ]);
+
+            $count++;
+        }
+
+        if (! empty($data['custom_language']) && ! in_array(mb_strtolower($data['custom_language']), $existingNames, true)) {
+            $profile->languages()->create([
+                'name' => $data['custom_language'],
+                'level' => $data['custom_language_level'] ?? 'intermediaire',
+                'sort_order' => $profile->languages()->count(),
+            ]);
+
+            $count++;
+        }
+
+        return $this->toSection(
+            'languages',
+            $count > 0 ? "{$count} langue(s) ajoutée(s)." : 'Aucune nouvelle langue à ajouter (déjà présentes).'
+        );
     }
 
     public function destroyLanguage(CvLanguage $language): RedirectResponse
@@ -224,7 +296,7 @@ class CvController extends Controller
         $this->authorizeOwnership($language->profile);
         $language->delete();
 
-        return back()->with('success', 'Langue supprimée.');
+        return $this->toSection('languages', 'Langue supprimée.');
     }
 
     // --- Certifications ---
@@ -241,7 +313,7 @@ class CvController extends Controller
         $profile = $this->currentProfile();
         $profile->certifications()->create($data + ['sort_order' => $profile->certifications()->count()]);
 
-        return back()->with('success', 'Certification ajoutée.');
+        return $this->toSection('certifications', 'Certification ajoutée.');
     }
 
     public function destroyCertification(CvCertification $certification): RedirectResponse
@@ -249,7 +321,7 @@ class CvController extends Controller
         $this->authorizeOwnership($certification->profile);
         $certification->delete();
 
-        return back()->with('success', 'Certification supprimée.');
+        return $this->toSection('certifications', 'Certification supprimée.');
     }
 
     // --- Projets (portfolio) ---
@@ -272,7 +344,7 @@ class CvController extends Controller
         $profile = $this->currentProfile();
         $profile->projects()->create($data + ['sort_order' => $profile->projects()->count()]);
 
-        return back()->with('success', 'Projet ajouté.');
+        return $this->toSection('projects', 'Projet ajouté.');
     }
 
     public function updateProject(Request $request, PortfolioProject $project): RedirectResponse
@@ -294,7 +366,7 @@ class CvController extends Controller
 
         $project->update($data);
 
-        return back()->with('success', 'Projet mis à jour.');
+        return $this->toSection('projects', 'Projet mis à jour.');
     }
 
     public function destroyProject(PortfolioProject $project): RedirectResponse
@@ -302,7 +374,7 @@ class CvController extends Controller
         $this->authorizeOwnership($project->profile);
         $project->delete();
 
-        return back()->with('success', 'Projet supprimé.');
+        return $this->toSection('projects', 'Projet supprimé.');
     }
 
     // --- Rendus imprimables ---

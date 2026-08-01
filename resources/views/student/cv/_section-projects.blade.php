@@ -1,4 +1,4 @@
-<section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+<section id="projects" class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
     <h2 class="text-lg font-bold">Projets (Portfolio)</h2>
     <p class="mt-1 text-sm text-gray-500">Ces projets apparaissent sur ton portfolio public.</p>
 

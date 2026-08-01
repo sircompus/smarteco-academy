@@ -21,7 +21,7 @@
     @endif
 
     {{-- Actions rapides : téléchargements + partage --}}
-    <section class="rounded-2xl bg-white p-6 shadow-sm">
+    <section id="exports" class="rounded-2xl bg-white p-6 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h2 class="text-lg font-bold">Exports & partage</h2>
@@ -99,7 +99,7 @@
     </section>
 
     {{-- Informations personnelles --}}
-    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm" x-data="{ open: true }">
+    <section id="profile-info" class="mt-8 rounded-2xl bg-white p-6 shadow-sm" x-data="{ open: true }">
         <button type="button" @click="open = !open" class="flex w-full items-center justify-between">
             <h2 class="text-lg font-bold">Informations personnelles</h2>
             <span x-text="open ? '−' : '+'" class="text-xl text-gray-400"></span>

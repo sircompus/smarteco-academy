@@ -1,4 +1,4 @@
-<section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+<section id="educations" class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
     <h2 class="text-lg font-bold">Formation</h2>
 
     <div class="mt-4 space-y-4">
