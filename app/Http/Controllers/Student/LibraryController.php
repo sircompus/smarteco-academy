@@ -43,7 +43,7 @@ class LibraryController extends Controller
                     ->map(fn ($group) => $group->groupBy('type'))
                     ->sortKeys();
 
-                $hasAccess = Auth::user()->hasAccessToSubject($selectedSubject);
+                $hasAccess = Auth::user()->hasSemesterAccessToSubject($selectedSubject);
             }
         }
 

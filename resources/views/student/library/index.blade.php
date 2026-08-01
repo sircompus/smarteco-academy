@@ -30,9 +30,10 @@
     @if ($selectedSubject)
         @unless ($hasAccess)
             <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-                Tu n'as pas encore accès à ce module. Inscris-toi au pack correspondant
-                depuis <a href="{{ route('student.packs.index') }}" class="font-semibold underline">Packs (semestres / modules)</a>
-                pour débloquer les téléchargements.
+                Tu n'as pas encore accès à cette bibliothèque. L'accès aux documents nécessite
+                une inscription au <strong>semestre complet</strong> (un pack limité à ce seul module
+                ne suffit pas). Inscris-toi depuis
+                <a href="{{ route('student.packs.index') }}" class="font-semibold underline">Packs (semestres / modules)</a>.
             </div>
         @endunless
 

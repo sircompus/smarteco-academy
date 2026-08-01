@@ -114,6 +114,21 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Accès strict : uniquement via un pack "semestre" actif (le pack
+     * module seul ne suffit pas). Utilisé pour la bibliothèque de ressources.
+     */
+    public function hasSemesterAccessToSubject(Subject $subject): bool
+    {
+        return $this->packEnrollments()
+            ->where('status', 'active')
+            ->whereHas('pack', function ($query) use ($subject) {
+                $query->where('type', 'semestre')
+                    ->where('semester_id', $subject->semester_id);
+            })
+            ->exists();
+    }
+
+    /**
      * Vérifier si l’utilisateur possède au moins un rôle donné.
      *
      * @param array<int, string> $roleNames
