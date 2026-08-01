@@ -50,4 +50,9 @@ Route::middleware(['auth', 'verified', 'role:admin,superviseur'])
         Route::get('/{user}', [\App\Http\Controllers\Admin\CvController::class, 'show'])->name('show');
         Route::get('/{user}/cv', [\App\Http\Controllers\Admin\CvController::class, 'showCv'])->name('download.cv');
         Route::get('/{user}/ats', [\App\Http\Controllers\Admin\CvController::class, 'showAts'])->name('download.ats');
+
+        Route::get('/catalogue/skills', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'index'])->name('skills.index');
+        Route::post('/catalogue/skills', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'store'])->name('skills.store');
+        Route::patch('/catalogue/skills/{skill}', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'update'])->name('skills.update');
+        Route::delete('/catalogue/skills/{skill}', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'destroy'])->name('skills.destroy');
     });

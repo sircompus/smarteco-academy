@@ -1,3 +1,341 @@
+﻿$path0 = "C:\laragon\www\SEA\app\Http\Controllers\Admin\SkillSuggestionController.php"
+$content0 = @'
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\SkillSuggestion;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class SkillSuggestionController extends Controller
+{
+    public function index(): View
+    {
+        return view('admin.cv.skills.index', [
+            'skills' => SkillSuggestion::query()
+                ->orderBy('category')
+                ->orderBy('sort_order')
+                ->get()
+                ->groupBy(fn ($skill) => $skill->category ?: 'Sans catégorie'),
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:100', 'unique:skill_suggestions,name'],
+            'category' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        SkillSuggestion::create($data + [
+            'is_active' => true,
+            'sort_order' => SkillSuggestion::count(),
+        ]);
+
+        return back()->with('success', 'Compétence ajoutée au catalogue.');
+    }
+
+    public function update(Request $request, SkillSuggestion $skill): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:100', 'unique:skill_suggestions,name,'.$skill->id],
+            'category' => ['nullable', 'string', 'max:100'],
+            'is_active' => ['required', 'boolean'],
+        ]);
+
+        $skill->update($data);
+
+        return back()->with('success', 'Compétence mise à jour.');
+    }
+
+    public function destroy(SkillSuggestion $skill): RedirectResponse
+    {
+        $skill->delete();
+
+        return back()->with('success', 'Compétence retirée du catalogue.');
+    }
+}
+
+'@
+$dir0 = Split-Path $path0 -Parent
+if (-not (Test-Path $dir0)) { New-Item -ItemType Directory -Path $dir0 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path0, $content0, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: app/Http/Controllers/Admin/SkillSuggestionController.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: app/Http/Controllers/Admin/SkillSuggestionController.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path1 = "C:\laragon\www\SEA\app\Models\SkillSuggestion.php"
+$content1 = @'
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SkillSuggestion extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'category',
+        'is_active',
+        'sort_order',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+            'sort_order' => 'integer',
+        ];
+    }
+}
+
+'@
+$dir1 = Split-Path $path1 -Parent
+if (-not (Test-Path $dir1)) { New-Item -ItemType Directory -Path $dir1 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path1, $content1, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: app/Models/SkillSuggestion.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: app/Models/SkillSuggestion.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path2 = "C:\laragon\www\SEA\database\migrations\2026_08_01_160000_create_skill_suggestions_table.php"
+$content2 = @'
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('skill_suggestions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->string('category')->nullable(); // ex: Gestion, Commerce, RH, IT...
+            $table->boolean('is_active')->default(true);
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('skill_suggestions');
+    }
+};
+
+'@
+$dir2 = Split-Path $path2 -Parent
+if (-not (Test-Path $dir2)) { New-Item -ItemType Directory -Path $dir2 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path2, $content2, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: database/migrations/2026_08_01_160000_create_skill_suggestions_table.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: database/migrations/2026_08_01_160000_create_skill_suggestions_table.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path3 = "C:\laragon\www\SEA\database\seeders\DatabaseSeeder.php"
+$content3 = @'
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $this->call([
+            RoleSeeder::class,
+            ModuleSeeder::class,
+            AcademicSeeder::class,
+            SemesterSubjectSeeder::class,
+            SkillSuggestionSeeder::class,
+        ]);
+    }
+}
+'@
+$dir3 = Split-Path $path3 -Parent
+if (-not (Test-Path $dir3)) { New-Item -ItemType Directory -Path $dir3 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path3, $content3, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: database/seeders/DatabaseSeeder.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: database/seeders/DatabaseSeeder.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path4 = "C:\laragon\www\SEA\database\seeders\SkillSuggestionSeeder.php"
+$content4 = @'
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\SkillSuggestion;
+use Illuminate\Database\Seeder;
+
+class SkillSuggestionSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $skills = [
+            'Gestion' => [
+                'Excel avancé', 'Word', 'PowerPoint', 'Sage Comptabilité', 'SAP',
+                'Comptabilité générale', 'Comptabilité analytique', 'Fiscalité',
+                'Contrôle de gestion', 'Analyse financière', 'Gestion budgétaire', 'Audit',
+            ],
+            'Commerce' => [
+                'Marketing digital', 'Négociation commerciale', 'Relation client',
+                'Étude de marché', 'Réseaux sociaux', 'SEO / référencement',
+            ],
+            'Ressources humaines' => [
+                'Gestion de la paie', 'Recrutement', 'Droit du travail', 'Gestion des conflits',
+            ],
+            'Économétrie / Data' => [
+                'Statistiques', 'Analyse de données', 'Python', 'R (langage statistique)',
+                'SPSS', 'Économétrie appliquée',
+            ],
+            'Transversal' => [
+                'Gestion de projet', "Travail d'équipe", 'Communication',
+                'Rédaction professionnelle', 'Intelligence artificielle (bases)', 'Anglais des affaires',
+            ],
+        ];
+
+        $sortOrder = 0;
+
+        foreach ($skills as $category => $names) {
+            foreach ($names as $name) {
+                SkillSuggestion::updateOrCreate(
+                    ['name' => $name],
+                    [
+                        'category' => $category,
+                        'is_active' => true,
+                        'sort_order' => $sortOrder,
+                    ]
+                );
+
+                $sortOrder++;
+            }
+        }
+    }
+}
+
+'@
+$dir4 = Split-Path $path4 -Parent
+if (-not (Test-Path $dir4)) { New-Item -ItemType Directory -Path $dir4 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path4, $content4, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: database/seeders/SkillSuggestionSeeder.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: database/seeders/SkillSuggestionSeeder.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path5 = "C:\laragon\www\SEA\resources\views\admin\cv\skills\index.blade.php"
+$content5 = @'
+@extends('layouts.admin')
+
+@section('title', 'Catalogue de compétences')
+@section('page-title', 'Catalogue de compétences (CV)')
+
+@section('content')
+    @if (session('success'))
+        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
+            <ul class="list-disc pl-5 text-sm text-red-700">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <section class="rounded-2xl bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-bold">Ajouter une compétence au catalogue</h2>
+        <p class="mt-1 text-sm text-gray-500">
+            Ces compétences apparaissent en cases à cocher dans le CV builder des étudiants.
+        </p>
+
+        <form method="POST" action="{{ route('admin.cv.skills.store') }}" class="mt-4 flex flex-wrap gap-3">
+            @csrf
+            <input name="name" placeholder="Nom de la compétence" class="rounded-lg border-gray-300" required>
+            <input name="category" placeholder="Catégorie (ex: Gestion, IT...)" class="rounded-lg border-gray-300">
+            <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
+                Ajouter
+            </button>
+        </form>
+    </section>
+
+    <div class="mt-8 space-y-6">
+        @foreach ($skills as $category => $categorySkills)
+            <section class="rounded-2xl bg-white p-6 shadow-sm">
+                <h3 class="font-bold text-gray-900">{{ $category }}</h3>
+
+                <div class="mt-4 space-y-2">
+                    @foreach ($categorySkills as $skill)
+                        <form method="POST" action="{{ route('admin.cv.skills.update', $skill) }}" class="flex flex-wrap items-center gap-3 rounded-xl border border-gray-100 p-3">
+                            @csrf
+                            @method('PATCH')
+
+                            <input name="name" value="{{ $skill->name }}" class="rounded-lg border-gray-300 text-sm">
+                            <input name="category" value="{{ $skill->category }}" placeholder="Catégorie" class="rounded-lg border-gray-300 text-sm">
+
+                            <select name="is_active" class="rounded-lg border-gray-300 text-sm">
+                                <option value="1" @selected($skill->is_active)>Active</option>
+                                <option value="0" @selected(! $skill->is_active)>Désactivée</option>
+                            </select>
+
+                            <button class="rounded-lg bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700">
+                                Enregistrer
+                            </button>
+
+                            <button
+                                type="button"
+                                onclick="if(confirm('Supprimer cette compétence du catalogue ?')) document.getElementById('del-skill-{{ $skill->id }}').submit();"
+                                class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600"
+                            >
+                                Supprimer
+                            </button>
+                        </form>
+
+                        <form id="del-skill-{{ $skill->id }}" method="POST" action="{{ route('admin.cv.skills.destroy', $skill) }}" class="hidden">
+                            @csrf @method('DELETE')
+                        </form>
+                    @endforeach
+                </div>
+            </section>
+        @endforeach
+    </div>
+@endsection
+
+'@
+$dir5 = Split-Path $path5 -Parent
+if (-not (Test-Path $dir5)) { New-Item -ItemType Directory -Path $dir5 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path5, $content5, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: resources/views/admin/cv/skills/index.blade.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: resources/views/admin/cv/skills/index.blade.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path6 = "C:\laragon\www\SEA\resources\views\layouts\admin.blade.php"
+$content6 = @'
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -558,3 +896,166 @@
     @stack('scripts')
 </body>
 </html>
+'@
+$dir6 = Split-Path $path6 -Parent
+if (-not (Test-Path $dir6)) { New-Item -ItemType Directory -Path $dir6 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path6, $content6, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: resources/views/layouts/admin.blade.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: resources/views/layouts/admin.blade.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path7 = "C:\laragon\www\SEA\resources\views\student\cv\_section-skills.blade.php"
+$content7 = @'
+<section id="skills" class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+    <h2 class="text-lg font-bold">Compétences</h2>
+
+    @if ($profile->skills->isNotEmpty())
+        <p class="mt-3 text-xs font-medium uppercase tracking-wide text-gray-400">Déjà ajoutées</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+            @foreach ($profile->skills as $skill)
+                <div class="flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-sm">
+                    <span class="font-medium text-indigo-700">{{ $skill->name }}</span>
+                    <span class="text-xs text-indigo-400">({{ $skill->level_label }})</span>
+                    <form method="POST" action="{{ route('student.cv.skills.destroy', $skill) }}">
+                        @csrf @method('DELETE')
+                        <button class="text-indigo-400 hover:text-red-600">×</button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('student.cv.skills.store') }}" class="mt-5 rounded-xl border border-dashed border-gray-300 p-4">
+        @csrf
+
+        <p class="text-sm font-medium text-gray-700">
+            Coche toutes les compétences qui te concernent, choisis un niveau, puis valide en une seule fois.
+        </p>
+
+        <div class="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3 md:grid-cols-4">
+            @php
+                $suggestedSkills = \App\Models\SkillSuggestion::where('is_active', true)
+                    ->orderBy('category')
+                    ->orderBy('sort_order')
+                    ->pluck('name');
+                $alreadyHave = $profile->skills->pluck('name')->map(fn ($n) => mb_strtolower($n))->all();
+            @endphp
+
+            @foreach ($suggestedSkills as $suggestedSkill)
+                @unless (in_array(mb_strtolower($suggestedSkill), $alreadyHave, true))
+                    <label class="flex items-center gap-2 text-sm text-gray-700">
+                        <input type="checkbox" name="skills[]" value="{{ $suggestedSkill }}" class="rounded border-gray-300">
+                        {{ $suggestedSkill }}
+                    </label>
+                @endunless
+            @endforeach
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-end gap-3">
+            <div>
+                <label class="text-xs font-medium text-gray-500">Niveau (appliqué à tout ce que tu coches)</label>
+                <select name="level" class="mt-1 block rounded-lg border-gray-300">
+                    <option value="debutant">Débutant</option>
+                    <option value="intermediaire" selected>Intermédiaire</option>
+                    <option value="avance">Avancé</option>
+                    <option value="expert">Expert</option>
+                </select>
+            </div>
+
+            <div class="flex-1 min-w-[200px]">
+                <label class="text-xs font-medium text-gray-500">Autre compétence (non listée)</label>
+                <input name="custom_skill" placeholder="Ex : Une compétence spécifique" class="mt-1 block w-full rounded-lg border-gray-300">
+            </div>
+
+            <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
+                Ajouter les compétences cochées
+            </button>
+        </div>
+    </form>
+</section>
+
+'@
+$dir7 = Split-Path $path7 -Parent
+if (-not (Test-Path $dir7)) { New-Item -ItemType Directory -Path $dir7 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path7, $content7, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: resources/views/student/cv/_section-skills.blade.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: resources/views/student/cv/_section-skills.blade.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path8 = "C:\laragon\www\SEA\routes\cv.php"
+$content8 = @'
+<?php
+
+use App\Http\Controllers\PublicPortfolioController;
+use App\Http\Controllers\Student\CvController;
+use Illuminate\Support\Facades\Route;
+
+// --- Espace étudiant : CV builder ---
+Route::middleware(['auth', 'verified'])
+    ->prefix('cv')
+    ->name('student.cv.')
+    ->group(function () {
+        Route::get('/', [CvController::class, 'edit'])->name('edit');
+        Route::patch('/profile', [CvController::class, 'updateProfile'])->name('profile.update');
+        Route::patch('/public', [CvController::class, 'togglePublic'])->name('public.toggle');
+
+        Route::post('/educations', [CvController::class, 'storeEducation'])->name('educations.store');
+        Route::patch('/educations/{education}', [CvController::class, 'updateEducation'])->name('educations.update');
+        Route::delete('/educations/{education}', [CvController::class, 'destroyEducation'])->name('educations.destroy');
+
+        Route::post('/experiences', [CvController::class, 'storeExperience'])->name('experiences.store');
+        Route::patch('/experiences/{experience}', [CvController::class, 'updateExperience'])->name('experiences.update');
+        Route::delete('/experiences/{experience}', [CvController::class, 'destroyExperience'])->name('experiences.destroy');
+
+        Route::post('/skills', [CvController::class, 'storeSkill'])->name('skills.store');
+        Route::delete('/skills/{skill}', [CvController::class, 'destroySkill'])->name('skills.destroy');
+
+        Route::post('/languages', [CvController::class, 'storeLanguage'])->name('languages.store');
+        Route::delete('/languages/{language}', [CvController::class, 'destroyLanguage'])->name('languages.destroy');
+
+        Route::post('/certifications', [CvController::class, 'storeCertification'])->name('certifications.store');
+        Route::delete('/certifications/{certification}', [CvController::class, 'destroyCertification'])->name('certifications.destroy');
+
+        Route::post('/projects', [CvController::class, 'storeProject'])->name('projects.store');
+        Route::patch('/projects/{project}', [CvController::class, 'updateProject'])->name('projects.update');
+        Route::delete('/projects/{project}', [CvController::class, 'destroyProject'])->name('projects.destroy');
+
+        Route::get('/download/cv', [CvController::class, 'showCv'])->name('download.cv');
+        Route::get('/download/ats', [CvController::class, 'showAts'])->name('download.ats');
+    });
+
+// --- Portfolio public (sans authentification) ---
+Route::get('/portfolio/{slug}', [PublicPortfolioController::class, 'show'])->name('portfolio.show');
+
+// --- Espace admin : consultation des CV des étudiants ---
+Route::middleware(['auth', 'verified', 'role:admin,superviseur'])
+    ->prefix('admin/cv')
+    ->name('admin.cv.')
+    ->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\CvController::class, 'index'])->name('index');
+        Route::get('/{user}', [\App\Http\Controllers\Admin\CvController::class, 'show'])->name('show');
+        Route::get('/{user}/cv', [\App\Http\Controllers\Admin\CvController::class, 'showCv'])->name('download.cv');
+        Route::get('/{user}/ats', [\App\Http\Controllers\Admin\CvController::class, 'showAts'])->name('download.ats');
+
+        Route::get('/catalogue/skills', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'index'])->name('skills.index');
+        Route::post('/catalogue/skills', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'store'])->name('skills.store');
+        Route::patch('/catalogue/skills/{skill}', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'update'])->name('skills.update');
+        Route::delete('/catalogue/skills/{skill}', [\App\Http\Controllers\Admin\SkillSuggestionController::class, 'destroy'])->name('skills.destroy');
+    });
+
+'@
+$dir8 = Split-Path $path8 -Parent
+if (-not (Test-Path $dir8)) { New-Item -ItemType Directory -Path $dir8 -Force | Out-Null }
+try {
+    [System.IO.File]::WriteAllText($path8, $content8, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: routes/cv.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: routes/cv.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+Write-Host ""
+Write-Host "Termine. Verifie qu il n y a AUCUNE ligne ECHEC rouge ci-dessus." -ForegroundColor Cyan
