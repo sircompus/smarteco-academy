@@ -32,23 +32,25 @@ class AcademicResourceController extends Controller
             ->values();
 
         $selectedSubject = null;
-        $resourcesByType = collect();
+        $resourcesByProfessor = collect();
 
         if ($request->filled('subject_id')) {
             $selectedSubject = $subjects->firstWhere('id', (int) $request->integer('subject_id'));
 
             if ($selectedSubject) {
-                $resourcesByType = $selectedSubject->resources()
+                $resourcesByProfessor = $selectedSubject->resources()
                     ->orderBy('sort_order')
                     ->get()
-                    ->groupBy('type');
+                    ->groupBy(fn ($resource) => $resource->professor_name ?: 'Professeur non renseigné')
+                    ->map(fn ($group) => $group->groupBy('type'))
+                    ->sortKeys();
             }
         }
 
         return view('admin.centre.library.index', [
             'subjects' => $subjects,
             'selectedSubject' => $selectedSubject,
-            'resourcesByType' => $resourcesByType,
+            'resourcesByProfessor' => $resourcesByProfessor,
         ]);
     }
 

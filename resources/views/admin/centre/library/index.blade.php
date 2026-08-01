@@ -97,44 +97,55 @@
         <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
             <h2 class="text-lg font-bold">Documents existants</h2>
 
-            <div class="mt-4 space-y-6">
-                @foreach (\App\Models\AcademicResource::TYPES as $typeKey => $typeLabel)
-                    <div>
-                        <h3 class="text-sm font-bold text-gray-700">{{ $typeLabel }}</h3>
+            <div class="mt-4 space-y-8">
+                @forelse ($resourcesByProfessor as $professorName => $byType)
+                    <div class="overflow-hidden rounded-xl border border-gray-200">
+                        <div class="bg-indigo-600 px-4 py-3 text-center">
+                            <p class="text-sm font-bold text-white">
+                                {{ $professorName }}
+                            </p>
+                        </div>
 
-                        <div class="mt-2 space-y-2">
-                            @forelse ($resourcesByType->get($typeKey, collect()) as $resource)
-                                <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-100 p-3">
-                                    <div>
-                                        <a href="{{ $resource->download_url }}" target="_blank" class="text-sm font-medium text-indigo-600 hover:underline">
-                                            {{ $resource->title }}
-                                        </a>
-                                        <p class="text-xs text-gray-400">
-                                            {{ $resource->original_name }} · {{ $resource->size_for_humans }}
-                                            @if ($resource->professor_name)
-                                                · Prof. {{ $resource->professor_name }}
-                                            @endif
-                                        </p>
+                        <div class="space-y-5 p-4">
+                            @foreach (\App\Models\AcademicResource::TYPES as $typeKey => $typeLabel)
+                                <div>
+                                    <h4 class="text-sm font-bold text-gray-700">{{ $typeLabel }}</h4>
+
+                                    <div class="mt-2 space-y-2">
+                                        @forelse ($byType->get($typeKey, collect()) as $resource)
+                                            <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-100 p-3">
+                                                <div>
+                                                    <a href="{{ $resource->download_url }}" target="_blank" class="text-sm font-medium text-indigo-600 hover:underline">
+                                                        {{ $resource->title }}
+                                                    </a>
+                                                    <p class="text-xs text-gray-400">
+                                                        {{ $resource->original_name }} · {{ $resource->size_for_humans }}
+                                                    </p>
+                                                </div>
+
+                                                <form
+                                                    method="POST"
+                                                    action="{{ route('admin.centre.library.destroy', $resource) }}"
+                                                    onsubmit="return confirm('Supprimer ce document ?');"
+                                                >
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
+                                                        Supprimer
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @empty
+                                            <p class="text-xs text-gray-400">Aucun document.</p>
+                                        @endforelse
                                     </div>
-
-                                    <form
-                                        method="POST"
-                                        action="{{ route('admin.centre.library.destroy', $resource) }}"
-                                        onsubmit="return confirm('Supprimer ce document ?');"
-                                    >
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
-                                            Supprimer
-                                        </button>
-                                    </form>
                                 </div>
-                            @empty
-                                <p class="text-xs text-gray-400">Aucun document.</p>
-                            @endforelse
+                            @endforeach
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p class="text-sm text-gray-400">Aucun document pour ce module pour le moment.</p>
+                @endforelse
             </div>
         </section>
     @else

@@ -28,18 +28,20 @@ class LibraryController extends Controller
             ->values();
 
         $selectedSubject = null;
-        $resourcesByType = collect();
+        $resourcesByProfessor = collect();
         $hasAccess = false;
 
         if ($request->filled('subject_id')) {
             $selectedSubject = $subjects->firstWhere('id', (int) $request->integer('subject_id'));
 
             if ($selectedSubject) {
-                $resourcesByType = $selectedSubject->resources()
+                $resourcesByProfessor = $selectedSubject->resources()
                     ->where('is_published', true)
                     ->orderBy('sort_order')
                     ->get()
-                    ->groupBy('type');
+                    ->groupBy(fn ($resource) => $resource->professor_name ?: 'Professeur non renseigné')
+                    ->map(fn ($group) => $group->groupBy('type'))
+                    ->sortKeys();
 
                 $hasAccess = Auth::user()->hasAccessToSubject($selectedSubject);
             }
@@ -48,7 +50,7 @@ class LibraryController extends Controller
         return view('student.library.index', [
             'subjects' => $subjects,
             'selectedSubject' => $selectedSubject,
-            'resourcesByType' => $resourcesByType,
+            'resourcesByProfessor' => $resourcesByProfessor,
             'hasAccess' => $hasAccess,
         ]);
     }
