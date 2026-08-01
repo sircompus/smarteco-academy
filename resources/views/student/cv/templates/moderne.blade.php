@@ -68,7 +68,7 @@
                     <h2 class="text-xs font-bold uppercase tracking-wide text-white">Langues</h2>
                     <ul class="mt-2 space-y-1 text-xs text-indigo-100">
                         @foreach ($profile->languages as $lang)
-                            <li>{{ $lang->name }} — {{ $lang->level_label }}</li>
+                            <li>{{ $lang->name }} : {{ $lang->level_label }}</li>
                         @endforeach
                     </ul>
                 </div>

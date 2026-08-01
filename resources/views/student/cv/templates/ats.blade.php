@@ -90,11 +90,9 @@
 
         @if ($profile->languages->isNotEmpty())
             <h2 class="mt-6 font-bold uppercase">LANGUES</h2>
-            <p>
-                @foreach ($profile->languages as $lang)
-                    {{ $lang->name }} ({{ $lang->level_label }}){{ ! $loop->last ? ', ' : '' }}
-                @endforeach
-            </p>
+            @foreach ($profile->languages as $lang)
+                <p>{{ $lang->name }} : {{ $lang->level_label }}</p>
+            @endforeach
         @endif
 
         @if ($profile->certifications->isNotEmpty())

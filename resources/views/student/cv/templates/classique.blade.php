@@ -142,11 +142,9 @@
         @if ($profile->languages->isNotEmpty())
             <div class="mt-4">
                 <h2 class="font-bold uppercase text-gray-900">Langues</h2>
-                <p>
-                    @foreach ($profile->languages as $lang)
-                        {{ $lang->name }} ({{ $lang->level_label }}){{ ! $loop->last ? ' — ' : '' }}
-                    @endforeach
-                </p>
+                @foreach ($profile->languages as $lang)
+                    <p>{{ $lang->name }} : {{ $lang->level_label }}</p>
+                @endforeach
             </div>
         @endif
 
