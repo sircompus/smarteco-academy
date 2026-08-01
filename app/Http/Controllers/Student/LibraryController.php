@@ -15,9 +15,17 @@ class LibraryController extends Controller
         $subjects = Subject::query()
             ->with('semester.program.level')
             ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get();
+            ->get()
+            ->sortBy(function ($subject) {
+                return sprintf(
+                    '%03d-%s-%03d-%03d',
+                    $subject->semester?->program?->level?->sort_order ?? 999,
+                    $subject->semester?->program?->name ?? '',
+                    $subject->semester?->number ?? 999,
+                    $subject->sort_order ?? 999
+                );
+            })
+            ->values();
 
         $selectedSubject = null;
         $resourcesByType = collect();

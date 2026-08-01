@@ -1,3 +1,5 @@
+﻿$path0 = "C:\laragon\www\SEA\app\Http\Controllers\Admin\AcademicResourceController.php"
+$content0 = @'
 <?php
 
 namespace App\Http\Controllers\Admin;
@@ -99,4 +101,78 @@ class AcademicResourceController extends Controller
             ->route('admin.centre.library.index', ['subject_id' => $subjectId])
             ->with('success', 'Le document a été supprimé.');
     }
+}
+
+'@
+try {
+    [System.IO.File]::WriteAllText($path0, $content0, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: app/Http/Controllers/Admin/AcademicResourceController.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: app/Http/Controllers/Admin/AcademicResourceController.php -- $($_.Exception.Message)" -ForegroundColor Red
+}
+
+$path1 = "C:\laragon\www\SEA\app\Http\Controllers\Student\LibraryController.php"
+$content1 = @'
+<?php
+
+namespace App\Http\Controllers\Student;
+
+use App\Http\Controllers\Controller;
+use App\Models\Subject;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+class LibraryController extends Controller
+{
+    public function index(Request $request): View
+    {
+        $subjects = Subject::query()
+            ->with('semester.program.level')
+            ->where('is_active', true)
+            ->get()
+            ->sortBy(function ($subject) {
+                return sprintf(
+                    '%03d-%s-%03d-%03d',
+                    $subject->semester?->program?->level?->sort_order ?? 999,
+                    $subject->semester?->program?->name ?? '',
+                    $subject->semester?->number ?? 999,
+                    $subject->sort_order ?? 999
+                );
+            })
+            ->values();
+
+        $selectedSubject = null;
+        $resourcesByType = collect();
+        $hasAccess = false;
+
+        if ($request->filled('subject_id')) {
+            $selectedSubject = $subjects->firstWhere('id', (int) $request->integer('subject_id'));
+
+            if ($selectedSubject) {
+                $resourcesByType = $selectedSubject->resources()
+                    ->where('is_published', true)
+                    ->orderBy('sort_order')
+                    ->get()
+                    ->groupBy('type');
+
+                $hasAccess = Auth::user()->hasAccessToSubject($selectedSubject);
+            }
+        }
+
+        return view('student.library.index', [
+            'subjects' => $subjects,
+            'selectedSubject' => $selectedSubject,
+            'resourcesByType' => $resourcesByType,
+            'hasAccess' => $hasAccess,
+        ]);
+    }
+}
+
+'@
+try {
+    [System.IO.File]::WriteAllText($path1, $content1, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "OK: app/Http/Controllers/Student/LibraryController.php" -ForegroundColor Green
+} catch {
+    Write-Host "ECHEC: app/Http/Controllers/Student/LibraryController.php -- $($_.Exception.Message)" -ForegroundColor Red
 }
