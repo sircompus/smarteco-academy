@@ -11,6 +11,7 @@
 
         .cv-classique, .cv-classique * {
             font-family: 'Times New Roman', Times, serif !important;
+            color: #000000 !important;
         }
 
         .cv-classique {
@@ -18,12 +19,23 @@
             line-height: 1.5;
         }
 
+        /* Titre principal : nom du candidat */
         .cv-classique h1 {
-            font-size: 16pt;
+            font-size: 20pt;
+            font-weight: bold;
         }
 
-        .cv-classique h2 {
+        /* Sous-titres : accroche + intitulés de section (Profil, Expérience...) */
+        .cv-classique h2,
+        .cv-classique .cv-subtitle {
             font-size: 16pt;
+            font-weight: bold;
+        }
+
+        /* Paragraphes : tout le reste du texte */
+        .cv-classique p,
+        .cv-classique li {
+            font-size: 12pt;
         }
     </style>
 @endpush
@@ -35,13 +47,13 @@
         </button>
     </div>
 
-    <div class="cv-classique mx-auto max-w-3xl bg-white p-10 text-gray-900 print:p-0 print:shadow-none">
+    <div class="cv-classique mx-auto max-w-3xl bg-white p-10 print:p-0 print:shadow-none" style="background:#ffffff; color:#000000;">
 
         <div class="border-b-2 border-gray-800 pb-4">
-            <h1 class="font-bold text-gray-900">{{ $profile->full_name }}</h1>
+            <h1>{{ $profile->full_name }}</h1>
 
             @if ($profile->headline)
-                <p class="mt-1">{{ $profile->headline }}</p>
+                <p class="cv-subtitle mt-1">{{ $profile->headline }}</p>
             @endif
 
             <p class="mt-2">
