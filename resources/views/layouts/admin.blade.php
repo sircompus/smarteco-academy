@@ -54,7 +54,7 @@
             >
                 <img
                     src="{{ asset('images/smarteco-logo.png') }}"
-                    class="h-14 w-14 rounded-xl object-contain"
+                    class="w-full h-auto object-contain"
                     alt="SmartEco Academy"
                 >
 

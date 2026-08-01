@@ -30,7 +30,7 @@
     >
         <div class="flex flex-col items-center gap-2 border-b border-gray-200 px-6 py-5">
             <a href="{{ route('professor.dashboard') }}" class="flex flex-col items-center gap-2 text-center">
-                <img src="{{ asset('images/smarteco-logo.png') }}" class="h-14 w-14 rounded-lg object-contain" alt="SmartEco Academy">
+                <img src="{{ asset('images/smarteco-logo.png') }}" class="w-full h-auto object-contain" alt="SmartEco Academy">
 
                 <div>
                     <p class="font-bold text-gray-900">SmartEco Academy</p>
