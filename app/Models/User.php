@@ -92,6 +92,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(PackEnrollment::class);
     }
 
+    public function cvProfile(): HasOne
+    {
+        return $this->hasOne(CvProfile::class);
+    }
+
     /**
      * Vérifie si l'étudiant a accès à une matière donnée,
      * via un pack "module" sur cette matière ou un pack

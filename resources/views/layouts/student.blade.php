@@ -44,7 +44,7 @@
     {{-- Menu latéral étudiant --}}
     <aside
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-white shadow-xl transition-transform duration-300 lg:translate-x-0"
+        class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-white shadow-xl transition-transform duration-300 lg:translate-x-0 print:hidden"
     >
         {{-- Logo --}}
         <div class="flex h-16 items-center border-b border-gray-200 px-6">
@@ -175,6 +175,37 @@
                     </svg>
 
                     Bibliothèque de ressources
+                </a>
+            </div>
+
+            <p class="mb-3 mt-8 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+                Carrière
+            </p>
+
+            <div class="space-y-1">
+                {{-- CV & Portfolio --}}
+                <a
+                    href="{{ route('student.cv.edit') }}"
+                    class="{{ request()->routeIs('student.cv.*')
+                        ? 'bg-indigo-50 text-indigo-700'
+                        : 'text-gray-700 hover:bg-gray-100' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                    </svg>
+
+                    Mon CV & Portfolio
                 </a>
             </div>
 
@@ -318,10 +349,10 @@
     </aside>
 
     {{-- Zone principale --}}
-    <div class="min-h-screen lg:pl-64">
+    <div class="min-h-screen lg:pl-64 print:pl-0">
         {{-- Barre supérieure --}}
         <header
-            class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6"
+            class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6 print:hidden"
         >
             <div class="flex items-center gap-4">
                 {{-- Bouton mobile --}}
@@ -433,7 +464,7 @@
         @endif
 
         {{-- Contenu --}}
-        <main class="p-4 sm:p-6">
+        <main class="p-4 sm:p-6 print:p-0">
             @yield('content')
         </main>
     </div>

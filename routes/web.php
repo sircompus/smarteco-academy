@@ -62,3 +62,4 @@ require __DIR__.'/admin.php';
 require __DIR__.'/centre.php';
 require __DIR__.'/registration.php';
 require __DIR__.'/training.php';
+require __DIR__.'/cv.php';
