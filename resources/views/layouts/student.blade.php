@@ -47,14 +47,14 @@
         class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-white shadow-xl transition-transform duration-300 lg:translate-x-0 print:hidden"
     >
         {{-- Logo --}}
-        <div class="flex h-16 items-center border-b border-gray-200 px-6">
+        <div class="flex flex-col items-center gap-2 border-b border-gray-200 px-6 py-5">
             <a
                 href="{{ route('student.dashboard') }}"
-                class="flex items-center gap-3"
+                class="flex flex-col items-center gap-2 text-center"
             >
                 <img
                     src="{{ asset('images/smarteco-logo.png') }}"
-                    class="h-9 w-9 rounded-lg object-contain"
+                    class="h-14 w-14 rounded-lg object-contain"
                     alt="SmartEco Academy"
                 >
 

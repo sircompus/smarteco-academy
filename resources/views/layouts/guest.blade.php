@@ -16,8 +16,8 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-10">
-            <a href="/" class="flex items-center gap-3">
-                <img src="{{ asset('images/smarteco-logo.png') }}" class="h-12 w-12 rounded-xl object-contain" alt="SmartEco Academy">
+            <a href="/" class="flex flex-col items-center gap-2 text-center">
+                <img src="{{ asset('images/smarteco-logo.png') }}" class="h-16 w-16 rounded-xl object-contain" alt="SmartEco Academy">
 
                 <div>
                     <p class="text-lg font-bold text-gray-900">

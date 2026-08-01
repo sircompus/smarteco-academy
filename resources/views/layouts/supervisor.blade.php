@@ -27,9 +27,9 @@
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
         class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-white shadow-xl transition-transform duration-300 lg:translate-x-0"
     >
-        <div class="flex h-16 items-center border-b border-gray-200 px-6">
-            <a href="{{ route('supervisor.dashboard') }}" class="flex items-center gap-3">
-                <img src="{{ asset('images/smarteco-logo.png') }}" class="h-9 w-9 rounded-lg object-contain" alt="SmartEco Academy">
+        <div class="flex flex-col items-center gap-2 border-b border-gray-200 px-6 py-5">
+            <a href="{{ route('supervisor.dashboard') }}" class="flex flex-col items-center gap-2 text-center">
+                <img src="{{ asset('images/smarteco-logo.png') }}" class="h-14 w-14 rounded-lg object-contain" alt="SmartEco Academy">
 
                 <div>
                     <p class="font-bold text-gray-900">SmartEco Academy</p>
