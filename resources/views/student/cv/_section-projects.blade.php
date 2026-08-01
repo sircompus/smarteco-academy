@@ -6,7 +6,7 @@
         @foreach ($profile->projects as $project)
             <form
                 method="POST"
-                action="{{ route(\"{$routePrefix}.projects.update\", $project) }}"
+                action="{{ route("{$routePrefix}.projects.update", $project) }}"
                 enctype="multipart/form-data"
                 class="space-y-2 rounded-xl border border-gray-100 p-4"
             >
@@ -36,7 +36,7 @@
                 </div>
             </form>
 
-            <form id="del-proj-{{ $project->id }}" method="POST" action="{{ route(\"{$routePrefix}.projects.destroy\", $project) }}" class="hidden">
+            <form id="del-proj-{{ $project->id }}" method="POST" action="{{ route("{$routePrefix}.projects.destroy", $project) }}" class="hidden">
                 @csrf @method('DELETE')
             </form>
         @endforeach

@@ -5,7 +5,7 @@
         @foreach ($profile->educations as $education)
             <form
                 method="POST"
-                action="{{ route(\"{$routePrefix}.educations.update\", $education) }}"
+                action="{{ route("{$routePrefix}.educations.update", $education) }}"
                 class="grid gap-3 rounded-xl border border-gray-100 p-4 md:grid-cols-2"
             >
                 @csrf
@@ -40,7 +40,7 @@
                 </div>
             </form>
 
-            <form id="del-edu-{{ $education->id }}" method="POST" action="{{ route(\"{$routePrefix}.educations.destroy\", $education) }}" class="hidden">
+            <form id="del-edu-{{ $education->id }}" method="POST" action="{{ route("{$routePrefix}.educations.destroy", $education) }}" class="hidden">
                 @csrf @method('DELETE')
             </form>
         @endforeach
