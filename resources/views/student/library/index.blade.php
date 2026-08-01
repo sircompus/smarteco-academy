@@ -20,10 +20,7 @@
                         value="{{ $subject->id }}"
                         @selected($selectedSubject && $selectedSubject->id === $subject->id)
                     >
-                        {{ $subject->semester?->program?->level?->name }}
-                        — {{ $subject->semester?->program?->name }}
-                        — {{ $subject->semester?->name }}
-                        — {{ $subject->name }}
+                        {{ $subject->compact_label }} — {{ $subject->name }}
                     </option>
                 @endforeach
             </select>

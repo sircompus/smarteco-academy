@@ -55,4 +55,24 @@ class Subject extends Model
     {
         return $this->hasMany(AcademicResource::class);
     }
+
+    /**
+     * Libellé compact pour les listes : "DEUG S1 Gestion" au lieu de
+     * "DEUG — Tronc commun en gestion — Semestre 1". Raccourcit
+     * spécifiquement les troncs communs ("Tronc commun en X" -> "X").
+     */
+    public function getCompactLabelAttribute(): string
+    {
+        $level = $this->semester?->program?->level?->name;
+        $semesterNumber = $this->semester?->number;
+        $programName = $this->semester?->program?->name;
+
+        $shortProgram = $programName
+            ? preg_replace('/^Tronc commun en /i', '', $programName)
+            : $programName;
+
+        $shortProgram = $shortProgram ? ucfirst($shortProgram) : $programName;
+
+        return trim("{$level} S{$semesterNumber} {$shortProgram}");
+    }
 }
