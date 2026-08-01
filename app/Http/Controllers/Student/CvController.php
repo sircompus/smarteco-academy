@@ -223,6 +223,8 @@ class CvController extends Controller
 
         $count = 0;
 
+        $categoriesByName = \App\Models\SkillSuggestion::pluck('category', 'name');
+
         foreach ($namesToAdd->unique() as $name) {
             if (in_array(mb_strtolower($name), $existingNames, true)) {
                 continue; // déjà ajoutée, on évite les doublons
@@ -230,6 +232,7 @@ class CvController extends Controller
 
             $profile->skills()->create([
                 'name' => $name,
+                'category' => $categoriesByName[$name] ?? null,
                 'level' => $data['level'],
                 'sort_order' => $profile->skills()->count(),
             ]);

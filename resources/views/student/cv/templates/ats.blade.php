@@ -75,8 +75,16 @@
 
         @if ($profile->skills->isNotEmpty())
             <h2 class="mt-6 font-bold uppercase">COMPETENCES</h2>
-            @foreach ($profile->skills as $skill)
-                <p>- {{ $skill->name }}</p>
+
+            @php
+                $skillsByCategory = $profile->skills->groupBy(fn ($s) => $s->category ?: 'Autres');
+            @endphp
+
+            @foreach ($skillsByCategory as $category => $categorySkills)
+                <p class="mt-3 font-semibold">{{ strtoupper($category) }} :</p>
+                @foreach ($categorySkills as $skill)
+                    <p>- {{ $skill->name }}</p>
+                @endforeach
             @endforeach
         @endif
 

@@ -17,7 +17,7 @@ class CvSkill extends Model
         'expert' => 'Expert',
     ];
 
-    protected $fillable = ['cv_profile_id', 'name', 'level', 'sort_order'];
+    protected $fillable = ['cv_profile_id', 'name', 'category', 'level', 'sort_order'];
 
     public function profile(): BelongsTo
     {

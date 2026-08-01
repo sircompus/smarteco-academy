@@ -169,13 +169,21 @@
             @if ($profile->skills->isNotEmpty())
                 <section class="rounded-2xl bg-white p-6 shadow-sm">
                     <h2 class="text-lg font-bold text-gray-900">Compétences</h2>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        @foreach ($profile->skills as $skill)
-                            <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-                                {{ $skill->name }}
-                            </span>
-                        @endforeach
-                    </div>
+
+                    @php
+                        $skillsByCategory = $profile->skills->groupBy(fn ($s) => $s->category ?: 'Autres');
+                    @endphp
+
+                    @foreach ($skillsByCategory as $category => $categorySkills)
+                        <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-indigo-600">{{ $category }}</p>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            @foreach ($categorySkills as $skill)
+                                <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+                                    {{ $skill->name }}
+                                </span>
+                            @endforeach
+                        </div>
+                    @endforeach
                 </section>
             @endif
 

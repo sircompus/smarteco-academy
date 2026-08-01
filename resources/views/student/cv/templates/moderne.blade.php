@@ -41,16 +41,25 @@
             @if ($profile->skills->isNotEmpty())
                 <div class="mt-6">
                     <h2 class="text-xs font-bold uppercase tracking-wide text-white">Compétences</h2>
-                    <div class="mt-2 space-y-2">
-                        @foreach ($profile->skills as $skill)
-                            <div>
-                                <p class="text-xs text-indigo-100">{{ $skill->name }}</p>
-                                <div class="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
-                                    <div class="h-full bg-white" style="width: {{ $skill->level_percent }}%"></div>
+
+                    @php
+                        $skillsByCategory = $profile->skills->groupBy(fn ($s) => $s->category ?: 'Autres');
+                    @endphp
+
+                    @foreach ($skillsByCategory as $category => $categorySkills)
+                        <p class="mt-3 text-[10px] font-semibold uppercase text-indigo-200">{{ $category }}</p>
+
+                        <div class="mt-1 space-y-2">
+                            @foreach ($categorySkills as $skill)
+                                <div>
+                                    <p class="text-xs text-indigo-100">{{ $skill->name }}</p>
+                                    <div class="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
+                                        <div class="h-full bg-white" style="width: {{ $skill->level_percent }}%"></div>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
+                    @endforeach
                 </div>
             @endif
 

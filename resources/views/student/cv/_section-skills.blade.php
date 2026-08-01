@@ -2,19 +2,25 @@
     <h2 class="text-lg font-bold">Compétences</h2>
 
     @if ($profile->skills->isNotEmpty())
-        <p class="mt-3 text-xs font-medium uppercase tracking-wide text-gray-400">Déjà ajoutées</p>
-        <div class="mt-2 flex flex-wrap gap-2">
-            @foreach ($profile->skills as $skill)
-                <div class="flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-sm">
-                    <span class="font-medium text-indigo-700">{{ $skill->name }}</span>
-                    <span class="text-xs text-indigo-400">({{ $skill->level_label }})</span>
-                    <form method="POST" action="{{ route("{$routePrefix}.skills.destroy", $skill) }}">
-                        @csrf @method('DELETE')
-                        <button class="text-indigo-400 hover:text-red-600">×</button>
-                    </form>
-                </div>
-            @endforeach
-        </div>
+        @php
+            $addedByCategory = $profile->skills->groupBy(fn ($s) => $s->category ?: 'Autres');
+        @endphp
+
+        @foreach ($addedByCategory as $category => $categorySkills)
+            <p class="mt-3 text-xs font-medium uppercase tracking-wide text-gray-400">{{ $category }}</p>
+            <div class="mt-2 flex flex-wrap gap-2">
+                @foreach ($categorySkills as $skill)
+                    <div class="flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-sm">
+                        <span class="font-medium text-indigo-700">{{ $skill->name }}</span>
+                        <span class="text-xs text-indigo-400">({{ $skill->level_label }})</span>
+                        <form method="POST" action="{{ route("{$routePrefix}.skills.destroy", $skill) }}">
+                            @csrf @method('DELETE')
+                            <button class="text-indigo-400 hover:text-red-600">×</button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
     @endif
 
     <form method="POST" action="{{ route("{$routePrefix}.skills.store", $storeParams) }}" class="mt-5 rounded-xl border border-dashed border-gray-300 p-4">
