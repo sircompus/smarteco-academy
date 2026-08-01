@@ -242,6 +242,30 @@
                 </a>
 
                 <a
+                    href="{{ route('admin.cv.index') }}"
+                    class="{{ request()->routeIs('admin.cv.*')
+                        ? 'bg-indigo-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                    </svg>
+
+                    CV & Portfolios des étudiants
+                </a>
+
+                <a
                     href="{{ route('admin.centre.reports.index') }}"
                     class="{{ request()->routeIs('admin.centre.reports.*')
                         ? 'bg-indigo-600 text-white'

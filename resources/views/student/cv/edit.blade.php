@@ -149,7 +149,11 @@
 
             <div class="md:col-span-2">
                 <label class="text-sm font-medium">Résumé professionnel</label>
-                <textarea name="summary" rows="4" class="mt-1 block w-full rounded-lg border-gray-300">{{ old('summary', $profile->summary) }}</textarea>
+                <textarea name="summary" rows="4" class="mt-1 block w-full rounded-lg border-gray-300" placeholder="Laisse vide pour une génération automatique basée sur ton profil (formations, expériences, compétences)">{{ old('summary', $profile->summary) }}</textarea>
+                <p class="mt-1 text-xs text-gray-400">
+                    Si tu laisses ce champ vide, un résumé sera généré automatiquement à partir de tes formations,
+                    expériences et compétences sur ton CV et ton portfolio (rien n'est enregistré tant que tu n'écris pas le tien).
+                </p>
             </div>
 
             <div>

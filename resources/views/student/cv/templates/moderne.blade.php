@@ -1,4 +1,4 @@
-@extends('layouts.student')
+@extends($layout ?? 'layouts.student')
 
 @section('title', 'Mon CV')
 @section('page-title', 'Mon CV — Modèle moderne')
@@ -68,10 +68,10 @@
 
         {{-- Colonne principale --}}
         <div class="col-span-2 p-6">
-            @if ($profile->summary)
+            @if (filled($profile->effective_summary))
                 <div>
                     <h2 class="text-sm font-bold uppercase tracking-wide text-indigo-600">Profil</h2>
-                    <p class="mt-2 leading-6 text-gray-700">{{ $profile->summary }}</p>
+                    <p class="mt-2 leading-6 text-gray-700">{{ $profile->effective_summary }}</p>
                 </div>
             @endif
 

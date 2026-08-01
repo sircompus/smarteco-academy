@@ -82,4 +82,18 @@ class CvProfile extends Model
     {
         return $this->public_slug ? route('portfolio.show', $this->public_slug) : null;
     }
+
+    /**
+     * Résumé à afficher : celui saisi par l'étudiant s'il existe,
+     * sinon un résumé généré automatiquement à partir de son profil
+     * (jamais enregistré en base — recalculé à chaque affichage).
+     */
+    public function getEffectiveSummaryAttribute(): string
+    {
+        if (filled($this->summary)) {
+            return $this->summary;
+        }
+
+        return app(\App\Services\CvSummaryGeneratorService::class)->generate($this);
+    }
 }

@@ -40,3 +40,14 @@ Route::middleware(['auth', 'verified'])
 
 // --- Portfolio public (sans authentification) ---
 Route::get('/portfolio/{slug}', [PublicPortfolioController::class, 'show'])->name('portfolio.show');
+
+// --- Espace admin : consultation des CV des étudiants ---
+Route::middleware(['auth', 'verified', 'role:admin,superviseur'])
+    ->prefix('admin/cv')
+    ->name('admin.cv.')
+    ->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\CvController::class, 'index'])->name('index');
+        Route::get('/{user}', [\App\Http\Controllers\Admin\CvController::class, 'show'])->name('show');
+        Route::get('/{user}/cv', [\App\Http\Controllers\Admin\CvController::class, 'showCv'])->name('download.cv');
+        Route::get('/{user}/ats', [\App\Http\Controllers\Admin\CvController::class, 'showAts'])->name('download.ats');
+    });

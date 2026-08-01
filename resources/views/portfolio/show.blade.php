@@ -64,9 +64,9 @@
 
     <main class="mx-auto max-w-4xl px-6 py-12">
 
-        @if ($profile->summary)
+        @if (filled($profile->effective_summary))
             <section class="rounded-2xl bg-white p-8 shadow-sm">
-                <p class="text-center text-lg leading-8 text-gray-700">{{ $profile->summary }}</p>
+                <p class="text-center text-lg leading-8 text-gray-700">{{ $profile->effective_summary }}</p>
             </section>
         @endif
 

@@ -16,7 +16,15 @@
 
     <form method="POST" action="{{ route('student.cv.languages.store') }}" class="mt-4 flex flex-wrap gap-2">
         @csrf
-        <input name="name" placeholder="Ex : Français, Anglais..." class="rounded-lg border-gray-300" required>
+        <select name="name" class="rounded-lg border-gray-300" required>
+            <option value="">Choisir une langue</option>
+            <option value="Arabe">Arabe</option>
+            <option value="Français">Français</option>
+            <option value="Anglais">Anglais</option>
+            <option value="Espagnol">Espagnol</option>
+            <option value="Allemand">Allemand</option>
+            <option value="Autre">Autre</option>
+        </select>
         <select name="level" class="rounded-lg border-gray-300">
             <option value="debutant">Débutant</option>
             <option value="intermediaire" selected>Intermédiaire</option>

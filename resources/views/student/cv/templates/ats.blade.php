@@ -1,4 +1,4 @@
-@extends('layouts.student')
+@extends($layout ?? 'layouts.student')
 
 @section('title', 'Mon CV — Version ATS')
 @section('page-title', 'Mon CV — Version ATS')
@@ -39,9 +39,9 @@
         @if ($profile->linkedin_url) <p>LinkedIn : {{ $profile->linkedin_url }}</p> @endif
         @if ($profile->github_url) <p>GitHub : {{ $profile->github_url }}</p> @endif
 
-        @if ($profile->summary)
+        @if (filled($profile->effective_summary))
             <h2 class="mt-6 font-bold uppercase">PROFIL</h2>
-            <p>{{ $profile->summary }}</p>
+            <p>{{ $profile->effective_summary }}</p>
         @endif
 
         @if ($profile->experiences->isNotEmpty())
