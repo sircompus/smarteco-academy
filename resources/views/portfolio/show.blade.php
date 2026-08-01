@@ -121,7 +121,7 @@
             </section>
         @endif
 
-        <div class="mt-10 grid gap-8 md:grid-cols-2">
+        <div class="mt-10 space-y-8">
             {{-- Expérience --}}
             @if ($profile->experiences->isNotEmpty())
                 <section class="rounded-2xl bg-white p-6 shadow-sm">
@@ -164,7 +164,7 @@
             @endif
         </div>
 
-        <div class="mt-8 grid gap-8 md:grid-cols-3">
+        <div class="mt-8 space-y-8">
             {{-- Compétences --}}
             @if ($profile->skills->isNotEmpty())
                 <section class="rounded-2xl bg-white p-6 shadow-sm">
