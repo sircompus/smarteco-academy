@@ -18,7 +18,23 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
+            'profile' => $request->user()->profile,
         ]);
+    }
+
+    public function updateAvatar(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'avatar' => ['required', 'image', 'max:4096'],
+        ]);
+
+        $profile = $request->user()->profile()->firstOrCreate([]);
+
+        $profile->update([
+            'avatar_path' => $request->file('avatar')->store('avatars', 'public'),
+        ]);
+
+        return Redirect::route('profile.edit')->with('status', 'avatar-updated');
     }
 
     /**

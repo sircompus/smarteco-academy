@@ -131,7 +131,11 @@
         <div class="border-t border-gray-200 p-4">
             <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 rounded-lg p-3 transition hover:bg-gray-100">
                 <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-700">
+                    @if (auth()->user()->profile?->avatar_path)
+                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url(auth()->user()->profile->avatar_path) }}" class="h-full w-full rounded-full object-cover" alt="Avatar">
+                @else
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                @endif
                 </div>
 
                 <div class="min-w-0">
