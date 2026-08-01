@@ -52,11 +52,11 @@
                 href="{{ route('admin.dashboard') }}"
                 class="flex items-center gap-3"
             >
-                <div
-                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500 font-bold text-white"
+                <img
+                    src="{{ asset('images/smarteco-logo.png') }}"
+                    class="h-10 w-10 rounded-xl object-contain"
+                    alt="SmartEco Academy"
                 >
-                    SE
-                </div>
 
                 <div>
                     <p class="font-bold text-white">
