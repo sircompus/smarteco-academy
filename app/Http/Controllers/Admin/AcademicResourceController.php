@@ -115,4 +115,27 @@ class AcademicResourceController extends Controller
             ->route('admin.centre.library.index', ['subject_id' => $subjectId])
             ->with('success', 'Le document a été supprimé.');
     }
+
+    public function edit(AcademicResource $resource): View
+    {
+        return view('admin.centre.library.edit', [
+            'resource' => $resource,
+        ]);
+    }
+
+    public function update(Request $request, AcademicResource $resource): RedirectResponse
+    {
+        $data = $request->validate([
+            'type' => ['required', 'in:cours,td,examen,resume'],
+            'professor_name' => ['nullable', 'string', 'max:150'],
+            'title' => ['required', 'string', 'max:150'],
+            'description' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $resource->update($data);
+
+        return redirect()
+            ->route('admin.centre.library.index', ['subject_id' => $resource->subject_id])
+            ->with('success', 'Le document a été mis à jour.');
+    }
 }

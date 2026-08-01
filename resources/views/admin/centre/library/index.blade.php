@@ -121,19 +121,31 @@
                                                     <p class="text-xs text-gray-400">
                                                         {{ $resource->original_name }} · {{ $resource->size_for_humans }}
                                                     </p>
+                                                    @if ($resource->description)
+                                                        <p class="mt-1 text-xs text-gray-500">{{ $resource->description }}</p>
+                                                    @endif
                                                 </div>
 
-                                                <form
-                                                    method="POST"
-                                                    action="{{ route('admin.centre.library.destroy', $resource) }}"
-                                                    onsubmit="return confirm('Supprimer ce document ?');"
-                                                >
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
-                                                        Supprimer
-                                                    </button>
-                                                </form>
+                                                <div class="flex items-center gap-2">
+                                                    <a
+                                                        href="{{ route('admin.centre.library.edit', $resource) }}"
+                                                        class="rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700"
+                                                    >
+                                                        Modifier
+                                                    </a>
+
+                                                    <form
+                                                        method="POST"
+                                                        action="{{ route('admin.centre.library.destroy', $resource) }}"
+                                                        onsubmit="return confirm('Supprimer ce document ?');"
+                                                    >
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
+                                                            Supprimer
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         @empty
                                             <p class="text-xs text-gray-400">Aucun document.</p>

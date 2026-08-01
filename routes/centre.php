@@ -102,6 +102,12 @@ Route::middleware([
 
         Route::delete('/library/{resource}', [AcademicResourceController::class, 'destroy'])
             ->name('library.destroy');
+
+        Route::get('/library/{resource}/edit', [AcademicResourceController::class, 'edit'])
+            ->name('library.edit');
+
+        Route::patch('/library/{resource}', [AcademicResourceController::class, 'update'])
+            ->name('library.update');
     });
 
 // Validation des inscriptions/paiements : ouverte à l'admin ET au superviseur.
