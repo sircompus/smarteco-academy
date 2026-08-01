@@ -24,22 +24,37 @@
             Coche toutes les compétences qui te concernent, choisis un niveau, puis valide en une seule fois.
         </p>
 
-        <div class="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3 md:grid-cols-4">
-            @php
-                $suggestedSkills = \App\Models\SkillSuggestion::where('is_active', true)
-                    ->orderBy('category')
-                    ->orderBy('sort_order')
-                    ->pluck('name');
-                $alreadyHave = $profile->skills->pluck('name')->map(fn ($n) => mb_strtolower($n))->all();
-            @endphp
+        @php
+            $alreadyHave = $profile->skills->pluck('name')->map(fn ($n) => mb_strtolower($n))->all();
 
-            @foreach ($suggestedSkills as $suggestedSkill)
-                @unless (in_array(mb_strtolower($suggestedSkill), $alreadyHave, true))
-                    <label class="flex items-center gap-2 text-sm text-gray-700">
-                        <input type="checkbox" name="skills[]" value="{{ $suggestedSkill }}" class="rounded border-gray-300">
-                        {{ $suggestedSkill }}
-                    </label>
-                @endunless
+            $suggestedByCategory = \App\Models\SkillSuggestion::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->groupBy(fn ($s) => $s->category ?: 'Autres');
+        @endphp
+
+        <div class="mt-3 space-y-5">
+            @foreach ($suggestedByCategory as $category => $categorySkills)
+                @php
+                    $visibleSkills = $categorySkills->filter(
+                        fn ($s) => ! in_array(mb_strtolower($s->name), $alreadyHave, true)
+                    );
+                @endphp
+
+                @if ($visibleSkills->isNotEmpty())
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wide text-indigo-600">{{ $category }}</p>
+
+                        <div class="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2 md:grid-cols-3">
+                            @foreach ($visibleSkills as $suggestedSkill)
+                                <label class="flex items-start gap-2 text-sm text-gray-700">
+                                    <input type="checkbox" name="skills[]" value="{{ $suggestedSkill->name }}" class="mt-0.5 rounded border-gray-300">
+                                    <span>{{ $suggestedSkill->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             @endforeach
         </div>
 
