@@ -70,6 +70,13 @@
             </section>
         @endif
 
+        @if ($profile->user?->profile?->bio)
+            <section class="mt-8 rounded-2xl bg-white p-8 shadow-sm">
+                <h2 class="text-lg font-bold text-gray-900">Biographie</h2>
+                <p class="mt-3 leading-7 text-gray-600">{{ $profile->user->profile->bio }}</p>
+            </section>
+        @endif
+
         {{-- Projets --}}
         @if ($profile->projects->isNotEmpty())
             <section class="mt-10">

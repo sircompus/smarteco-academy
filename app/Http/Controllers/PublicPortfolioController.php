@@ -12,7 +12,7 @@ class PublicPortfolioController extends Controller
         $profile = CvProfile::query()
             ->where('public_slug', $slug)
             ->where('is_public', true)
-            ->with(['educations', 'experiences', 'skills', 'languages', 'certifications', 'projects'])
+            ->with(['user.profile', 'educations', 'experiences', 'skills', 'languages', 'certifications', 'projects'])
             ->firstOrFail();
 
         return view('portfolio.show', ['profile' => $profile]);

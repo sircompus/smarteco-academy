@@ -28,6 +28,7 @@ class CvProfile extends Model
         'cv_template',
         'portfolio_template',
         'is_public',
+        'show_in_navigation',
         'public_slug',
     ];
 
@@ -35,6 +36,7 @@ class CvProfile extends Model
     {
         return [
             'is_public' => 'boolean',
+            'show_in_navigation' => 'boolean',
         ];
     }
 

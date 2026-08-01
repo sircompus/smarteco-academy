@@ -323,6 +323,36 @@
             </div>
         </nav>
 
+        {{-- Profils mis en avant (fondateur / équipe) --}}
+        @php
+            $featuredProfiles = \App\Models\CvProfile::where('is_public', true)
+                ->where('show_in_navigation', true)
+                ->get();
+        @endphp
+
+        @if ($featuredProfiles->isNotEmpty())
+            <div class="border-t border-gray-200 px-4 py-3">
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Notre équipe</p>
+
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($featuredProfiles as $featured)
+                        <a
+                            href="{{ $featured->public_url }}"
+                            target="_blank"
+                            title="{{ $featured->full_name }} — CV, portfolio & biographie"
+                            class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border-2 border-indigo-100 bg-indigo-50 font-semibold text-indigo-700 transition hover:border-indigo-400"
+                        >
+                            @if ($featured->photo_url)
+                                <img src="{{ $featured->photo_url }}" class="h-full w-full object-cover" alt="{{ $featured->full_name }}">
+                            @else
+                                {{ strtoupper(substr($featured->full_name ?: '?', 0, 1)) }}
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         {{-- Profil étudiant --}}
         <div class="border-t border-gray-200 p-4">
             <a

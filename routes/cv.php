@@ -12,6 +12,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/', [CvController::class, 'edit'])->name('edit');
         Route::patch('/profile', [CvController::class, 'updateProfile'])->name('profile.update');
         Route::patch('/public', [CvController::class, 'togglePublic'])->name('public.toggle');
+        Route::patch('/navigation', [CvController::class, 'toggleNavigation'])->name('navigation.toggle');
 
         Route::post('/educations', [CvController::class, 'storeEducation'])->name('educations.store');
         Route::patch('/educations/{education}', [CvController::class, 'updateEducation'])->name('educations.update');
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'verified', 'role:admin,superviseur'])
         Route::get('/{user}/edit', [\App\Http\Controllers\Admin\CvBuilderController::class, 'edit'])->name('edit');
         Route::patch('/{user}/profile', [\App\Http\Controllers\Admin\CvBuilderController::class, 'updateProfile'])->name('profile.update');
         Route::patch('/{user}/public', [\App\Http\Controllers\Admin\CvBuilderController::class, 'togglePublic'])->name('public.toggle');
+        Route::patch('/{user}/navigation', [\App\Http\Controllers\Admin\CvBuilderController::class, 'toggleNavigation'])->name('navigation.toggle');
 
         Route::post('/{user}/educations', [\App\Http\Controllers\Admin\CvBuilderController::class, 'storeEducation'])->name('educations.store');
         Route::patch('/educations/{education}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'updateEducation'])->name('educations.update');

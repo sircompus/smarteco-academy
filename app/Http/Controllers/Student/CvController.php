@@ -106,6 +106,17 @@ class CvController extends Controller
         );
     }
 
+    public function toggleNavigation(Request $request): RedirectResponse
+    {
+        $profile = $this->currentProfile();
+
+        $profile->update([
+            'show_in_navigation' => $request->boolean('show_in_navigation'),
+        ]);
+
+        return $this->toSection('exports', 'Préférence mise à jour.');
+    }
+
     // --- Formation ---
 
     public function storeEducation(Request $request): RedirectResponse

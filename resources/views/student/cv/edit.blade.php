@@ -66,6 +66,24 @@
                 <p class="text-sm text-gray-400">Ton portfolio est actuellement privé.</p>
             @endif
         </div>
+
+        @if ($profile->is_public)
+            <form method="POST" action="{{ route("{$routePrefix}.navigation.toggle", $storeParams) }}" class="mt-4">
+                @csrf
+                @method('PATCH')
+                <label class="flex items-center gap-2 text-sm text-gray-700">
+                    <input
+                        type="checkbox"
+                        name="show_in_navigation"
+                        value="1"
+                        onchange="this.form.submit()"
+                        @checked($profile->show_in_navigation)
+                        class="rounded border-gray-300"
+                    >
+                    Afficher mon icône (photo) dans le menu étudiant, avec accès à mon CV/portfolio/biographie
+                </label>
+            </form>
+        @endif
     </section>
 
     {{-- Score ATS --}}
