@@ -58,34 +58,48 @@ class AcademicResourceController extends Controller
             'subject_id' => ['required', 'exists:subjects,id'],
             'type' => ['required', 'in:cours,td,examen,resume'],
             'professor_name' => ['nullable', 'string', 'max:150'],
-            'title' => ['required', 'string', 'max:150'],
+            'title' => ['nullable', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'file' => ['required', 'file', 'max:20480'],
+            'files' => ['required', 'array', 'min:1'],
+            'files.*' => ['file', 'max:20480'],
         ]);
 
-        $file = $request->file('file');
-        $path = $file->store('academic-resources/'.$data['subject_id'], 'public');
+        $count = 0;
+        $sortOrder = AcademicResource::where('subject_id', $data['subject_id'])->count();
 
-        AcademicResource::create([
-            'uuid' => (string) Str::uuid(),
-            'subject_id' => $data['subject_id'],
-            'type' => $data['type'],
-            'professor_name' => $data['professor_name'] ?? null,
-            'title' => $data['title'],
-            'description' => $data['description'] ?? null,
-            'disk' => 'public',
-            'path' => $path,
-            'original_name' => $file->getClientOriginalName(),
-            'mime_type' => $file->getClientMimeType(),
-            'size' => $file->getSize(),
-            'uploaded_by' => Auth::id(),
-            'is_published' => true,
-            'sort_order' => AcademicResource::where('subject_id', $data['subject_id'])->count(),
-        ]);
+        foreach ($request->file('files') as $file) {
+            $path = $file->store('academic-resources/'.$data['subject_id'], 'public');
+
+            // Si un seul fichier ET un titre saisi -> on l'utilise.
+            // Sinon (plusieurs fichiers, ou pas de titre) -> nom du fichier.
+            $title = (count($request->file('files')) === 1 && ! empty($data['title']))
+                ? $data['title']
+                : pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+            AcademicResource::create([
+                'uuid' => (string) Str::uuid(),
+                'subject_id' => $data['subject_id'],
+                'type' => $data['type'],
+                'professor_name' => $data['professor_name'] ?? null,
+                'title' => $title,
+                'description' => $data['description'] ?? null,
+                'disk' => 'public',
+                'path' => $path,
+                'original_name' => $file->getClientOriginalName(),
+                'mime_type' => $file->getClientMimeType(),
+                'size' => $file->getSize(),
+                'uploaded_by' => Auth::id(),
+                'is_published' => true,
+                'sort_order' => $sortOrder,
+            ]);
+
+            $sortOrder++;
+            $count++;
+        }
 
         return redirect()
             ->route('admin.centre.library.index', ['subject_id' => $data['subject_id']])
-            ->with('success', 'Le document a été mis en ligne.');
+            ->with('success', "{$count} fichier(s) mis en ligne.");
     }
 
     public function destroy(AcademicResource $resource): RedirectResponse
