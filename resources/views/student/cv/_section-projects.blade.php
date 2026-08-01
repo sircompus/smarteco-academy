@@ -6,7 +6,7 @@
         @foreach ($profile->projects as $project)
             <form
                 method="POST"
-                action="{{ route('student.cv.projects.update', $project) }}"
+                action="{{ route(\"{$routePrefix}.projects.update\", $project) }}"
                 enctype="multipart/form-data"
                 class="space-y-2 rounded-xl border border-gray-100 p-4"
             >
@@ -36,13 +36,13 @@
                 </div>
             </form>
 
-            <form id="del-proj-{{ $project->id }}" method="POST" action="{{ route('student.cv.projects.destroy', $project) }}" class="hidden">
+            <form id="del-proj-{{ $project->id }}" method="POST" action="{{ route(\"{$routePrefix}.projects.destroy\", $project) }}" class="hidden">
                 @csrf @method('DELETE')
             </form>
         @endforeach
     </div>
 
-    <form method="POST" action="{{ route('student.cv.projects.store') }}" enctype="multipart/form-data" class="mt-4 space-y-2 rounded-xl border border-dashed border-gray-300 p-4">
+    <form method="POST" action="{{ route("{$routePrefix}.projects.store", $storeParams) }}" enctype="multipart/form-data" class="mt-4 space-y-2 rounded-xl border border-dashed border-gray-300 p-4">
         @csrf
         <input type="file" name="image" accept="image/*" class="w-full text-xs">
         <input name="title" placeholder="Titre du projet" class="w-full rounded-lg border-gray-300" required>

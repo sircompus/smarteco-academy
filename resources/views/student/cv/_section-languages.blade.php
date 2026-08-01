@@ -8,7 +8,7 @@
                 <div class="flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-sm">
                     <span class="font-medium text-indigo-700">{{ $language->name }}</span>
                     <span class="text-xs text-indigo-400">({{ $language->level_label }})</span>
-                    <form method="POST" action="{{ route('student.cv.languages.destroy', $language) }}">
+                    <form method="POST" action="{{ route("{$routePrefix}.languages.destroy", $language) }}">
                         @csrf @method('DELETE')
                         <button class="text-indigo-400 hover:text-red-600">×</button>
                     </form>
@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('student.cv.languages.store') }}" class="mt-5 rounded-xl border border-dashed border-gray-300 p-4">
+    <form method="POST" action="{{ route("{$routePrefix}.languages.store", $storeParams) }}" class="mt-5 rounded-xl border border-dashed border-gray-300 p-4">
         @csrf
 
         <p class="text-sm font-medium text-gray-700">

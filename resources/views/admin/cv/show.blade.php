@@ -9,6 +9,10 @@
             <p class="text-gray-500">
                 {{ $targetUser->name }} n'a pas encore commencé son CV.
             </p>
+
+            <a href="{{ route('admin.cv.builder.edit', $targetUser) }}" class="mt-4 inline-block rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
+                Créer son CV à sa place
+            </a>
         </section>
     @else
         <section class="rounded-2xl bg-white p-6 shadow-sm">
@@ -32,6 +36,9 @@
             </div>
 
             <div class="mt-4 flex flex-wrap gap-2">
+                <a href="{{ route('admin.cv.builder.edit', $targetUser) }}" class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white">
+                    Modifier à sa place
+                </a>
                 <a href="{{ route('admin.cv.download.cv', $targetUser) }}" target="_blank" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">
                     Voir / Imprimer le CV
                 </a>

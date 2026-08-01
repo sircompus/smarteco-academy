@@ -13,7 +13,7 @@
                         @endif
                     </p>
                 </div>
-                <form method="POST" action="{{ route('student.cv.certifications.destroy', $certification) }}">
+                <form method="POST" action="{{ route(\"{$routePrefix}.certifications.destroy\", $certification) }}">
                     @csrf @method('DELETE')
                     <button class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">Supprimer</button>
                 </form>
@@ -21,7 +21,7 @@
         @endforeach
     </div>
 
-    <form method="POST" action="{{ route('student.cv.certifications.store') }}" class="mt-4 grid gap-3 rounded-xl border border-dashed border-gray-300 p-4 md:grid-cols-2">
+    <form method="POST" action="{{ route("{$routePrefix}.certifications.store", $storeParams) }}" class="mt-4 grid gap-3 rounded-xl border border-dashed border-gray-300 p-4 md:grid-cols-2">
         @csrf
         <input name="name" placeholder="Nom de la certification" class="rounded-lg border-gray-300" required>
         <input name="issuer" placeholder="Organisme" class="rounded-lg border-gray-300">

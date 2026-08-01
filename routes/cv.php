@@ -38,6 +38,37 @@ Route::middleware(['auth', 'verified'])
         Route::get('/download/ats', [CvController::class, 'showAts'])->name('download.ats');
     });
 
+// --- Espace admin : édition complète du CV d'un étudiant à sa place ---
+Route::middleware(['auth', 'verified', 'role:admin,superviseur'])
+    ->prefix('admin/cv')
+    ->name('admin.cv.builder.')
+    ->group(function () {
+        Route::get('/{user}/edit', [\App\Http\Controllers\Admin\CvBuilderController::class, 'edit'])->name('edit');
+        Route::patch('/{user}/profile', [\App\Http\Controllers\Admin\CvBuilderController::class, 'updateProfile'])->name('profile.update');
+        Route::patch('/{user}/public', [\App\Http\Controllers\Admin\CvBuilderController::class, 'togglePublic'])->name('public.toggle');
+
+        Route::post('/{user}/educations', [\App\Http\Controllers\Admin\CvBuilderController::class, 'storeEducation'])->name('educations.store');
+        Route::patch('/educations/{education}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'updateEducation'])->name('educations.update');
+        Route::delete('/educations/{education}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'destroyEducation'])->name('educations.destroy');
+
+        Route::post('/{user}/experiences', [\App\Http\Controllers\Admin\CvBuilderController::class, 'storeExperience'])->name('experiences.store');
+        Route::patch('/experiences/{experience}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'updateExperience'])->name('experiences.update');
+        Route::delete('/experiences/{experience}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'destroyExperience'])->name('experiences.destroy');
+
+        Route::post('/{user}/skills', [\App\Http\Controllers\Admin\CvBuilderController::class, 'storeSkill'])->name('skills.store');
+        Route::delete('/skills/{skill}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'destroySkill'])->name('skills.destroy');
+
+        Route::post('/{user}/languages', [\App\Http\Controllers\Admin\CvBuilderController::class, 'storeLanguage'])->name('languages.store');
+        Route::delete('/languages/{language}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'destroyLanguage'])->name('languages.destroy');
+
+        Route::post('/{user}/certifications', [\App\Http\Controllers\Admin\CvBuilderController::class, 'storeCertification'])->name('certifications.store');
+        Route::delete('/certifications/{certification}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'destroyCertification'])->name('certifications.destroy');
+
+        Route::post('/{user}/projects', [\App\Http\Controllers\Admin\CvBuilderController::class, 'storeProject'])->name('projects.store');
+        Route::patch('/projects/{project}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'updateProject'])->name('projects.update');
+        Route::delete('/projects/{project}', [\App\Http\Controllers\Admin\CvBuilderController::class, 'destroyProject'])->name('projects.destroy');
+    });
+
 // --- Portfolio public (sans authentification) ---
 Route::get('/portfolio/{slug}', [PublicPortfolioController::class, 'show'])->name('portfolio.show');
 

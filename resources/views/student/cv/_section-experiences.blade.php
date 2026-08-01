@@ -5,7 +5,7 @@
         @foreach ($profile->experiences as $experience)
             <form
                 method="POST"
-                action="{{ route('student.cv.experiences.update', $experience) }}"
+                action="{{ route(\"{$routePrefix}.experiences.update\", $experience) }}"
                 class="grid gap-3 rounded-xl border border-gray-100 p-4 md:grid-cols-2"
             >
                 @csrf
@@ -40,13 +40,13 @@
                 </div>
             </form>
 
-            <form id="del-exp-{{ $experience->id }}" method="POST" action="{{ route('student.cv.experiences.destroy', $experience) }}" class="hidden">
+            <form id="del-exp-{{ $experience->id }}" method="POST" action="{{ route(\"{$routePrefix}.experiences.destroy\", $experience) }}" class="hidden">
                 @csrf @method('DELETE')
             </form>
         @endforeach
     </div>
 
-    <form method="POST" action="{{ route('student.cv.experiences.store') }}" class="mt-4 grid gap-3 rounded-xl border border-dashed border-gray-300 p-4 md:grid-cols-2">
+    <form method="POST" action="{{ route("{$routePrefix}.experiences.store", $storeParams) }}" class="mt-4 grid gap-3 rounded-xl border border-dashed border-gray-300 p-4 md:grid-cols-2">
         @csrf
         <input name="company" placeholder="Entreprise" class="rounded-lg border-gray-300" required>
         <input name="position" placeholder="Poste" class="rounded-lg border-gray-300" required>

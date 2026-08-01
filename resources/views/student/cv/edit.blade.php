@@ -1,9 +1,14 @@
-@extends('layouts.student')
+@extends($layout ?? 'layouts.student')
 
 @section('title', 'Mon CV & Portfolio')
 @section('page-title', 'Mon CV & Portfolio')
 
 @section('content')
+    @php
+        $routePrefix = $routePrefix ?? 'student.cv';
+        $storeParams = isset($targetUser) ? [$targetUser] : [];
+    @endphp
+
     @if (session('success'))
         <div class="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
             {{ session('success') }}
@@ -31,18 +36,18 @@
             </div>
 
             <div class="flex flex-wrap gap-2">
-                <a href="{{ route('student.cv.download.cv') }}" target="_blank" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">
+                <a href="{{ route($targetUser ?? false ? 'admin.cv.download.cv' : 'student.cv.download.cv', $storeParams) }}" target="_blank" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">
                     Voir / Imprimer mon CV
                 </a>
 
-                <a href="{{ route('student.cv.download.ats') }}" target="_blank" class="rounded-lg bg-gray-800 px-4 py-2 text-sm font-semibold text-white">
+                <a href="{{ route($targetUser ?? false ? 'admin.cv.download.ats' : 'student.cv.download.ats', $storeParams) }}" target="_blank" class="rounded-lg bg-gray-800 px-4 py-2 text-sm font-semibold text-white">
                     Version ATS
                 </a>
             </div>
         </div>
 
         <div class="mt-4 flex flex-wrap items-center gap-4 rounded-xl bg-gray-50 p-4">
-            <form method="POST" action="{{ route('student.cv.public.toggle') }}">
+            <form method="POST" action="{{ route("{$routePrefix}.public.toggle", $storeParams) }}">
                 @csrf
                 @method('PATCH')
                 <button class="rounded-lg {{ $profile->is_public ? 'bg-red-50 text-red-600' : 'bg-green-600 text-white' }} px-4 py-2 text-sm font-semibold">
@@ -108,7 +113,7 @@
         <form
             x-show="open"
             method="POST"
-            action="{{ route('student.cv.profile.update') }}"
+            action="{{ route("{$routePrefix}.profile.update", $storeParams) }}"
             enctype="multipart/form-data"
             class="mt-4 grid gap-4 md:grid-cols-2"
         >
@@ -194,10 +199,10 @@
         </form>
     </section>
 
-    @include('student.cv._section-educations', ['profile' => $profile])
-    @include('student.cv._section-experiences', ['profile' => $profile])
-    @include('student.cv._section-skills', ['profile' => $profile])
-    @include('student.cv._section-languages', ['profile' => $profile])
-    @include('student.cv._section-certifications', ['profile' => $profile])
-    @include('student.cv._section-projects', ['profile' => $profile])
+    @include('student.cv._section-educations', ['profile' => $profile, 'routePrefix' => $routePrefix, 'storeParams' => $storeParams])
+    @include('student.cv._section-experiences', ['profile' => $profile, 'routePrefix' => $routePrefix, 'storeParams' => $storeParams])
+    @include('student.cv._section-skills', ['profile' => $profile, 'routePrefix' => $routePrefix, 'storeParams' => $storeParams])
+    @include('student.cv._section-languages', ['profile' => $profile, 'routePrefix' => $routePrefix, 'storeParams' => $storeParams])
+    @include('student.cv._section-certifications', ['profile' => $profile, 'routePrefix' => $routePrefix, 'storeParams' => $storeParams])
+    @include('student.cv._section-projects', ['profile' => $profile, 'routePrefix' => $routePrefix, 'storeParams' => $storeParams])
 @endsection
