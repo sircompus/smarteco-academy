@@ -75,7 +75,9 @@
 
         @if ($profile->skills->isNotEmpty())
             <h2 class="mt-6 font-bold uppercase">COMPETENCES</h2>
-            <p>{{ $profile->skills->pluck('name')->implode(', ') }}</p>
+            @foreach ($profile->skills as $skill)
+                <p>- {{ $skill->name }}</p>
+            @endforeach
         @endif
 
         @if ($profile->languages->isNotEmpty())
