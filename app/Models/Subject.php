@@ -50,4 +50,9 @@ class Subject extends Model
     {
         return $this->hasMany(Pack::class);
     }
+
+    public function resources(): HasMany
+    {
+        return $this->hasMany(AcademicResource::class);
+    }
 }

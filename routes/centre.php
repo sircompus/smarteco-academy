@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AcademicResourceController;
 use App\Http\Controllers\Admin\CentreController;
 use App\Http\Controllers\Admin\CourseContentController;
 use App\Http\Controllers\Admin\CurriculumController;
@@ -92,6 +93,15 @@ Route::middleware([
 
         Route::delete('/resources/{resource}', [CourseContentController::class, 'destroyResource'])
             ->name('resources.destroy');
+
+        Route::get('/library', [AcademicResourceController::class, 'index'])
+            ->name('library.index');
+
+        Route::post('/library', [AcademicResourceController::class, 'store'])
+            ->name('library.store');
+
+        Route::delete('/library/{resource}', [AcademicResourceController::class, 'destroy'])
+            ->name('library.destroy');
     });
 
 // Validation des inscriptions/paiements : ouverte à l'admin ET au superviseur.
@@ -164,4 +174,16 @@ Route::middleware([
 
         Route::post('/{pack}/enroll', [StudentPackController::class, 'enroll'])
             ->name('enroll');
+    });
+
+Route::middleware([
+    'auth',
+    'verified',
+    'module.active:centre',
+])
+    ->prefix('student/library')
+    ->name('student.library.')
+    ->group(function () {
+        Route::get('/', [\App\Http\Controllers\Student\LibraryController::class, 'index'])
+            ->name('index');
     });
