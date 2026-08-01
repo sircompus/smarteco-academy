@@ -39,7 +39,7 @@ class AliBahtitCvSeeder extends Seeder
                 'phone' => '06 63 62 83 76',
                 'address' => 'Tétouan, Maroc',
                 'summary' => "Candidat au doctorat disposant d'un parcours pluridisciplinaire en économie-gestion, management des systèmes d'information, leadership managérial augmenté par l'intelligence artificielle et transformation numérique. Les travaux de recherche menés sur l'industrie 4.0, la migration des systèmes vers le cloud via Google Cloud Platform et la veille stratégique augmentée traduisent une trajectoire scientifique cohérente centrée sur l'innovation, l'aide à la décision et la performance organisationnelle. Plus de vingt ans d'expérience en informatique, maintenance, logiciels de gestion, formation et accompagnement des utilisateurs.",
-                'cv_template' => 'moderne',
+                'cv_template' => 'classique',
                 'portfolio_template' => 'elegant',
                 'is_public' => true,
                 'show_in_navigation' => true,
