@@ -221,32 +221,16 @@
                             </form>
                         </div>
                     @endif
-
-                    @php
-                        $mismatchWarning = $enrollment->levelMismatchWarning();
-                    @endphp
-
-                    @if ($mismatchWarning)
-                        <div class="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700">
-                            ⚠️ {{ $mismatchWarning }}
-                        </div>
-                    @endif
                 </div>
 
                 @if ($enrollment->status === 'en_attente')
                     <div class="mt-4 flex gap-2 border-t border-gray-100 pt-4">
-                        <form
-                            method="POST"
-                            action="{{ route('admin.centre.pack-enrollments.status', $enrollment) }}"
-                            @if ($mismatchWarning)
-                                onsubmit="return confirm('Attention : {{ addslashes($mismatchWarning) }}\n\nValider quand même cette inscription ?');"
-                            @endif
-                        >
+                        <form method="POST" action="{{ route('admin.centre.pack-enrollments.status', $enrollment) }}">
                             @csrf
                             @method('PATCH')
                             <input type="hidden" name="status" value="active">
-                            <button class="rounded-lg {{ $mismatchWarning ? 'bg-amber-600' : 'bg-green-600' }} px-3 py-2 text-xs font-semibold text-white">
-                                {{ $mismatchWarning ? '⚠️ Valider quand même' : "Valider l'inscription" }}
+                            <button class="rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white">
+                                Valider l'inscription
                             </button>
                         </form>
 
