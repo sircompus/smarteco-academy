@@ -40,7 +40,11 @@ class CvController extends Controller
     {
         return CvProfile::firstOrCreate(
             ['user_id' => Auth::id()],
-            ['full_name' => Auth::user()->name, 'email' => Auth::user()->email]
+            [
+                'uuid' => (string) Str::uuid(),
+                'full_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ]
         );
     }
 
