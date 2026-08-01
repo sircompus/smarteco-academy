@@ -10,6 +10,8 @@ class CvEducation extends Model
 {
     use HasFactory;
 
+    protected $table = 'cv_educations';
+
     protected $fillable = [
         'cv_profile_id', 'institution', 'degree', 'field_of_study',
         'start_date', 'end_date', 'is_current', 'description', 'sort_order',
