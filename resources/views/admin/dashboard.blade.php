@@ -65,31 +65,59 @@
 
             <div class="mt-5 grid gap-3 sm:grid-cols-2">
                 <a
-                    href="#"
+                    href="{{ route('admin.users.index') }}"
                     class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
                 >
-                    Utilisateurs
+                    Utilisateurs & rôles
                 </a>
 
                 <a
-                    href="#"
+                    href="{{ route('admin.centre.index') }}"
                     class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
                 >
-                    Modules
+                    Niveaux, filières & cours
                 </a>
 
                 <a
-                    href="#"
+                    href="{{ route('admin.centre.packs.index') }}"
                     class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
                 >
-                    Paramètres
+                    Packs (semestres / modules)
                 </a>
 
                 <a
-                    href="#"
+                    href="{{ route('admin.centre.library.index') }}"
                     class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
                 >
-                    Journaux d’activité
+                    Bibliothèque de ressources
+                </a>
+
+                <a
+                    href="{{ route('admin.centre.pack-enrollments.index') }}"
+                    class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
+                >
+                    Inscriptions & paiements
+                </a>
+
+                <a
+                    href="{{ route('admin.registrations.index') }}"
+                    class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
+                >
+                    Dossiers d’admission
+                </a>
+
+                <a
+                    href="{{ route('admin.cv.index') }}"
+                    class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
+                >
+                    CV & Portfolios des étudiants
+                </a>
+
+                <a
+                    href="{{ route('admin.centre.reports.index') }}"
+                    class="rounded-xl border border-gray-200 p-4 text-sm font-semibold hover:border-indigo-300 hover:bg-indigo-50"
+                >
+                    État financier
                 </a>
             </div>
         </section>
