@@ -154,4 +154,46 @@ class PackEnrollment extends Model
     {
         return ! $this->requiresPayment() || $this->amount_remaining <= 0;
     }
+
+    /**
+     * Niveau académique auquel ce pack appartient (via son semestre ou sa matière).
+     */
+    public function packLevel(): ?AcademicLevel
+    {
+        if ($this->pack?->isTypeSemestre()) {
+            return $this->pack->semester?->program?->level;
+        }
+
+        return $this->pack?->subject?->semester?->program?->level;
+    }
+
+    /**
+     * Message d'avertissement si le niveau du pack ne correspond pas au
+     * niveau du dossier d'admission ACCEPTÉ de l'étudiant (ou s'il n'y en
+     * a aucun). Retourne null si tout concorde.
+     */
+    public function levelMismatchWarning(): ?string
+    {
+        $packLevel = $this->packLevel();
+
+        if (! $packLevel) {
+            return null;
+        }
+
+        $acceptedRegistration = Registration::query()
+            ->where('user_id', $this->user_id)
+            ->where('status', Registration::STATUS_ACCEPTED)
+            ->latest()
+            ->first();
+
+        if (! $acceptedRegistration) {
+            return "Aucun dossier d'admission accepté trouvé pour cet étudiant — vérifie sa situation avant de valider.";
+        }
+
+        if ($acceptedRegistration->academic_level_id !== $packLevel->id) {
+            return "Le dossier d'admission accepté est au niveau « {$acceptedRegistration->level?->name} », mais ce pack correspond au niveau « {$packLevel->name} ».";
+        }
+
+        return null;
+    }
 }
