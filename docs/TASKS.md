@@ -218,3 +218,102 @@ Résultats des tests :
 
 Prochaine action exacte : Inventorier les modèles et migrations CV,
 portfolio, notifications et jobs avant de créer les nouvelles migrations.
+
+
+## TASK-016 — Gestion des veilles d’emploi
+
+Statut : EN COURS
+
+Responsable : Ali / ChatGPT
+
+Priorité : P1
+
+Branche : `feature/job-watch-crud`
+
+Dépendance : TASK-015
+
+Objectif : Permettre à un utilisateur authentifié de créer, consulter,
+modifier, activer, suspendre et supprimer ses propres veilles d’emploi.
+
+Fonctionnalités prévues :
+
+- afficher la liste des veilles de l’utilisateur ;
+- créer une veille ;
+- sélectionner un profil CV ;
+- choisir le mode `cv`, `portfolio` ou `both` ;
+- renseigner les intitulés recherchés ;
+- renseigner les localisations ;
+- sélectionner les types de contrat ;
+- sélectionner le mode de travail ;
+- définir le score minimum ;
+- définir la fréquence de recherche ;
+- ajouter des mots-clés inclus ou exclus ;
+- afficher le détail d’une veille ;
+- modifier une veille ;
+- suspendre ou réactiver une veille ;
+- supprimer une veille.
+
+Fichiers autorisés :
+
+- `routes/job-watch.php`
+- `bootstrap/app.php`
+- `app/Http/Controllers/Student/JobWatchController.php`
+- `app/Http/Requests/JobWatch/StoreJobWatchRequest.php`
+- `app/Http/Requests/JobWatch/UpdateJobWatchRequest.php`
+- `app/Models/JobWatch.php`
+- `app/Models/JobWatchKeyword.php`
+- `app/Policies/JobWatchPolicy.php`
+- `resources/views/student/job-watches/*`
+- `resources/views/layouts/student.blade.php`
+- `resources/views/student/dashboard.blade.php`
+- `tests/Feature/JobWatch/JobWatchCrudTest.php`
+- `docs/TASKS.md`
+- `docs/CURRENT_STATE.md`
+- `docs/HANDOFF.md`
+- `docs/CHANGELOG_AI.md`
+
+Sous-tâches :
+
+- [ ] Examiner le système actuel de chargement des routes.
+- [ ] Examiner le layout étudiant.
+- [ ] Créer les routes protégées par authentification.
+- [ ] Créer `StoreJobWatchRequest`.
+- [ ] Créer `UpdateJobWatchRequest`.
+- [ ] Créer `JobWatchController`.
+- [ ] Utiliser `JobWatchPolicy` dans chaque action.
+- [ ] Créer la liste des veilles.
+- [ ] Créer le formulaire d’ajout.
+- [ ] Créer la page de détail.
+- [ ] Créer le formulaire de modification.
+- [ ] Ajouter la suspension et la réactivation.
+- [ ] Ajouter la suppression.
+- [ ] Gérer les mots-clés dans une transaction MySQL.
+- [ ] Ajouter un lien dans la navigation étudiante.
+- [ ] Tester l’accès limité au propriétaire.
+- [ ] Tester la validation des formulaires.
+- [ ] Tester les opérations CRUD.
+- [ ] Mettre à jour la documentation.
+
+Hors périmètre :
+
+- récupération externe des offres ;
+- scraping ;
+- moteur de scoring ;
+- notifications ;
+- Laravel Queue ;
+- Laravel Scheduler ;
+- intelligence artificielle.
+
+Critères de validation :
+
+- un utilisateur peut gérer ses propres veilles ;
+- un utilisateur ne peut pas consulter la veille d’un autre ;
+- les données invalides sont rejetées ;
+- les profils CV proposés appartiennent à l’utilisateur ;
+- les mots-clés sont enregistrés sans doublons ;
+- les formulaires Blade utilisent la protection CSRF ;
+- les tests MySQL réussissent ;
+- aucun secret n’est ajouté au dépôt.
+
+Prochaine action exacte : examiner le chargement des routes et le layout
+étudiant avant de générer le contrôleur et les vues.
