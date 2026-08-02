@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\JobSourceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobSource extends Model
 {
-    /** @use HasFactory<\Database\Factories\JobSourceFactory> */
+    /** @use HasFactory<JobSourceFactory> */
     use HasFactory;
 
     protected $fillable = [

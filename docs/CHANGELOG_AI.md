@@ -16,3 +16,24 @@ Modules Inscription/Admission, Centre (structure académique, packs, paiements a
 
 ## Note sur la traçabilité
 Ce journal est tenu manuellement par chaque assistant en fin de session — il ne remplace pas `git log`, qui reste la trace technique définitive. En cas de doute sur ce qui a été réellement livré, toujours vérifier `git log` et l'état réel des fichiers plutôt que ce journal seul.
+
+
+
+## 2026-08-02 — Fondation du module de veille d’emploi
+
+Assistant : ChatGPT
+
+Branche : `feature/job-watch-foundation`
+
+Ajouts :
+
+- six migrations MySQL ;
+- six modèles Eloquent ;
+- six factories ;
+- `JobWatchPolicy` ;
+- relations avec `User` et `CvProfile` ;
+- tests des relations, contraintes et autorisations.
+
+Tests :
+
+- `JobWatchFoundationTest` : 7 réussis, 21 assertions.

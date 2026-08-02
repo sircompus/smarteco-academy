@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\JobMatchFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobMatch extends Model
 {
-    /** @use HasFactory<\Database\Factories\JobMatchFactory> */
+    /** @use HasFactory<JobMatchFactory> */
     use HasFactory;
 
     protected $fillable = [

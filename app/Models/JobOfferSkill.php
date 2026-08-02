@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\JobOfferSkillFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobOfferSkill extends Model
 {
-    /** @use HasFactory<\Database\Factories\JobOfferSkillFactory> */
+    /** @use HasFactory<JobOfferSkillFactory> */
     use HasFactory;
 
     protected $fillable = [

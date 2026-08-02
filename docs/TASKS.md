@@ -136,23 +136,23 @@ Relations prévues :
 
 Sous-tâches :
 
-- [ ] Vérifier les modèles CV et portfolio existants.
+- [X] Vérifier les modèles CV et portfolio existants.
 - [ ] Vérifier si `portfolio_projects` appartient à `users` ou à `cv_profiles`.
-- [ ] Vérifier les migrations existantes.
-- [ ] Vérifier la table Laravel `notifications`.
-- [ ] Définir précisément les colonnes des nouvelles tables.
+- [X] Vérifier les migrations existantes.
+- [X] Vérifier la table Laravel `notifications`.
+- [X] Définir précisément les colonnes des nouvelles tables.
 - [ ] Mettre à jour `DATABASE_SCHEMA.md`.
 - [ ] Mettre à jour `DECISIONS.md`.
-- [ ] Créer les migrations MySQL.
-- [ ] Créer les modèles Eloquent.
-- [ ] Ajouter les relations Eloquent.
-- [ ] Ajouter les clés étrangères et les index.
-- [ ] Ajouter les contraintes contre les doublons.
-- [ ] Créer `JobWatchPolicy`.
-- [ ] Ajouter les factories et données fictives.
-- [ ] Tester les migrations et les rollbacks.
-- [ ] Tester les relations Eloquent.
-- [ ] Tester que chaque utilisateur accède uniquement à ses veilles.
+- [X] Créer les migrations MySQL.
+- [X] Créer les modèles Eloquent.
+- [X] Ajouter les relations Eloquent.
+- [X] Ajouter les clés étrangères et les index.
+- [X] Ajouter les contraintes contre les doublons.
+- [X] Créer `JobWatchPolicy`.
+- [X] Ajouter les factories et données fictives.
+- [X] Tester les migrations et les rollbacks.
+- [X] Tester les relations Eloquent.
+- [X] Tester que chaque utilisateur accède uniquement à ses veilles.
 - [ ] Mettre à jour `CURRENT_STATE.md`.
 - [ ] Mettre à jour `HANDOFF.md`.
 - [ ] Mettre à jour `CHANGELOG_AI.md`.
@@ -206,6 +206,15 @@ Décision concernant le portfolio :
 - La veille pourra utiliser le CV, le portfolio ou les deux grâce à `source_mode`.
 - En mode portfolio, les projets seront récupérés à partir des profils CV appartenant à l’utilisateur.
 - La séparation complète du portfolio pourra faire l’objet d’une future tâche de refactorisation.
+
+Résultats des tests :
+
+- Base de test : MySQL `laravel_testing`.
+- `JobWatchFoundationTest` : 7 tests réussis, 21 assertions.
+- Relations Eloquent : validées.
+- Contraintes anti-doublons : validées.
+- Policy propriétaire : validée.
+- Suppressions en cascade : validées.
 
 Prochaine action exacte : Inventorier les modèles et migrations CV,
 portfolio, notifications et jobs avant de créer les nouvelles migrations.

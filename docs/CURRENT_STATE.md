@@ -35,3 +35,28 @@ Aucun test automatisé (`tests/Feature/*`) n'a été exécuté durant les sessio
 
 ## Prochaine action recommandée
 Demander à Ali quelle est sa priorité : (a) commencer un nouveau module (Community, Projets, ou Examens), (b) mettre en place la synchronisation multi-PC reportée, (c) mettre en place une suite de tests automatisés, ou (d) autre chose. Ne pas décider à sa place.
+
+
+
+## Veille d’emploi
+
+Les fondations MySQL et Eloquent sont opérationnelles.
+
+Éléments disponibles :
+
+- six tables MySQL ;
+- six modèles Eloquent ;
+- factories ;
+- relations ;
+- Policy de propriété ;
+- contraintes anti-doublons ;
+- tests MySQL réussis.
+
+Non encore développé :
+
+- interface utilisateur ;
+- récupération externe des offres ;
+- moteur de scoring ;
+- Queue et Scheduler ;
+- notifications ;
+- résumé quotidien.

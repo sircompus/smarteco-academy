@@ -39,3 +39,64 @@ Référence des tables par domaine. Pour le détail exact des colonnes, toujours
 ## Points d'attention Eloquent
 - `CvEducation::$table = 'cv_educations'` doit rester forcé explicitement (voir ci-dessus)
 - `PackEnrollment` et `TrainingEnrollment` suivent des logiques de facturation quasi-identiques mais sont des modèles totalement séparés (pas d'héritage/trait partagé) — toute correction de bug sur l'un doit être vérifiée sur l'autre
+
+
+
+## Module de veille d’emploi
+
+### job_watches
+
+Veilles créées par les utilisateurs.
+
+Relations :
+
+- `user_id` → `users.id`
+- `cv_profile_id` → `cv_profiles.id`, nullable
+
+### job_watch_keywords
+
+Mots-clés associés à une veille.
+
+Relation :
+
+- `job_watch_id` → `job_watches.id`
+
+### job_sources
+
+Sources autorisées pour les offres.
+
+Les secrets et clés API ne sont jamais enregistrés dans cette table.
+
+### job_offers
+
+Offres récupérées et normalisées.
+
+Relation :
+
+- `job_source_id` → `job_sources.id`
+
+Contraintes :
+
+- `fingerprint` unique ;
+- couple `job_source_id` + `external_id` unique.
+
+### job_offer_skills
+
+Compétences demandées dans une offre.
+
+Relation :
+
+- `job_offer_id` → `job_offers.id`
+
+### job_matches
+
+Correspondances entre une veille et une offre.
+
+Relations :
+
+- `job_watch_id` → `job_watches.id`
+- `job_offer_id` → `job_offers.id`
+
+Contrainte :
+
+- couple `job_watch_id` + `job_offer_id` unique.

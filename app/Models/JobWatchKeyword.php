@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\JobWatchKeywordFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobWatchKeyword extends Model
 {
-    /** @use HasFactory<\Database\Factories\JobWatchKeywordFactory> */
+    /** @use HasFactory<JobWatchKeywordFactory> */
     use HasFactory;
 
     protected $fillable = [

@@ -136,7 +136,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Vérifier si l’utilisateur possède au moins un rôle donné.
      *
-     * @param array<int, string> $roleNames
+     * @param  array<int, string>  $roleNames
      */
     public function hasAnyRole(array $roleNames): bool
     {
@@ -158,19 +158,19 @@ class User extends Authenticatable implements MustVerifyEmail
             })
             ->exists();
     }
-    
+
     public function registrations(): HasMany
     {
-    return $this->hasMany(Registration::class);
-    }
-    
-    public function trainingEnrollments(): HasMany
-    {
-    return $this->hasMany(TrainingEnrollment::class);
+        return $this->hasMany(Registration::class);
     }
 
-	public function jobWatches(): HasMany
-	{
-    return $this->hasMany(JobWatch::class);
-	}
+    public function trainingEnrollments(): HasMany
+    {
+        return $this->hasMany(TrainingEnrollment::class);
+    }
+
+    public function jobWatches(): HasMany
+    {
+        return $this->hasMany(JobWatch::class);
+    }
 }
