@@ -2,6 +2,10 @@
 
 Lis d'abord `AGENTS.md` (règles communes à tous les assistants), puis ce qui suit est propre à Claude.
 
+## Rappel critique (déjà dans AGENTS.md, répété ici car Claude a tendance à l'oublier en fin de longue session)
+
+Toute réponse qui livre un fichier métier modifié DOIT inclure, dans le **même** message, la mise à jour de `docs/CURRENT_STATE.md` et `docs/HANDOFF.md`. Ne pas attendre la fin de la conversation ni une demande explicite d'Ali. Voir la section "OBLIGATION DE CLÔTURE DE SESSION" dans `AGENTS.md` pour le détail complet.
+
 ## Qui est Ali
 
 - Porteur du projet SmartEco Academy, en train de lancer une vraie startup
