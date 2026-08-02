@@ -98,4 +98,8 @@ class CvProfile extends Model
 
         return app(\App\Services\CvSummaryGeneratorService::class)->generate($this);
     }
+public function jobWatches(): HasMany
+{
+    return $this->hasMany(JobWatch::class);
+}
 }

@@ -23,8 +23,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->orderBy('menu_order')
             ->get();
 
+        $user = auth()->user();
+
         return view('student.dashboard', [
             'activeModules' => $activeModules,
+            'packEnrollmentsCount' => $user->packEnrollments()->count(),
+            'trainingEnrollmentsCount' => $user->trainingEnrollments()->count(),
+            'moduleRoutes' => [
+                'centre' => 'student.packs.index',
+                'inscription' => 'student.registrations.index',
+                'formations' => 'student.trainings.index',
+                'cv-ats' => 'student.cv.edit',
+                'portfolio' => 'student.cv.edit',
+            ],
         ]);
     })->name('student.dashboard');
 

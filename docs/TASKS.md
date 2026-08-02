@@ -130,16 +130,14 @@ Relations prévues :
 - Un utilisateur possède plusieurs veilles.
 - Une veille appartient à un utilisateur.
 - Une veille peut utiliser un profil CV.
-- Une veille peut utiliser un portfolio.
-- Une veille possède plusieurs mots-clés.
-- Une veille possède plusieurs correspondances.
-- Une source possède plusieurs offres.
-- Une offre possède plusieurs compétences.
-- Une correspondance appartient à une veille et à une offre.
+- Une veille peut fonctionner avec le CV, le portfolio ou les deux.
+- Les projets du portfolio sont récupérés à partir de leur relation existante.
+- Aucun `portfolio_id` ne sera créé tant qu’une table `portfolios` indépendante n’existe pas.
 
 Sous-tâches :
 
 - [ ] Vérifier les modèles CV et portfolio existants.
+- [ ] Vérifier si `portfolio_projects` appartient à `users` ou à `cv_profiles`.
 - [ ] Vérifier les migrations existantes.
 - [ ] Vérifier la table Laravel `notifications`.
 - [ ] Définir précisément les colonnes des nouvelles tables.
@@ -158,6 +156,7 @@ Sous-tâches :
 - [ ] Mettre à jour `CURRENT_STATE.md`.
 - [ ] Mettre à jour `HANDOFF.md`.
 - [ ] Mettre à jour `CHANGELOG_AI.md`.
+- [x] Vérifier la relation réelle du portfolio : `portfolio_projects.cv_profile_id`.
 
 Hors périmètre de cette première phase :
 
@@ -197,6 +196,16 @@ Critères de validation :
 - Un utilisateur ne peut consulter que ses propres veilles.
 - Aucun secret ou fichier `.env` n’est ajouté à Git.
 - La documentation est mise à jour.
+
+Décision concernant le portfolio :
+
+- Le projet ne possède actuellement ni modèle `Portfolio.php` ni table `portfolios`.
+- Les projets sont enregistrés dans `portfolio_projects`.
+- Chaque projet appartient techniquement à un `CvProfile` avec `cv_profile_id`.
+- Aucun `portfolio_id` ne sera créé dans `job_watches`.
+- La veille pourra utiliser le CV, le portfolio ou les deux grâce à `source_mode`.
+- En mode portfolio, les projets seront récupérés à partir des profils CV appartenant à l’utilisateur.
+- La séparation complète du portfolio pourra faire l’objet d’une future tâche de refactorisation.
 
 Prochaine action exacte : Inventorier les modèles et migrations CV,
 portfolio, notifications et jobs avant de créer les nouvelles migrations.
