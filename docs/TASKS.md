@@ -74,7 +74,7 @@ Contexte : Ali veut travailler depuis 2 PC sur le même réseau Wifi, partageant
 
 ## TASK-015 — Fondations du système de veille d’emploi
 
-Statut : EN COURS
+Statut : À VALIDER
 
 Responsable : Ali / ChatGPT
 
