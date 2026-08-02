@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class EnsureUserHasRole
+{
+    public function handle(
+        Request $request,
+        Closure $next,
+        string $role
+    ): Response {
+        abort_unless(
+            $request->user()
+            && $request->user()->hasRole($role),
+            403,
+            'Vous n’êtes pas autorisé à accéder à cette page.'
+        );
+
+        return $next($request);
+    }
+}

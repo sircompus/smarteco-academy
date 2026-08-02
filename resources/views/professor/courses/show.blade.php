@@ -1,0 +1,214 @@
+@extends('layouts.professor')
+
+@section('title', $course->title)
+@section('page-title', $course->title)
+
+@section('content')
+    @if (session('success'))
+        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <section class="rounded-2xl bg-white p-6 shadow-sm">
+        <p class="text-xs font-medium uppercase tracking-wide text-gray-400">
+            {{ $course->subject?->semester?->program?->level?->name }}
+            — {{ $course->subject?->name }}
+        </p>
+
+        <h2 class="mt-1 text-xl font-bold">{{ $course->title }}</h2>
+
+        <span class="mt-2 inline-block rounded-full px-3 py-1 text-xs font-semibold {{ $course->status === 'published' ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500' }}">
+            {{ $course->status === 'published' ? 'Publié' : 'Brouillon' }}
+        </span>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <h3 class="font-bold">
+            Étudiants inscrits ({{ $students->count() }})
+        </h3>
+
+        <div class="mt-4 space-y-2">
+            @forelse ($students as $student)
+                <div class="flex items-center justify-between rounded-xl border border-gray-100 p-3 text-sm">
+                    <span class="font-medium">{{ $student->name }}</span>
+                    <span class="text-gray-400">{{ $student->email }}</span>
+                </div>
+            @empty
+                <p class="text-sm text-gray-400">Aucun étudiant inscrit pour le moment sur ce module.</p>
+            @endforelse
+        </div>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <h3 class="font-bold">Ajouter une section (optionnel)</h3>
+
+        <form method="POST" action="{{ route('professor.courses.sections.store', $course) }}" class="mt-4 flex flex-wrap gap-3">
+            @csrf
+            <input name="title" placeholder="Titre de la section" class="flex-1 min-w-[200px] rounded-lg border-gray-300" required>
+            <button class="rounded-lg bg-gray-800 px-4 py-2 text-sm font-semibold text-white">
+                Ajouter la section
+            </button>
+        </form>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <h3 class="font-bold">Ajouter une leçon</h3>
+
+        <form method="POST" action="{{ route('professor.courses.lessons.store', $course) }}" class="mt-4 space-y-4">
+            @csrf
+
+            <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                    <label class="text-sm font-medium">Titre de la leçon</label>
+                    <input name="title" class="mt-1 block w-full rounded-lg border-gray-300" required>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">Section (optionnel)</label>
+                    <select name="course_section_id" class="mt-1 block w-full rounded-lg border-gray-300">
+                        <option value="">Aucune (leçon libre)</option>
+                        @foreach ($course->sections as $section)
+                            <option value="{{ $section->id }}">{{ $section->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm font-medium">Contenu texte (optionnel)</label>
+                <textarea name="content" rows="4" class="mt-1 block w-full rounded-lg border-gray-300"></textarea>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-3">
+                <div>
+                    <label class="text-sm font-medium">Lien vidéo (optionnel)</label>
+                    <input name="video_url" type="url" placeholder="https://..." class="mt-1 block w-full rounded-lg border-gray-300">
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">Durée (minutes)</label>
+                    <input name="duration_minutes" type="number" min="0" class="mt-1 block w-full rounded-lg border-gray-300">
+                </div>
+
+                <div class="flex items-end gap-4 pb-2">
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox" name="is_preview" value="1" class="rounded border-gray-300">
+                        Aperçu gratuit
+                    </label>
+
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox" name="is_published" value="1" class="rounded border-gray-300" checked>
+                        Publiée
+                    </label>
+                </div>
+            </div>
+
+            <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
+                Ajouter la leçon
+            </button>
+        </form>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <h3 class="font-bold">Leçons existantes</h3>
+
+        @foreach ($course->sections as $section)
+            <div class="mt-5">
+                <h4 class="text-sm font-bold text-gray-700">{{ $section->title }}</h4>
+
+                <div class="mt-2 space-y-2">
+                    @forelse ($section->lessons as $lesson)
+                        @include('professor.courses._lesson-row', ['lesson' => $lesson])
+                    @empty
+                        <p class="text-sm text-gray-400">Aucune leçon dans cette section.</p>
+                    @endforelse
+                </div>
+            </div>
+        @endforeach
+
+        <div class="mt-5">
+            @if ($course->sections->isNotEmpty())
+                <h4 class="text-sm font-bold text-gray-700">Sans section</h4>
+            @endif
+
+            <div class="mt-2 space-y-2">
+                @forelse ($course->lessons as $lesson)
+                    @include('professor.courses._lesson-row', ['lesson' => $lesson])
+                @empty
+                    @if ($course->sections->isEmpty())
+                        <p class="text-sm text-gray-400">Aucune leçon pour ce cours.</p>
+                    @endif
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <h3 class="font-bold">Ressources (Cours, TD, Exercices, Résumés)</h3>
+
+        <form
+            method="POST"
+            action="{{ route('professor.courses.resources.store', $course) }}"
+            enctype="multipart/form-data"
+            class="mt-4 grid gap-3 md:grid-cols-2"
+        >
+            @csrf
+
+            <select name="type" class="rounded-lg border-gray-300" required>
+                <option value="">Type de document</option>
+                <option value="cours">Cours</option>
+                <option value="td">TD</option>
+                <option value="exercice">Exercices</option>
+                <option value="resume">Résumé</option>
+            </select>
+
+            <input name="title" placeholder="Titre du document" class="rounded-lg border-gray-300" required>
+
+            <input type="file" name="file" class="rounded-lg border-gray-300 md:col-span-2" required>
+
+            <input name="description" placeholder="Description (optionnel)" class="rounded-lg border-gray-300 md:col-span-2">
+
+            <button class="w-fit rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white md:col-span-2">
+                Mettre en ligne
+            </button>
+        </form>
+
+        <div class="mt-6 space-y-5">
+            @foreach (\App\Models\CourseResource::TYPES as $typeKey => $typeLabel)
+                <div>
+                    <h4 class="text-sm font-bold text-gray-700">{{ $typeLabel }}</h4>
+
+                    <div class="mt-2 space-y-2">
+                        @forelse ($resourcesByType->get($typeKey, collect()) as $resource)
+                            <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-100 p-3">
+                                <div>
+                                    <a href="{{ $resource->download_url }}" target="_blank" class="text-sm font-medium text-indigo-600 hover:underline">
+                                        {{ $resource->title }}
+                                    </a>
+                                    <p class="text-xs text-gray-400">
+                                        {{ $resource->original_name }} · {{ $resource->size_for_humans }}
+                                    </p>
+                                </div>
+
+                                <form
+                                    method="POST"
+                                    action="{{ route('professor.resources.destroy', $resource) }}"
+                                    onsubmit="return confirm('Supprimer ce fichier ?');"
+                                >
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        @empty
+                            <p class="text-xs text-gray-400">Aucun document.</p>
+                        @endforelse
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </section>
+@endsection
