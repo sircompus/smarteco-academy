@@ -60,3 +60,28 @@ Non encore développé :
 - Queue et Scheduler ;
 - notifications ;
 - résumé quotidien.
+
+## Veille d’emploi
+
+Les fondations MySQL et Eloquent du module sont opérationnelles.
+
+Disponible :
+
+- six tables MySQL ;
+- six modèles Eloquent ;
+- six factories ;
+- relations Eloquent ;
+- contraintes anti-doublons ;
+- Policy de propriété ;
+- tests MySQL ;
+- suppression en cascade.
+
+Non développé :
+
+- interface de gestion des veilles ;
+- importation réelle des offres ;
+- moteur de scoring ;
+- Laravel Queue ;
+- Laravel Scheduler ;
+- notifications ;
+- résumé quotidien.

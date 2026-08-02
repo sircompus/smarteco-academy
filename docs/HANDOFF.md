@@ -37,3 +37,24 @@ Aucun (documentation pure, pas de changement de code).
 2. Demander à Ali sa priorité du jour (ne pas supposer)
 3. Si Ali mentionne avoir utilisé ChatGPT entre-temps, lui demander un résumé de ce qui a été fait, et vérifier que `docs/CURRENT_STATE.md` reflète bien ces changements — sinon, le mettre à jour avant de continuer
 4. À la fin de la session, mettre à jour ce fichier (`HANDOFF.md`) et `docs/CURRENT_STATE.md` avant de clore
+
+
+### Progression — TASK-015
+
+Les fondations du module de veille d’emploi ont été créées sur
+`feature/job-watch-foundation`.
+
+Validation :
+
+- MySQL `laravel_testing` ;
+- 7 tests réussis ;
+- 21 assertions ;
+- migrations validées ;
+- relations validées ;
+- contraintes anti-doublons validées ;
+- Policy validée.
+
+Prochaine action exacte :
+
+Créer le CRUD des veilles d’emploi avec routes, contrôleur,
+Form Requests, vues et tests d’autorisation.

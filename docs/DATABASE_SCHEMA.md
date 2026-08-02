@@ -100,3 +100,51 @@ Relations :
 Contrainte :
 
 - couple `job_watch_id` + `job_offer_id` unique.
+
+## Module de veille d’emploi
+
+### `job_watches`
+
+Veilles créées par les utilisateurs.
+
+- `user_id` référence `users.id`.
+- `cv_profile_id` référence éventuellement `cv_profiles.id`.
+- `source_mode` accepte `cv`, `portfolio` ou `both`.
+- Le portfolio est actuellement récupéré via les projets rattachés aux profils CV.
+
+### `job_watch_keywords`
+
+Mots-clés associés aux veilles.
+
+- `job_watch_id` référence `job_watches.id`.
+- Le couple veille, mot-clé normalisé et type est unique.
+
+### `job_sources`
+
+Sources autorisées pour l’importation des offres.
+
+- Les clés API ne sont pas enregistrées dans cette table.
+- Les secrets restent dans les variables d’environnement.
+
+### `job_offers`
+
+Offres récupérées et normalisées.
+
+- `job_source_id` référence `job_sources.id`.
+- `fingerprint` est unique.
+- Le couple `job_source_id` et `external_id` est unique.
+
+### `job_offer_skills`
+
+Compétences demandées par les offres.
+
+- `job_offer_id` référence `job_offers.id`.
+- Une compétence normalisée ne peut apparaître qu’une fois par offre.
+
+### `job_matches`
+
+Correspondances entre les veilles et les offres.
+
+- `job_watch_id` référence `job_watches.id`.
+- `job_offer_id` référence `job_offers.id`.
+- Le couple veille et offre est unique.

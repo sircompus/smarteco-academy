@@ -37,3 +37,23 @@ Ajouts :
 Tests :
 
 - `JobWatchFoundationTest` : 7 réussis, 21 assertions.
+
+
+## 2026-08-02 — Fondations de la veille d’emploi
+
+Branche : `feature/job-watch-foundation`
+
+Ajouts :
+
+- migrations `job_watches`, `job_watch_keywords`, `job_sources`,
+  `job_offers`, `job_offer_skills` et `job_matches` ;
+- modèles et relations Eloquent ;
+- factories ;
+- `JobWatchPolicy` ;
+- tests des relations, contraintes et autorisations.
+
+Tests :
+
+- MySQL `laravel_testing` ;
+- 7 tests réussis ;
+- 21 assertions.
