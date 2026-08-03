@@ -1,105 +1,41 @@
-# Prompt maître SmartEco Academy
+# MASTER_PROMPT.md
 
-Tu travailles sur le projet **SmartEco Academy** :
+Copie-colle ce texte tel quel au tout début de toute nouvelle session (Claude ou ChatGPT) pour reprendre le projet SmartEco Academy.
 
-https://github.com/sircompus/smarteco-academy
+---
 
-Avant toute modification, lis obligatoirement :
+Tu reprends le développement du projet **SmartEco Academy**.
 
-1. `README.md`
-2. `AGENTS.md`
-3. `CLAUDE.md`
-4. `docs/PROJECT_CONTEXT.md`
-5. `docs/ARCHITECTURE.md`
-6. `docs/DECISIONS.md`
-7. `docs/TASKS.md`
-8. `docs/CURRENT_STATE.md`
-9. `docs/HANDOFF.md`
-10. `docs/DATABASE_SCHEMA.md`
+Dépôt GitHub (source unique de vérité) :
+https://github.com/sircompus/smarteco-academy.git
+Branche de travail : `develop` (ne jamais utiliser `main`)
 
-## Règles obligatoires
+**Contrainte technique importante** : tu n'as pas d'accès direct pour pousser sur ce dépôt. Le porteur du projet (Ali) installe lui-même chaque fichier que tu lui fournis, puis fait `git commit` / `git push` de son côté. Ne prétends jamais avoir poussé quelque chose toi-même.
 
-- GitHub est la source unique de vérité.
-- Ne te base pas sur la mémoire d’une ancienne conversation.
-- Utilise Laravel et MySQL.
-- Ne pas introduire FastAPI, PostgreSQL ou Celery.
-- Utiliser Eloquent, Laravel Queue et Laravel Scheduler.
-- Ne jamais modifier directement la branche `main`.
-- Travailler uniquement sur une branche dédiée issue de `develop`.
-- Ne modifier que les fichiers autorisés dans `docs/TASKS.md`.
-- Ne pas supprimer une fonctionnalité existante.
-- Ne pas changer l’architecture sans mettre à jour `docs/DECISIONS.md`.
-- Ajouter ou adapter les tests.
-- Ne jamais mettre de secrets dans GitHub.
-- Ne jamais modifier `.env` dans un commit.
-- Vérifier l’état Git avant et après chaque tâche.
-- Mettre à jour `docs/CURRENT_STATE.md` et `docs/HANDOFF.md` avant de terminer.
-- Ajouter les changements réalisés par une IA dans `docs/CHANGELOG_AI.md`.
-- Ne jamais déclarer une tâche terminée sans avoir exécuté les vérifications nécessaires.
+Avant toute action, lis dans cet ordre :
+1. `AGENTS.md` — règles obligatoires pour tout assistant IA sur ce projet
+2. `CLAUDE.md` (si tu es Claude) — contexte et erreurs déjà rencontrées à éviter
+3. `docs/PROJECT_CONTEXT.md` — ce qu'est le projet
+4. `docs/ARCHITECTURE.md` — comment il est structuré techniquement
+5. `docs/DATABASE_SCHEMA.md` — schéma de base de données
+6. `docs/DECISIONS.md` — décisions déjà tranchées, ne pas les reproposer
+7. `docs/CURRENT_STATE.md` — état exact actuel
+8. `docs/HANDOFF.md` — ce que le dernier assistant a fait, prochaine action recommandée
+9. `docs/TASKS.md` — liste des tâches et leurs statuts
 
-## Procédure de démarrage obligatoire
+Une fois ces fichiers lus, indique-moi clairement, avant de coder quoi que ce soit :
+1. La tâche active recommandée (d'après `HANDOFF.md`)
+2. Son statut
+3. Ce qui a déjà été fait
+4. Ce qu'il reste à faire
+5. Ta première question de clarification si besoin, ou ta proposition de première action
 
-Avant de commencer le travail, exécuter :
+Ne modifie aucun fichier avant cette étape de vérification. N'invente jamais qu'une fonctionnalité existe ou est terminée si ce n'est pas confirmé dans `docs/CURRENT_STATE.md` ou dans le code lui-même.
 
-```bash
-git fetch origin
-git switch develop
-git pull --ff-only origin develop
-git status
-```
+---
 
-Ensuite :
+## Note pour Ali : comment utiliser ce fichier
 
-1. Lire tous les fichiers de référence.
-2. Identifier la tâche active dans `docs/TASKS.md`.
-3. Vérifier les fichiers autorisés.
-4. Créer une branche dédiée.
-5. Réaliser uniquement les modifications demandées.
-6. Tester les changements.
-7. Mettre à jour la documentation de suivi.
-8. Présenter le rapport final obligatoire.
-
-## Création d’une branche de travail
-
-Utiliser un nom explicite, par exemple :
-
-```bash
-git switch -c feature/nom-de-la-fonctionnalite
-```
-
-ou :
-
-```bash
-git switch -c fix/nom-du-correctif
-```
-
-Ne jamais travailler directement sur `main`.
-
-## Format obligatoire du rapport final
-
-```text
-TÂCHE :
-BRANCHE :
-FICHIERS CONSULTÉS :
-FICHIERS MODIFIÉS :
-MODIFICATIONS :
-TESTS :
-RÉSULTATS DES TESTS :
-RISQUES :
-TRAVAIL RESTANT :
-PROCHAINE ACTION :
-COMMIT RECOMMANDÉ :
-```
-
-## Transmission vers une nouvelle conversation
-
-Lorsqu’un compte ou une conversation devient indisponible :
-
-1. Vérifier que les modifications utiles sont enregistrées dans Git.
-2. Mettre à jour `docs/CURRENT_STATE.md`.
-3. Mettre à jour `docs/HANDOFF.md`.
-4. Mettre à jour `docs/TASKS.md`.
-5. Copier le contenu de ce fichier dans la nouvelle conversation.
-6. Demander au nouvel assistant de lire les fichiers du dépôt avant toute modification.
-
-La nouvelle conversation ne doit jamais continuer uniquement à partir d’un résumé de mémoire. Elle doit reprendre depuis l’état réel du dépôt GitHub et la documentation présente dans le projet.
+- Colle le bloc ci-dessus (entre les `---`) en tout début de conversation avec Claude ou ChatGPT
+- Si tu as travaillé avec l'autre assistant entre-temps, dis-le explicitement dans ton premier message ("j'ai avancé avec ChatGPT depuis la dernière fois, voici ce qu'on a fait : ...") pour que l'assistant actuel mette à jour son contexte
+- En fin de session, demande à l'assistant de mettre à jour `docs/CURRENT_STATE.md`, `docs/HANDOFF.md` et `docs/CHANGELOG_AI.md` avant de terminer, puis installe/committe/pousse ces fichiers comme n'importe quel autre livrable

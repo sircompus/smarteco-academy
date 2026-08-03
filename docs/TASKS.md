@@ -1,462 +1,319 @@
-# TASKS — Tableau de travail SmartEco Academy
-
-> Ce fichier est le tableau de travail partagé entre les développeurs, ChatGPT et Claude.
-> Toute tâche doit être enregistrée ici avant de modifier le code.
-
-## 1. Règles d’utilisation
-
-1. Lire ce fichier avant de commencer une nouvelle tâche.
-2. Ne travailler que sur une tâche portant le statut `PRÊTE` ou `EN COURS`.
-3. Une seule personne ou un seul assistant IA doit être responsable d’une tâche à la fois.
-4. Indiquer précisément les fichiers autorisés avant toute modification.
-5. Ne pas modifier un fichier qui ne figure pas dans la liste des fichiers autorisés.
-6. Ne jamais travailler directement sur la branche `main`.
-7. Créer une branche dédiée à partir de `develop`.
-8. Ajouter ou adapter les tests nécessaires.
-9. Mettre à jour cette tâche après chaque session.
-10. Mettre à jour `CURRENT_STATE.md`, `HANDOFF.md` et `CHANGELOG_AI.md` avant de terminer.
-11. Une tâche ne passe à `TERMINÉE` qu’après validation des tests et vérification du résultat.
-12. Une tâche bloquée doit contenir la cause du blocage et la prochaine action concrète.
-
----
-
-## 2. Statuts autorisés
-
-| Statut | Signification |
-|---|---|
-| `À ÉTUDIER` | Besoin identifié, mais pas encore analysé |
-| `PRÊTE` | Tâche suffisamment définie pour être commencée |
-| `EN COURS` | Travail actuellement en cours |
-| `BLOQUÉE` | Impossible d’avancer sans correction, information ou décision |
-| `À TESTER` | Développement terminé, vérifications encore nécessaires |
-| `À VALIDER` | Tests réussis, validation finale requise |
-| `TERMINÉE` | Travail testé, validé, documenté et intégré |
-| `ANNULÉE` | Tâche abandonnée avec justification |
-
----
-
-## 3. Priorités autorisées
-
-| Priorité | Signification |
-|---|---|
-| `P0` | Urgence critique : sécurité, perte de données ou application indisponible |
-| `P1` | Priorité élevée : fonctionnalité essentielle ou blocage majeur |
-| `P2` | Priorité normale : développement planifié |
-| `P3` | Amélioration non urgente |
-| `P4` | Idée ou évolution future |
-
----
-
-## 4. Tableau synthétique
-
-| ID | Tâche | Priorité | Statut | Responsable | Branche | Dépendance |
-|---|---|---:|---|---|---|---|
-| DOC-001 | Mettre en place la documentation de coordination IA | P1 | EN COURS | À compléter | `docs/coordination-ia` | Aucune |
-| DOC-002 | Compléter le contexte réel du projet | P1 | PRÊTE | Non attribué | À créer | DOC-001 |
-| DOC-003 | Documenter l’architecture existante | P1 | À ÉTUDIER | Non attribué | À créer | DOC-002 |
-| DB-001 | Documenter le schéma MySQL actuel | P1 | À ÉTUDIER | Non attribué | À créer | DOC-002 |
-| APP-001 | À compléter avec la prochaine tâche fonctionnelle | P2 | À ÉTUDIER | Non attribué | À créer | À compléter |
-
-> Ce tableau sert uniquement de résumé. Les détails complets de chaque tâche se trouvent dans les sections suivantes.
-
----
-
-# 5. Tâches actives
-
-## DOC-001 — Mettre en place la documentation de coordination IA
-
-### Informations générales
-
-- **Priorité :** P1
-- **Statut :** EN COURS
-- **Responsable :** À compléter
-- **Branche :** `docs/coordination-ia`
-- **Date de création :** 2026-08-02
-- **Dernière mise à jour :** 2026-08-02
-- **Dépendances :** Aucune
-
-### Objectif
-
-Créer la structure documentaire permettant à plusieurs comptes ChatGPT, à Claude et aux développeurs de travailler sur le même dépôt sans divergence.
-
-### Résultat attendu
-
-Les fichiers suivants existent, contiennent des informations cohérentes et sont disponibles dans la branche `develop` :
-
-```text
-AGENTS.md
-CLAUDE.md
-docs/PROJECT_CONTEXT.md
-docs/ARCHITECTURE.md
-docs/DECISIONS.md
-docs/TASKS.md
-docs/CURRENT_STATE.md
-docs/HANDOFF.md
-docs/CHANGELOG_AI.md
-docs/DATABASE_SCHEMA.md
-prompts/MASTER_PROMPT.md
-```
-
-### Fichiers autorisés
-
-```text
-AGENTS.md
-CLAUDE.md
-docs/PROJECT_CONTEXT.md
-docs/ARCHITECTURE.md
-docs/DECISIONS.md
-docs/TASKS.md
-docs/CURRENT_STATE.md
-docs/HANDOFF.md
-docs/CHANGELOG_AI.md
-docs/DATABASE_SCHEMA.md
-prompts/MASTER_PROMPT.md
-README.md
-```
-
-### Fichiers interdits
-
-Tous les fichiers applicatifs, les migrations, les contrôleurs, les modèles, les vues, les routes et les fichiers de configuration qui ne figurent pas dans la liste précédente.
-
-### Sous-tâches
-
-- [ ] Créer `AGENTS.md`.
-- [ ] Créer `CLAUDE.md`.
-- [ ] Créer `docs/PROJECT_CONTEXT.md`.
-- [ ] Créer `docs/ARCHITECTURE.md`.
-- [ ] Créer `docs/DECISIONS.md`.
-- [x] Créer `docs/TASKS.md`.
-- [ ] Créer `docs/CURRENT_STATE.md`.
-- [x] Créer `docs/HANDOFF.md`.
-- [ ] Créer `docs/CHANGELOG_AI.md`.
-- [ ] Créer `docs/DATABASE_SCHEMA.md`.
-- [x] Créer `prompts/MASTER_PROMPT.md`.
-- [ ] Vérifier la cohérence entre tous les documents.
-- [ ] Ajouter une section dans `README.md` expliquant la procédure de reprise.
-- [ ] Envoyer les fichiers vers `origin/develop`.
-
-### Tests et vérifications
-
-```powershell
-git status
-git branch --show-current
-git ls-tree -r --name-only HEAD
-git diff --check
-```
-
-### Critères d’acceptation
-
-- [ ] Les 11 fichiers demandés sont présents.
-- [ ] Les chemins et les noms respectent exactement la structure prévue.
-- [ ] Aucun fichier applicatif n’a été modifié.
-- [ ] Aucun secret n’est présent dans les fichiers.
-- [ ] Les documents ne se contredisent pas.
-- [ ] `CURRENT_STATE.md` reflète l’état réel du dépôt.
-- [ ] `HANDOFF.md` indique la prochaine action exacte.
-- [ ] Le commit est disponible sur `origin/develop`.
-
-### Notes de progression
-
-- `HANDOFF.md` a été créé.
-- `MASTER_PROMPT.md` a été créé.
-- `TASKS.md` a été créé.
-- Les autres documents doivent encore être rédigés et adaptés à l’état réel du projet.
-
-### Blocages
-
-Aucun blocage signalé actuellement.
-
-### Prochaine action exacte
-
-Créer et compléter `docs/PROJECT_CONTEXT.md` à partir de l’état réel du dépôt.
-
----
-
-## DOC-002 — Compléter le contexte réel du projet
-
-### Informations générales
-
-- **Priorité :** P1
-- **Statut :** PRÊTE
-- **Responsable :** Non attribué
-- **Branche recommandée :** `docs/project-context`
-- **Dépendance :** DOC-001
-
-### Objectif
-
-Décrire clairement le but de SmartEco Academy, ses utilisateurs, ses fonctionnalités, son environnement technique et ses contraintes.
-
-### Fichiers autorisés
-
-```text
-README.md
-composer.json
-package.json
-routes/
-app/
-resources/
-config/
-database/
-docs/PROJECT_CONTEXT.md
-docs/CURRENT_STATE.md
-docs/HANDOFF.md
-docs/CHANGELOG_AI.md
-docs/TASKS.md
-```
-
-> Les fichiers applicatifs peuvent être consultés, mais seuls les fichiers de documentation peuvent être modifiés dans cette tâche.
-
-### Sous-tâches
-
-- [ ] Lire le `README.md`.
-- [ ] Identifier la version de Laravel.
-- [ ] Identifier les principaux modules fonctionnels.
-- [ ] Identifier les rôles utilisateurs.
-- [ ] Identifier les dépendances importantes.
-- [ ] Identifier les services externes.
-- [ ] Identifier les fonctionnalités terminées et incomplètes.
-- [ ] Rédiger `docs/PROJECT_CONTEXT.md`.
-- [ ] Mettre à jour `docs/CURRENT_STATE.md`.
-- [ ] Mettre à jour `docs/HANDOFF.md`.
-- [ ] Mettre à jour `docs/CHANGELOG_AI.md`.
-
-### Critères d’acceptation
-
-- [ ] Le contenu repose sur le code réel du dépôt.
-- [ ] Aucune fonctionnalité inexistante n’est présentée comme terminée.
-- [ ] Les hypothèses sont clairement signalées.
-- [ ] Les informations techniques sont vérifiables dans le dépôt.
-
----
-
-# 6. Modèle pour créer une nouvelle tâche
-
-Copier ce bloc à la fin de la section **Tâches actives** :
-
-```markdown
-## [ID] — [Titre précis de la tâche]
-
-### Informations générales
-
-- **Priorité :** P0 / P1 / P2 / P3 / P4
-- **Statut :** À ÉTUDIER / PRÊTE / EN COURS / BLOQUÉE / À TESTER / À VALIDER
-- **Responsable :** Nom, ChatGPT, Claude ou développeur
-- **Branche :** `feature/...`, `fix/...`, `docs/...`
-- **Date de création :** AAAA-MM-JJ
-- **Dernière mise à jour :** AAAA-MM-JJ
-- **Dépendances :** Aucune ou identifiants des tâches
-
-### Contexte
-
-Décrire pourquoi cette tâche existe.
-
-### Objectif
-
-Décrire le résultat attendu en une ou deux phrases.
-
-### Hors périmètre
-
-- Élément qui ne doit pas être traité.
-- Fonctionnalité qui ne doit pas être modifiée.
-
-### Fichiers autorisés
-
-```text
-chemin/du/fichier
-chemin/du/dossier/
-```
-
-### Fichiers interdits
-
-```text
-chemin/du/fichier
-```
-
-### Sous-tâches
-
-- [ ] Première action.
-- [ ] Deuxième action.
-- [ ] Ajouter ou adapter les tests.
-- [ ] Mettre à jour la documentation.
+# TASKS.md
+
+Format par tâche : identifiant, statut (TERMINÉ / EN COURS / PRÉVU), objectif, fichiers concernés.
+
+## TASK-000 — Système de coordination multi-assistants
+Statut : TERMINÉ
+Responsable : Claude
+Objectif : Créer AGENTS.md, CLAUDE.md, docs/*, prompts/MASTER_PROMPT.md pour permettre à Claude et ChatGPT de se relayer sans perdre le contexte.
+Fichiers autorisés : AGENTS.md, CLAUDE.md, docs/*, prompts/*
+Critères de validation : aucun fichier métier modifié ; contenu reflète l'état réel du dépôt (pas d'invention) ; Ali peut installer et pousser sans conflit.
+
+## TASK-001 — Module Inscription/Admission
+Statut : TERMINÉ
+Objectif : Dossiers d'admission étudiant + validation admin.
+Fichiers : `routes/registration.php`, `app/Http/Controllers/{Admin,Student}/RegistrationController.php`, `resources/views/{admin,student}/registrations/*`
+
+## TASK-002 — Module Centre (structure académique + packs + paiements)
+Statut : TERMINÉ
+Objectif : Niveaux/filières/semestres/modules, packs payants (semestre ou module, facturation unique ou mensuelle avec pause), paiements, relances email, reçus imprimables A5, état financier A4.
+Fichiers : `routes/centre.php`, `app/Http/Controllers/Admin/{Centre,Curriculum,Pack,PackEnrollment,PaymentReport}Controller.php`, `app/Models/{AcademicLevel,AcademicProgram,Semester,Subject,Pack,PackEnrollment,PackPayment,PackPaymentReminder}.php`
+
+## TASK-003 — Bibliothèque de ressources académiques
+Statut : TERMINÉ
+Objectif : Réservoir de documents (Cours/TD/Examens/Résumés) classé par Niveau→Filière→Semestre→Module, indépendant du système Cours, prof en texte libre, accès étudiant strict (pack semestre obligatoire).
+Fichiers : `app/Models/AcademicResource.php`, `app/Http/Controllers/Admin/AcademicResourceController.php`, `app/Http/Controllers/Student/LibraryController.php`, `resources/views/{admin,student}/.../library/*`
+
+## TASK-004 — Rôles Professeur & Superviseur
+Statut : TERMINÉ (mais fragile — voir HANDOFF.md)
+Objectif : Interfaces dédiées par rôle, permissions différenciées.
+Fichiers : `routes/professor.php`, `resources/views/layouts/{professor,supervisor}.blade.php`
+⚠️ Le fichier `layouts/professor.blade.php` a été découvert manquant en base (jamais committé) lors d'une session ultérieure et recréé — vérifier qu'il est bien présent avant de construire dessus.
+
+## TASK-005 — Cours & leçons (upload/téléchargement)
+Statut : TERMINÉ mais non exploité en usage réel
+Objectif : Upload de contenu de cours par le professeur propriétaire, téléchargement étudiant selon accès.
+Fichiers : `app/Models/{Course,CourseSection,Lesson,CourseResource}.php`, `app/Http/Controllers/Professor/CourseController.php`
+
+## TASK-006 — Module Formations courtes (Training)
+Statut : TERMINÉ (paiements ajoutés sur une base déjà codée)
+Fichiers : `routes/training.php`, `app/Models/Training*.php`
+
+## TASK-007 — Module CV / ATS / Portfolio
+Statut : TERMINÉ (première version complète, itérée en profondeur)
+Objectif : CV builder, score ATS, modèles imprimables (Classique Times New Roman / Moderne coloré), portfolio public partageable, édition déléguée par l'admin, catalogue de compétences par catégorie.
+Fichiers : `routes/cv.php`, `app/Models/Cv*.php`, `app/Models/PortfolioProject.php`, `app/Models/SkillSuggestion.php`, `app/Services/{AtsScoreService,CvSummaryGeneratorService}.php`, `app/Http/Controllers/{Student,Admin}/Cv*.php`, `resources/views/{student/cv,admin/cv,portfolio}/*`
+
+## TASK-008 — Photo de profil générale (compte)
+Statut : TERMINÉ
+Objectif : Upload d'avatar sur `/profile` (distinct du CV), affiché dans les 4 menus latéraux.
+Fichiers : `app/Http/Controllers/ProfileController.php`, `resources/views/profile/partials/update-avatar-form.blade.php`
+
+## TASK-009 — Nettoyage navigation (liens morts)
+Statut : TERMINÉ
+Objectif : Tableau de bord admin et étudiant avaient des liens `href="#"` ou des statistiques figées en dur — corrigés.
+Fichiers : `resources/views/admin/dashboard.blade.php`, `resources/views/student/dashboard.blade.php`, `routes/web.php`
+
+## TASK-010 — CV réel d'Ali Bahtit (données de démonstration/réelles)
+Statut : TERMINÉ
+Objectif : Seeder remplissant le profil CV réel d'Ali à partir de son CV docx.
+Fichiers : `database/seeders/AliBahtitCvSeeder.php`
+
+## TASK-011 — Module Community / Divertissement
+Statut : PRÉVU (non commencé)
+
+## TASK-012 — Module Projets / Services académiques
+Statut : PRÉVU (non commencé)
+
+## TASK-013 — Module Examens
+Statut : PRÉVU (non commencé)
+
+## TASK-014 — Synchronisation multi-PC (2 postes de travail)
+Statut : REPORTÉ à la demande d'Ali ("on garde ça pour plus tard")
+Contexte : Ali veut travailler depuis 2 PC sur le même réseau Wifi, partageant la même base MySQL. Plan déjà donné (bind-address MySQL, utilisateur réseau, .env pointant vers l'IP du PC serveur) mais non mis en œuvre.
+
+## TASK-015 — Fondations du système de veille d’emploi
+
+Statut : À VALIDER
+
+Responsable : Ali / ChatGPT
+
+Priorité : P1
+
+Branche : `feature/job-watch-foundation`
+
+Objectif : Créer les fondations MySQL et Eloquent du système de
+recommandation d’offres d’emploi selon le CV, les compétences,
+les expériences et le portfolio de l’utilisateur.
+
+Contexte : Le module CV / ATS / Portfolio existe déjà dans TASK-007.
+Cette tâche doit réutiliser les modèles et les données existants sans
+recréer les tables CV, portfolio, utilisateurs ou notifications.
+
+Fichiers autorisés :
+
+- `app/Models/JobWatch.php`
+- `app/Models/JobWatchKeyword.php`
+- `app/Models/JobSource.php`
+- `app/Models/JobOffer.php`
+- `app/Models/JobOfferSkill.php`
+- `app/Models/JobMatch.php`
+- `app/Policies/JobWatchPolicy.php`
+- `app/Models/User.php`
+- `app/Models/CvProfile.php`
+- `database/migrations/*job_watch*`
+- `database/migrations/*job_source*`
+- `database/migrations/*job_offer*`
+- `database/migrations/*job_match*`
+- `database/factories/*`
+- `database/seeders/*Job*`
+- `tests/Feature/JobWatch/*`
+- `tests/Unit/JobWatch/*`
+- `docs/TASKS.md`
+- `docs/DATABASE_SCHEMA.md`
+- `docs/CURRENT_STATE.md`
+- `docs/HANDOFF.md`
+- `docs/CHANGELOG_AI.md`
+- `docs/DECISIONS.md`
+
+Tables à créer dans cette première phase :
+
+- `job_watches`
+- `job_watch_keywords`
+- `job_sources`
+- `job_offers`
+- `job_offer_skills`
+- `job_matches`
+
+Relations prévues :
+
+- Un utilisateur possède plusieurs veilles.
+- Une veille appartient à un utilisateur.
+- Une veille peut utiliser un profil CV.
+- Une veille peut fonctionner avec le CV, le portfolio ou les deux.
+- Les projets du portfolio sont récupérés à partir de leur relation existante.
+- Aucun `portfolio_id` ne sera créé tant qu’une table `portfolios` indépendante n’existe pas.
+
+Sous-tâches :
+
+- [X] Vérifier les modèles CV et portfolio existants.
+- [ ] Vérifier si `portfolio_projects` appartient à `users` ou à `cv_profiles`.
+- [X] Vérifier les migrations existantes.
+- [X] Vérifier la table Laravel `notifications`.
+- [X] Définir précisément les colonnes des nouvelles tables.
+- [ ] Mettre à jour `DATABASE_SCHEMA.md`.
+- [ ] Mettre à jour `DECISIONS.md`.
+- [X] Créer les migrations MySQL.
+- [X] Créer les modèles Eloquent.
+- [X] Ajouter les relations Eloquent.
+- [X] Ajouter les clés étrangères et les index.
+- [X] Ajouter les contraintes contre les doublons.
+- [X] Créer `JobWatchPolicy`.
+- [X] Ajouter les factories et données fictives.
+- [X] Tester les migrations et les rollbacks.
+- [X] Tester les relations Eloquent.
+- [X] Tester que chaque utilisateur accède uniquement à ses veilles.
 - [ ] Mettre à jour `CURRENT_STATE.md`.
 - [ ] Mettre à jour `HANDOFF.md`.
 - [ ] Mettre à jour `CHANGELOG_AI.md`.
+- [x] Vérifier la relation réelle du portfolio : `portfolio_projects.cv_profile_id`.
 
-### Tests obligatoires
+Hors périmètre de cette première phase :
 
-```bash
-commande de test
-```
+- API externe d’offres d’emploi ;
+- scraping ;
+- Laravel Scheduler ;
+- Laravel Queue ;
+- notifications par email ;
+- interface utilisateur ;
+- moteur d’intelligence artificielle ;
+- scoring avancé ;
+- récupération automatique des offres.
 
-### Critères d’acceptation
+Tests obligatoires :
 
-- [ ] Critère vérifiable 1.
-- [ ] Critère vérifiable 2.
-- [ ] Aucun test existant n’est cassé.
-- [ ] Aucun secret n’est ajouté au dépôt.
-- [ ] La documentation est mise à jour.
+- `php artisan migrate:status`
+- `php artisan migrate`
+- `php artisan migrate:rollback`
+- `php artisan test --filter=JobWatch`
+- `vendor\bin\pint --test`
+- `npm.cmd run build`
 
-### Risques
+État initial des tests avant cette tâche :
 
-- Risque identifié.
-- Mesure de protection.
+- 24 tests réussis ;
+- 1 test échoué ;
+- échec préexistant dans `RegistrationTest` ;
+- cet échec ne provient pas du module de veille.
 
-### Notes de progression
+Critères de validation :
 
-- AAAA-MM-JJ : travail réalisé.
+- Les six nouvelles tables sont créées dans MySQL.
+- Les migrations et rollbacks fonctionnent.
+- Aucune table existante n’est recréée.
+- Les relations Eloquent sont testées.
+- Les doublons d’offres sont bloqués par MySQL.
+- Un utilisateur ne peut consulter que ses propres veilles.
+- Aucun secret ou fichier `.env` n’est ajouté à Git.
+- La documentation est mise à jour.
 
-### Blocages
+Décision concernant le portfolio :
 
-Aucun, ou description précise du blocage.
+- Le projet ne possède actuellement ni modèle `Portfolio.php` ni table `portfolios`.
+- Les projets sont enregistrés dans `portfolio_projects`.
+- Chaque projet appartient techniquement à un `CvProfile` avec `cv_profile_id`.
+- Aucun `portfolio_id` ne sera créé dans `job_watches`.
+- La veille pourra utiliser le CV, le portfolio ou les deux grâce à `source_mode`.
+- En mode portfolio, les projets seront récupérés à partir des profils CV appartenant à l’utilisateur.
+- La séparation complète du portfolio pourra faire l’objet d’une future tâche de refactorisation.
 
-### Prochaine action exacte
+Résultats des tests :
 
-Décrire une seule action concrète permettant de reprendre immédiatement.
-```
+- Base de test : MySQL `laravel_testing`.
+- `JobWatchFoundationTest` : 7 tests réussis, 21 assertions.
+- Relations Eloquent : validées.
+- Contraintes anti-doublons : validées.
+- Policy propriétaire : validée.
+- Suppressions en cascade : validées.
 
----
+Prochaine action exacte : Inventorier les modèles et migrations CV,
+portfolio, notifications et jobs avant de créer les nouvelles migrations.
 
-# 7. Procédure de prise en charge d’une tâche
 
-## Avant de commencer
+## TASK-016 — Gestion des veilles d’emploi
 
-1. Mettre à jour le dépôt :
+Statut : EN COURS
 
-```powershell
-git fetch origin
-git switch develop
-git pull --ff-only origin develop
-git status
-```
+Responsable : Ali / ChatGPT
 
-2. Choisir une tâche ayant le statut `PRÊTE`.
-3. Ajouter le responsable.
-4. Passer le statut à `EN COURS`.
-5. Créer une branche dédiée :
+Priorité : P1
 
-```powershell
-git switch -c feature/nom-de-la-tache
-```
+Branche : `feature/job-watch-crud`
 
-Pour une correction :
+Dépendance : TASK-015
 
-```powershell
-git switch -c fix/nom-du-correctif
-```
+Objectif : Permettre à un utilisateur authentifié de créer, consulter,
+modifier, activer, suspendre et supprimer ses propres veilles d’emploi.
 
-Pour une documentation :
+Fonctionnalités prévues :
 
-```powershell
-git switch -c docs/nom-du-document
-```
+- afficher la liste des veilles de l’utilisateur ;
+- créer une veille ;
+- sélectionner un profil CV ;
+- choisir le mode `cv`, `portfolio` ou `both` ;
+- renseigner les intitulés recherchés ;
+- renseigner les localisations ;
+- sélectionner les types de contrat ;
+- sélectionner le mode de travail ;
+- définir le score minimum ;
+- définir la fréquence de recherche ;
+- ajouter des mots-clés inclus ou exclus ;
+- afficher le détail d’une veille ;
+- modifier une veille ;
+- suspendre ou réactiver une veille ;
+- supprimer une veille.
 
-6. Enregistrer la prise en charge :
+Fichiers autorisés :
 
-```powershell
-git add docs/TASKS.md
-git commit -m "docs: prise en charge de la tâche ID"
-git push -u origin nom-de-la-branche
-```
+- `routes/job-watch.php`
+- `bootstrap/app.php`
+- `app/Http/Controllers/Student/JobWatchController.php`
+- `app/Http/Requests/JobWatch/StoreJobWatchRequest.php`
+- `app/Http/Requests/JobWatch/UpdateJobWatchRequest.php`
+- `app/Models/JobWatch.php`
+- `app/Models/JobWatchKeyword.php`
+- `app/Policies/JobWatchPolicy.php`
+- `resources/views/student/job-watches/*`
+- `resources/views/layouts/student.blade.php`
+- `resources/views/student/dashboard.blade.php`
+- `tests/Feature/JobWatch/JobWatchCrudTest.php`
+- `docs/TASKS.md`
+- `docs/CURRENT_STATE.md`
+- `docs/HANDOFF.md`
+- `docs/CHANGELOG_AI.md`
 
----
+Sous-tâches :
 
-# 8. Procédure pendant le travail
+- [ ] Examiner le système actuel de chargement des routes.
+- [ ] Examiner le layout étudiant.
+- [ ] Créer les routes protégées par authentification.
+- [ ] Créer `StoreJobWatchRequest`.
+- [ ] Créer `UpdateJobWatchRequest`.
+- [ ] Créer `JobWatchController`.
+- [ ] Utiliser `JobWatchPolicy` dans chaque action.
+- [ ] Créer la liste des veilles.
+- [ ] Créer le formulaire d’ajout.
+- [ ] Créer la page de détail.
+- [ ] Créer le formulaire de modification.
+- [ ] Ajouter la suspension et la réactivation.
+- [ ] Ajouter la suppression.
+- [ ] Gérer les mots-clés dans une transaction MySQL.
+- [ ] Ajouter un lien dans la navigation étudiante.
+- [ ] Tester l’accès limité au propriétaire.
+- [ ] Tester la validation des formulaires.
+- [ ] Tester les opérations CRUD.
+- [ ] Mettre à jour la documentation.
 
-Après chaque étape importante :
+Hors périmètre :
 
-1. Cocher les sous-tâches terminées.
-2. Ajouter une note datée dans **Notes de progression**.
-3. Signaler immédiatement tout blocage.
-4. Indiquer les nouveaux risques.
-5. Ne pas élargir le périmètre sans créer une nouvelle tâche.
-6. Ne pas ajouter un fichier à la liste des fichiers autorisés sans justification.
+- récupération externe des offres ;
+- scraping ;
+- moteur de scoring ;
+- notifications ;
+- Laravel Queue ;
+- Laravel Scheduler ;
+- intelligence artificielle.
 
-Exemple :
+Critères de validation :
 
-```markdown
-### Notes de progression
+- un utilisateur peut gérer ses propres veilles ;
+- un utilisateur ne peut pas consulter la veille d’un autre ;
+- les données invalides sont rejetées ;
+- les profils CV proposés appartiennent à l’utilisateur ;
+- les mots-clés sont enregistrés sans doublons ;
+- les formulaires Blade utilisent la protection CSRF ;
+- les tests MySQL réussissent ;
+- aucun secret n’est ajouté au dépôt.
 
-- 2026-08-02 : analyse des routes terminée.
-- 2026-08-02 : modèle `Course` vérifié.
-- 2026-08-02 : blocage identifié dans la migration `courses`.
-```
-
----
-
-# 9. Procédure lorsqu’une tâche est bloquée
-
-Modifier immédiatement :
-
-```markdown
-- **Statut :** BLOQUÉE
-```
-
-Puis compléter :
-
-```markdown
-### Blocages
-
-- Erreur exacte :
-- Fichier concerné :
-- Commande permettant de reproduire :
-- Cause probable :
-- Information ou décision nécessaire :
-- Prochaine action possible :
-```
-
-Ne jamais masquer une erreur et ne jamais déclarer la tâche terminée pour contourner un blocage.
-
----
-
-# 10. Procédure de clôture d’une tâche
-
-Avant de passer la tâche à `TERMINÉE` :
-
-1. Exécuter tous les tests obligatoires.
-2. Vérifier le résultat manuellement.
-3. Vérifier que seuls les fichiers autorisés ont été modifiés.
-4. Mettre à jour les cases à cocher.
-5. Mettre à jour `CURRENT_STATE.md`.
-6. Mettre à jour `HANDOFF.md`.
-7. Mettre à jour `CHANGELOG_AI.md`.
-8. Ajouter les résultats des tests.
-9. Passer d’abord le statut à `À VALIDER`.
-10. Après validation finale, passer le statut à `TERMINÉE`.
-
-Commandes de contrôle :
-
-```powershell
-git status
-git diff --name-only origin/develop...HEAD
-git diff --check
-git log --oneline -5
-```
-
-Exemple de clôture :
-
-```markdown
-- **Statut :** TERMINÉE
-
-### Résultats des tests
-
-- `php artisan test` : réussi.
-- `npm run build` : réussi.
-- Vérification manuelle : réussie.
-- Régression connue : aucune.
-```
-
----
-
-# 11. Tâches terminées
-
-Déplacer ici uniquement les tâches réellement validées.
-
-Aucune tâche terminée pour le moment.
-
----
-
-# 12. Tâches annulées
-
-Déplacer ici les tâches abandonnées en indiquant obligatoirement la raison.
-
-Aucune tâche annulée pour le moment.
+Prochaine action exacte : examiner le chargement des routes et le layout
+étudiant avant de générer le contrôleur et les vues.

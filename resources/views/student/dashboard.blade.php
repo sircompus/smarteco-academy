@@ -28,11 +28,11 @@
 
         <div class="rounded-2xl bg-white p-6 shadow-sm">
             <p class="text-sm font-medium text-gray-500">
-                Inscriptions
+                Inscriptions (packs)
             </p>
 
             <p class="mt-3 text-3xl font-bold text-gray-900">
-                0
+                {{ $packEnrollmentsCount }}
             </p>
         </div>
 
@@ -42,7 +42,7 @@
             </p>
 
             <p class="mt-3 text-3xl font-bold text-gray-900">
-                0
+                {{ $trainingEnrollmentsCount }}
             </p>
         </div>
 
@@ -64,15 +64,36 @@
 
         <div class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             @forelse ($activeModules as $module)
-                <article class="rounded-2xl bg-white p-5 shadow-sm">
-                    <h4 class="font-semibold text-gray-900">
-                        {{ $module->name }}
-                    </h4>
+                @php
+                    $routeName = $moduleRoutes[$module->slug] ?? null;
+                    $hasRoute = $routeName && \Illuminate\Support\Facades\Route::has($routeName);
+                @endphp
 
-                    <p class="mt-2 text-sm leading-6 text-gray-600">
-                        {{ $module->description }}
-                    </p>
-                </article>
+                @if ($hasRoute)
+                    <a href="{{ route($routeName) }}" class="block rounded-2xl bg-white p-5 shadow-sm transition hover:shadow-md">
+                        <h4 class="font-semibold text-indigo-700">
+                            {{ $module->name }}
+                        </h4>
+
+                        <p class="mt-2 text-sm leading-6 text-gray-600">
+                            {{ $module->description }}
+                        </p>
+
+                        <p class="mt-3 text-xs font-semibold text-indigo-600">Accéder →</p>
+                    </a>
+                @else
+                    <article class="rounded-2xl bg-gray-50 p-5 opacity-75">
+                        <h4 class="font-semibold text-gray-900">
+                            {{ $module->name }}
+                        </h4>
+
+                        <p class="mt-2 text-sm leading-6 text-gray-600">
+                            {{ $module->description }}
+                        </p>
+
+                        <p class="mt-3 text-xs font-semibold text-gray-400">Bientôt disponible</p>
+                    </article>
+                @endif
             @empty
                 <p class="text-gray-500">
                     Aucun module actif.

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CvSummaryGeneratorService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -96,6 +97,11 @@ class CvProfile extends Model
             return $this->summary;
         }
 
-        return app(\App\Services\CvSummaryGeneratorService::class)->generate($this);
+        return app(CvSummaryGeneratorService::class)->generate($this);
+    }
+
+    public function jobWatches(): HasMany
+    {
+        return $this->hasMany(JobWatch::class);
     }
 }

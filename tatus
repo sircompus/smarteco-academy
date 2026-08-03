@@ -1,0 +1,387 @@
+ 00 SHIFT COMPT CHATGPT CLAUDE .docx                |  Bin [31m0[m -> [32m24259[m bytes
+ README.md                                          |  652 [32m++++[m[31m-[m
+ TRILLO RECOVER.PNG                                 |  Bin [31m64245[m -> [32m0[m bytes
+ admin-cv-builder.ps1                               | 1278 [31m---------[m
+ ali-cv-seeder.ps1                                  |  241 [31m--[m
+ .../Admin/AcademicResourceController.php           |  141 [31m-[m
+ app/Http/Controllers/Admin/CentreController.php    |  321 [31m---[m
+ .../Controllers/Admin/CourseContentController.php  |  159 [31m--[m
+ .../Controllers/Admin/CurriculumController.php     |  226 [31m--[m
+ app/Http/Controllers/Admin/CvBuilderController.php |  375 [31m---[m
+ app/Http/Controllers/Admin/CvController.php        |   63 [31m-[m
+ app/Http/Controllers/Admin/PackController.php      |  236 [31m--[m
+ .../Controllers/Admin/PackEnrollmentController.php |  117 [31m-[m
+ .../Controllers/Admin/PaymentReportController.php  |   84 [31m-[m
+ .../Controllers/Admin/RegistrationController.php   |  206 [31m--[m
+ .../Admin/SkillSuggestionController.php            |   58 [31m-[m
+ app/Http/Controllers/Admin/TrainingController.php  |  294 [31m--[m
+ .../Admin/TrainingEnrollmentController.php         |  110 [31m-[m
+ app/Http/Controllers/Admin/UserController.php      |   97 [31m-[m
+ .../Auth/AuthenticatedSessionController.php        |   47 [31m-[m
+ .../Auth/ConfirmablePasswordController.php         |   40 [31m-[m
+ .../EmailVerificationNotificationController.php    |   24 [31m-[m
+ .../Auth/EmailVerificationPromptController.php     |   21 [31m-[m
+ .../Controllers/Auth/NewPasswordController.php     |   63 [31m-[m
+ app/Http/Controllers/Auth/PasswordController.php   |   29 [31m-[m
+ .../Auth/PasswordResetLinkController.php           |   45 [31m-[m
+ .../Controllers/Auth/RegisteredUserController.php  |   77 [31m-[m
+ .../Controllers/Auth/VerifyEmailController.php     |   27 [31m-[m
+ .../Controllers/Professor/CourseController.php     |  215 [31m--[m
+ app/Http/Controllers/ProfileController.php         |   95 [31m-[m
+ app/Http/Controllers/PublicPortfolioController.php |   20 [31m-[m
+ app/Http/Controllers/Student/CourseController.php  |   62 [31m-[m
+ app/Http/Controllers/Student/CvController.php      |  418 [31m---[m
+ app/Http/Controllers/Student/LibraryController.php |   57 [31m-[m
+ app/Http/Controllers/Student/PackController.php    |   65 [31m-[m
+ .../Controllers/Student/RegistrationController.php |  285 [31m--[m
+ .../Student/RegistrationDocumentController.php     |  134 [31m-[m
+ .../Controllers/Student/TrainingController.php     |  257 [31m--[m
+ app/Http/Middleware/EnsureModuleIsActive.php       |   30 [31m-[m
+ app/Http/Middleware/EnsureUserHasRole.php          |   25 [31m-[m
+ app/Http/Requests/Auth/LoginRequest.php            |   94 [31m-[m
+ app/Http/Requests/ProfileUpdateRequest.php         |  131 [31m-[m
+ app/Mail/PaymentReminderMail.php                   |   41 [31m-[m
+ app/Mail/TrainingPaymentReminderMail.php           |   41 [31m-[m
+ app/Models/AcademicLevel.php                       |   36 [31m-[m
+ app/Models/AcademicProgram.php                     |   45 [31m-[m
+ app/Models/AcademicResource.php                    |   81 [31m-[m
+ app/Models/Course.php                              |   75 [31m-[m
+ app/Models/CourseEnrollment.php                    |   10 [31m-[m
+ app/Models/CourseResource.php                      |   80 [31m-[m
+ app/Models/CourseSection.php                       |   41 [31m-[m
+ app/Models/CvCertification.php                     |   26 [31m-[m
+ app/Models/CvEducation.php                         |   33 [31m-[m
+ app/Models/CvExperience.php                        |   31 [31m-[m
+ app/Models/CvLanguage.php                          |   32 [31m-[m
+ app/Models/CvProfile.php                           |  101 [31m-[m
+ app/Models/CvSkill.php                             |   42 [31m-[m
+ app/Models/Lesson.php                              |   54 [31m-[m
+ app/Models/LessonFile.php                          |   38 [31m-[m
+ app/Models/MediaFile.php                           |   51 [31m-[m
+ app/Models/Module.php                              |   67 [31m-[m
+ app/Models/ModuleSetting.php                       |   32 [31m-[m
+ app/Models/Pack.php                                |   78 [31m-[m
+ app/Models/PackEnrollment.php                      |  199 [31m--[m
+ app/Models/PackPayment.php                         |   39 [31m-[m
+ app/Models/PackPaymentReminder.php                 |   38 [31m-[m
+ app/Models/PortfolioProject.php                    |   33 [31m-[m
+ app/Models/Profile.php                             |   38 [31m-[m
+ app/Models/Registration.php                        |  145 [31m-[m
+ app/Models/RegistrationDocument.php                |   82 [31m-[m
+ app/Models/RegistrationStatusHistory.php           |   35 [31m-[m
+ app/Models/Role.php                                |   48 [31m-[m
+ app/Models/Semester.php                            |   50 [31m-[m
+ app/Models/SkillSuggestion.php                     |   26 [31m-[m
+ app/Models/Subject.php                             |   78 [31m-[m
+ app/Models/Training.php                            |   92 [31m-[m
+ app/Models/TrainingEnrollment.php                  |  165 [31m--[m
+ app/Models/TrainingLesson.php                      |   70 [31m-[m
+ app/Models/TrainingPayment.php                     |   39 [31m-[m
+ app/Models/TrainingPaymentReminder.php             |   38 [31m-[m
+ app/Models/TrainingProgress.php                    |   50 [31m-[m
+ app/Models/TrainingSection.php                     |   42 [31m-[m
+ app/Models/TrainingSession.php                     |  110 [31m-[m
+ app/Models/User.php                                |  161 [32m+[m[31m-[m
+ app/Services/AtsScoreService.php                   |  128 [31m-[m
+ app/Services/CvSummaryGeneratorService.php         |   82 [31m-[m
+ app/View/Components/AppLayout.php                  |   17 [31m-[m
+ app/View/Components/GuestLayout.php                |   17 [31m-[m
+ app/core/Auth/.gitkeep                             |    0
+ app/core/Files/.gitkeep                            |    0
+ app/core/Modules/.gitkeep                          |    0
+ .../Modules/AcademicProjects/Controllers/.gitkeep  |    0
+ .../Modules/AcademicProjects/Database/.gitkeep     |    0
+ app/core/Modules/AcademicProjects/Models/.gitkeep  |    0
+ app/core/Modules/AcademicProjects/Routes/.gitkeep  |    0
+ .../Modules/AcademicProjects/Services/.gitkeep     |    0
+ app/core/Modules/AcademicProjects/Views/.gitkeep   |    0
+ .../Modules/Administration/Controllers/.gitkeep    |    0
+ app/core/Modules/Administration/Database/.gitkeep  |    0
+ app/core/Modules/Administration/Models/.gitkeep    |    0
+ app/core/Modules/Administration/Routes/.gitkeep    |    0
+ app/core/Modules/Administration/Services/.gitkeep  |    0
+ app/core/Modules/Administration/Views/.gitkeep     |    0
+ app/core/Modules/CVATS/Controllers/.gitkeep        |    0
+ app/core/Modules/CVATS/Database/.gitkeep           |    0
+ app/core/Modules/CVATS/Models/.gitkeep             |    0
+ app/core/Modules/CVATS/Routes/.gitkeep             |    0
+ app/core/Modules/CVATS/Services/.gitkeep           |    0
+ app/core/Modules/CVATS/Views/.gitkeep              |    0
+ app/core/Modules/Centre/Controllers/.gitkeep       |    0
+ app/core/Modules/Centre/Database/.gitkeep          |    0
+ app/core/Modules/Centre/Models/.gitkeep            |    0
+ app/core/Modules/Centre/Routes/.gitkeep            |    0
+ app/core/Modules/Centre/Services/.gitkeep          |    0
+ app/core/Modules/Centre/Views/.gitkeep             |    0
+ app/core/Modules/Community/Controllers/.gitkeep    |    0
+ app/core/Modules/Community/Database/.gitkeep       |    0
+ app/core/Modules/Community/Models/.gitkeep         |    0
+ app/core/Modules/Community/Routes/.gitkeep         |    0
+ app/core/Modules/Community/Services/.gitkeep       |    0
+ app/core/Modules/Community/Views/.gitkeep          |    0
+ app/core/Modules/ComputerAI/Controllers/.gitkeep   |    0
+ app/core/Modules/ComputerAI/Database/.gitkeep      |    0
+ app/core/Modules/ComputerAI/Models/.gitkeep        |    0
+ app/core/Modules/ComputerAI/Routes/.gitkeep        |    0
+ app/core/Modules/ComputerAI/Services/.gitkeep      |    0
+ app/core/Modules/ComputerAI/Views/.gitkeep         |    0
+ app/core/Modules/Courses/Controllers/.gitkeep      |    0
+ app/core/Modules/Courses/Database/.gitkeep         |    0
+ app/core/Modules/Courses/Models/.gitkeep           |    0
+ app/core/Modules/Courses/Routes/.gitkeep           |    0
+ app/core/Modules/Courses/Services/.gitkeep         |    0
+ app/core/Modules/Courses/Views/.gitkeep            |    0
+ .../Modules/Entertainment/Controllers/.gitkeep     |    0
+ app/core/Modules/Entertainment/Database/.gitkeep   |    0
+ app/core/Modules/Entertainment/Models/.gitkeep     |    0
+ app/core/Modules/Entertainment/Routes/.gitkeep     |    0
+ app/core/Modules/Entertainment/Services/.gitkeep   |    0
+ app/core/Modules/Entertainment/Views/.gitkeep      |    0
+ app/core/Modules/Exams/Controllers/.gitkeep        |    0
+ app/core/Modules/Exams/Database/.gitkeep           |    0
+ app/core/Modules/Exams/Models/.gitkeep             |    0
+ app/core/Modules/Exams/Routes/.gitkeep             |    0
+ app/core/Modules/Exams/Services/.gitkeep           |    0
+ app/core/Modules/Exams/Views/.gitkeep              |    0
+ app/core/Modules/ModuleManager.php                 |   64 [31m-[m
+ app/core/Modules/Payments/Controllers/.gitkeep     |    0
+ app/core/Modules/Payments/Database/.gitkeep        |    0
+ app/core/Modules/Payments/Models/.gitkeep          |    0
+ app/core/Modules/Payments/Routes/.gitkeep          |    0
+ app/core/Modules/Payments/Services/.gitkeep        |    0
+ app/core/Modules/Payments/Views/.gitkeep           |    0
+ app/core/Modules/Portfolio/Controllers/.gitkeep    |    0
+ app/core/Modules/Portfolio/Database/.gitkeep       |    0
+ app/core/Modules/Portfolio/Models/.gitkeep         |    0
+ app/core/Modules/Portfolio/Routes/.gitkeep         |    0
+ app/core/Modules/Portfolio/Services/.gitkeep       |    0
+ app/core/Modules/Portfolio/Views/.gitkeep          |    0
+ app/core/Modules/Registration/Controllers/.gitkeep |    0
+ app/core/Modules/Registration/Database/.gitkeep    |    0
+ app/core/Modules/Registration/Models/.gitkeep      |    0
+ app/core/Modules/Registration/Routes/.gitkeep      |    0
+ app/core/Modules/Registration/Services/.gitkeep    |    0
+ app/core/Modules/Registration/Views/.gitkeep       |    0
+ app/core/Modules/Services/Controllers/.gitkeep     |    0
+ app/core/Modules/Services/Database/.gitkeep        |    0
+ app/core/Modules/Services/Models/.gitkeep          |    0
+ app/core/Modules/Services/Routes/.gitkeep          |    0
+ app/core/Modules/Services/Services/.gitkeep        |    0
+ app/core/Modules/Services/Views/.gitkeep           |    0
+ .../Modules/StudentExperience/Controllers/.gitkeep |    0
+ .../Modules/StudentExperience/Database/.gitkeep    |    0
+ app/core/Modules/StudentExperience/Models/.gitkeep |    0
+ app/core/Modules/StudentExperience/Routes/.gitkeep |    0
+ .../Modules/StudentExperience/Services/.gitkeep    |    0
+ app/core/Modules/StudentExperience/Views/.gitkeep  |    0
+ app/core/Notifications/.gitkeep                    |    0
+ app/core/Permissions/.gitkeep                      |    0
+ app/core/Settings/.gitkeep                         |    0
+ avatar-feature.ps1                                 | 1709 [31m-----------[m
+ bootstrap/app.php                                  |   19 [32m+[m[31m-[m
+ composer.json                                      |    1 [31m-[m
+ composer.lock                                      |   63 [32m+[m[31m-[m
+ course-resources-v2.ps1                            | 1541 [31m----------[m
+ course-resources.ps1                               | 1475 [31m----------[m
+ cv-anchors-checkboxes.ps1                          | 1076 [31m-------[m
+ cv-backslash-fix.ps1                               |  275 [31m--[m
+ cv-enhancements.ps1                                | 2251 [31m---------------[m
+ cv-module.ps1                                      | 3012 [31m--------------------[m
+ .../2026_07_12_194709_create_profiles_table.php    |   44 [31m-[m
+ .../2026_07_12_194717_create_roles_table.php       |   27 [31m-[m
+ .../2026_07_12_194723_create_permissions_table.php |   31 [31m-[m
+ .../2026_07_12_194729_create_role_user_table.php   |   38 [31m-[m
+ ...6_07_12_194738_create_permission_role_table.php |   38 [31m-[m
+ .../2026_07_12_194744_create_modules_table.php     |   35 [31m-[m
+ ...6_07_12_194751_create_module_settings_table.php |   38 [31m-[m
+ .../2026_07_12_194758_create_media_files_table.php |   46 [31m-[m
+ ...026_07_12_194804_create_notifications_table.php |   31 [31m-[m
+ ...026_07_12_194811_create_activity_logs_table.php |   44 [31m-[m
+ ...6_07_12_194816_create_system_settings_table.php |   35 [31m-[m
+ ...6_07_12_234733_add_is_active_to_users_table.php |   24 [31m-[m
+ ...26_upgrade_modules_table_for_module_manager.php |   66 [31m-[m
+ ...14_upgrade_modules_table_for_module_manager.php |   28 [31m-[m
+ ...26_07_13_145015_create_centre_module_tables.php |  233 [31m--[m
+ ...13_152256_create_registration_module_tables.php |  135 [31m-[m
+ ..._07_13_171059_create_training_module_tables.php |  193 [31m--[m
+ .../2026_07_29_100000_create_packs_tables.php      |   68 [31m-[m
+ ...00_add_payment_tracking_to_pack_enrollments.php |   44 [31m-[m
+ ..._100000_create_pack_payment_reminders_table.php |   35 [31m-[m
+ ...2026_07_31_110000_add_billing_type_to_packs.php |   24 [31m-[m
+ ...31_120000_add_payment_tracking_to_trainings.php |   75 [31m-[m
+ .../2026_07_31_130000_add_pause_to_enrollments.php |   32 [31m-[m
+ ..._08_01_090000_create_course_resources_table.php |   50 [31m-[m
+ ...8_01_100000_create_academic_resources_table.php |   52 [31m-[m
+ ...026_08_01_150000_create_cv_portfolio_tables.php |  122 [31m-[m
+ ...08_01_160000_create_skill_suggestions_table.php |   25 [31m-[m
+ ...70000_add_show_in_navigation_to_cv_profiles.php |   22 [31m-[m
+ ...2026_08_01_180000_add_category_to_cv_skills.php |   22 [31m-[m
+ database/seeders/AcademicSeeder.php                |   89 [31m-[m
+ database/seeders/AliBahtitCvSeeder.php             |  231 [31m--[m
+ database/seeders/DatabaseSeeder.php                |   20 [32m+[m[31m-[m
+ database/seeders/DemoDataSeeder.php                |  139 [31m-[m
+ database/seeders/ModuleSeeder.php                  |  121 [31m-[m
+ database/seeders/MonthlyBillingDemoSeeder.php      |  120 [31m-[m
+ database/seeders/RoleSeeder.php                    |   51 [31m-[m
+ database/seeders/SemesterSubjectSeeder.php         |   87 [31m-[m
+ database/seeders/SkillSuggestionSeeder.php         |   91 [31m-[m
+ email_verified_at                                  |    0
+ first()                                            |    0
+ fix-dead-links.ps1                                 |  622 [31m----[m
+ fix-receipts-v2.ps1                                |  305 [31m--[m
+ fix-receipts-v3.ps1                                |  332 [31m---[m
+ fix-receipts-v4.ps1                                |  330 [31m---[m
+ fix-receipts.ps1                                   |  305 [31m--[m
+ fix-report.ps1                                     |  261 [31m--[m
+ fix-student-dashboard-v2.ps1                       |  121 [32m+[m
+ fix-student-dashboard.ps1                          |  205 [32m++[m
+ get(['id'                                          |    0
+ guest.blade.php                                    |   40 [31m-[m
+ level-mismatch-guard.ps1                           |  494 [31m----[m
+ library-by-professor.ps1                           |  464 [31m---[m
+ library-compact-label.ps1                          |  330 [31m---[m
+ library-edit.ps1                                   |  616 [31m----[m
+ library-feature.ps1                                | 1831 [31m------------[m
+ library-multi-upload.ps1                           |  282 [31m--[m
+ library-semester-access.ps1                        |  345 [31m---[m
+ library-sort-fix.ps1                               |  178 [31m--[m
+ login.blade.php                                    |   51 [31m-[m
+ logo-full-width.ps1                                | 1494 [31m----------[m
+ logo-vertical-stack.ps1                            | 1494 [31m----------[m
+ nav-icon.ps1                                       | 2067 [31m--------------[m
+ pack-system.zip                                    |  Bin [31m19078[m -> [32m0[m bytes
+ .../app/Http/Controllers/Admin/PackController.php  |   89 [31m-[m
+ .../Http/Controllers/Student/PackController.php    |   64 [31m-[m
+ pack-system/app/Models/Pack.php                    |   72 [31m-[m
+ pack-system/app/Models/PackEnrollment.php          |   48 [31m-[m
+ pack-system/app/Models/Semester.php                |   50 [31m-[m
+ pack-system/app/Models/Subject.php                 |   53 [31m-[m
+ pack-system/app/Models/User.php                    |  151 [31m-[m
+ .../2026_07_29_100000_create_packs_tables.php      |   68 [31m-[m
+ .../views/admin/centre/packs/index.blade.php       |  216 [31m--[m
+ .../resources/views/layouts/admin.blade.php        |  457 [31m---[m
+ .../resources/views/layouts/student.blade.php      |  418 [31m---[m
+ .../resources/views/student/packs/index.blade.php  |   82 [31m-[m
+ pack-system/routes/centre.php                      |   81 [31m-[m
+ package-lock.json                                  | 1130 [32m+[m[31m-------[m
+ package.json                                       |    6 [32m+[m[31m-[m
+ php                                                |    0
+ postcss.config.js                                  |    6 [31m-[m
+ primary-button.blade.php                           |    3 [31m-[m
+ public/images/smarteco-logo.png                    |  Bin [31m552103[m -> [32m0[m bytes
+ real-logo-everywhere.ps1                           | 1764 [31m------------[m
+ register.blade.php                                 |   56 [31m-[m
+ resources/css/app.css                              |   12 [32m+[m[31m-[m
+ resources/js/app.js                                |   11 [32m+[m[31m-[m
+ .../admin/centre/courses/_lesson-row.blade.php     |   45 [31m-[m
+ .../views/admin/centre/courses/content.blade.php   |  216 [31m--[m
+ .../views/admin/centre/curriculum/index.blade.php  |  140 [31m-[m
+ resources/views/admin/centre/index.blade.php       |  364 [31m---[m
+ .../views/admin/centre/library/edit.blade.php      |   62 [31m-[m
+ .../views/admin/centre/library/index.blade.php     |  168 [31m--[m
+ .../admin/centre/pack-enrollments/index.blade.php  |  258 [31m--[m
+ .../pack-enrollments-index-revert.blade.php        |  258 [31m--[m
+ .../centre/pack-enrollments/pack-receipt.blade.php |  149 [31m-[m
+ .../centre/pack-enrollments/receipt.blade.php      |  157 [31m-[m
+ .../pack-enrollments/training-receipt.blade.php    |  142 [31m-[m
+ resources/views/admin/centre/packs/edit.blade.php  |  116 [31m-[m
+ resources/views/admin/centre/packs/index.blade.php |  282 [31m--[m
+ .../views/admin/centre/reports/index.blade.php     |  160 [31m--[m
+ resources/views/admin/cv/index.blade.php           |   60 [31m-[m
+ resources/views/admin/cv/show.blade.php            |  102 [31m-[m
+ resources/views/admin/cv/skills/index.blade.php    |   79 [31m-[m
+ resources/views/admin/dashboard.blade.php          |  163 [31m--[m
+ .../views/admin/registrations/index.blade.php      |   81 [31m-[m
+ resources/views/admin/registrations/show.blade.php |  167 [31m--[m
+ .../admin/trainings/enrollments/index.blade.php    |  223 [31m--[m
+ .../trainings/enrollments/pack-receipt.blade.php   |  142 [31m-[m
+ .../admin/trainings/enrollments/receipt.blade.php  |  157 [31m-[m
+ .../enrollments/training-receipt.blade.php         |  149 [31m-[m
+ resources/views/admin/trainings/index.blade.php    |  345 [31m---[m
+ resources/views/admin/users/index.blade.php        |  171 [31m--[m
+ resources/views/auth/confirm-password.blade.php    |   27 [31m-[m
+ resources/views/auth/forgot-password.blade.php     |   25 [31m-[m
+ resources/views/auth/login.blade.php               |   51 [31m-[m
+ resources/views/auth/register.blade.php            |   56 [31m-[m
+ resources/views/auth/reset-password.blade.php      |   39 [31m-[m
+ resources/views/auth/verify-email.blade.php        |   31 [31m-[m
+ .../views/components/application-logo.blade.php    |    3 [31m-[m
+ .../views/components/auth-session-status.blade.php |    7 [31m-[m
+ resources/views/components/danger-button.blade.php |    3 [31m-[m
+ resources/views/components/dropdown-link.blade.php |    1 [31m-[m
+ resources/views/components/dropdown.blade.php      |   35 [31m-[m
+ resources/views/components/input-error.blade.php   |    9 [31m-[m
+ resources/views/components/input-label.blade.php   |    5 [31m-[m
+ resources/views/components/modal.blade.php         |   78 [31m-[m
+ resources/views/components/nav-link.blade.php      |   11 [31m-[m
+ .../views/components/primary-button.blade.php      |    3 [31m-[m
+ .../views/components/responsive-nav-link.blade.php |   11 [31m-[m
+ .../views/components/secondary-button.blade.php    |    3 [31m-[m
+ resources/views/components/text-input.blade.php    |    3 [31m-[m
+ resources/views/dashboard.blade.php                |   17 [31m-[m
+ resources/views/emails/payment-reminder.blade.php  |   22 [31m-[m
+ .../emails/training-payment-reminder.blade.php     |   22 [31m-[m
+ resources/views/layouts/admin.blade.php            |  564 [31m----[m
+ resources/views/layouts/app.blade.php              |   36 [31m-[m
+ resources/views/layouts/guest.blade.php            |   38 [31m-[m
+ resources/views/layouts/navigation.blade.php       |  100 [31m-[m
+ resources/views/layouts/professor.blade.php        |  131 [31m-[m
+ resources/views/layouts/public.blade.php           |  260 [31m--[m
+ resources/views/layouts/student.blade.php          |  437 [31m---[m
+ resources/views/layouts/supervisor.blade.php       |  198 [31m--[m
+ resources/views/portfolio/show.blade.php           |  218 [31m--[m
+ resources/views/professor/courses/show.blade.php   |  214 [31m--[m
+ resources/views/profile/edit.blade.php             |   35 [31m-[m
+ .../profile/partials/delete-user-form.blade.php    |   55 [31m-[m
+ .../profile/partials/update-avatar-form.blade.php  |   44 [31m-[m
+ .../partials/update-password-form.blade.php        |   48 [31m-[m
+ .../update-profile-information-form.blade.php      |  308 [31m--[m
+ resources/views/public/home.blade.php              |  140 [31m-[m
+ .../views/student/courses/_lesson-row.blade.php    |   41 [31m-[m
+ resources/views/student/courses/index.blade.php    |   47 [31m-[m
+ resources/views/student/courses/show.blade.php     |  124 [31m-[m
+ .../student/cv/_section-certifications.blade.php   |   32 [31m-[m
+ .../views/student/cv/_section-educations.blade.php |   71 [31m-[m
+ .../student/cv/_section-experiences.blade.php      |   71 [31m-[m
+ .../views/student/cv/_section-languages.blade.php  |   75 [31m-[m
+ .../views/student/cv/_section-projects.blade.php   |   55 [31m-[m
+ .../views/student/cv/_section-skills.blade.php     |   88 [31m-[m
+ resources/views/student/cv/edit.blade.php          |  226 [31m--[m
+ resources/views/student/cv/templates/ats.blade.php |  105 [31m-[m
+ .../views/student/cv/templates/classique.blade.php |  164 [31m--[m
+ .../views/student/cv/templates/moderne.blade.php   |  130 [31m-[m
+ resources/views/student/dashboard.blade.php        |   45 [32m+[m[31m-[m
+ resources/views/student/library/index.blade.php    |   91 [31m-[m
+ resources/views/student/packs/index.blade.php      |   82 [31m-[m
+ .../views/student/registrations/_form.blade.php    |  225 [31m--[m
+ .../views/student/registrations/create.blade.php   |   20 [31m-[m
+ .../views/student/registrations/edit.blade.php     |   25 [31m-[m
+ .../views/student/registrations/index.blade.php    |   72 [31m-[m
+ .../views/student/registrations/show.blade.php     |  172 [31m--[m
+ resources/views/student/trainings/index.blade.php  |   48 [31m-[m
+ resources/views/student/trainings/lesson.blade.php |   60 [31m-[m
+ resources/views/student/trainings/show.blade.php   |  116 [31m-[m
+ routes/admin.php                                   |   25 [31m-[m
+ routes/api.php                                     |    0
+ routes/auth.php                                    |   59 [31m-[m
+ routes/centre.php                                  |  195 [31m--[m
+ routes/cv.php                                      |   91 [31m-[m
+ routes/professor.php                               |   37 [31m-[m
+ routes/registration.php                            |   95 [31m-[m
+ routes/training.php                                |  112 [31m-[m
+ routes/web.php                                     |   11 [32m+[m
+ skill-catalogue.ps1                                | 1061 [31m-------[m
+ skill-categories-display.ps1                       | 1890 [31m------------[m
+ skill-taxonomy.ps1                                 |  307 [31m--[m
+ skills-languages-format.ps1                        |  663 [31m-----[m
+ tailwind.config.js                                 |   21 [31m-[m
+ tests/Feature/Auth/AuthenticationTest.php          |   54 [31m-[m
+ tests/Feature/Auth/EmailVerificationTest.php       |   58 [31m-[m
+ tests/Feature/Auth/PasswordConfirmationTest.php    |   44 [31m-[m
+ tests/Feature/Auth/PasswordResetTest.php           |   73 [31m-[m
+ tests/Feature/Auth/PasswordUpdateTest.php          |   51 [31m-[m
+ tests/Feature/Auth/RegistrationTest.php            |   31 [31m-[m
+ tests/Feature/ProfileTest.php                      |   99 [31m-[m
+ text-input.blade.php                               |    3 [31m-[m
+ vite.config.js                                     |   13 [32m+[m
+ 386 files changed, 1095 insertions(+), 54599 deletions(-)
