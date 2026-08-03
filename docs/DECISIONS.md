@@ -33,3 +33,6 @@ Ali s'est retrouvé sur la branche `main` (quasiment vide) au lieu de `develop` 
 - Community / Divertissement
 - Projets / Services académiques
 - Examens
+
+## Incident du 03/08/2026 — base de données vide, curriculum réel perdu
+La base `smarteco_academy` s'est retrouvée sans aucune table (migrations jamais appliquées), causant une cascade de pannes (connexion impossible, pages vides, packs manquants). Résolu par `php artisan migrate` + `php artisan db:seed`. **Découverte importante** : le vrai programme académique d'Ali (modules réels par filière/semestre) n'existait QUE dans la saisie manuelle faite via `admin/centre/curriculum`, jamais dans un seeder — il a donc été perdu avec la réinitialisation. **Retrouvé** en fouillant la transcription complète de la conversation (les 6 blocs de texte donnés initialement), et transformé en seeder permanent `RealCurriculumSeeder`, désormais dans `DatabaseSeeder`. Décision : **toute donnée métier réelle et non triviale doit être capturée dans un seeder, jamais laissée uniquement en saisie manuelle via l'interface.**

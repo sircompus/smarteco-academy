@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             ModuleSeeder::class,
             AcademicSeeder::class,
             SemesterSubjectSeeder::class,
+            RealCurriculumSeeder::class,
             SkillSuggestionSeeder::class,
         ]);
     }

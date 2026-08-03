@@ -32,56 +32,8 @@ Aucun test automatisé (`tests/Feature/*`) n'a été exécuté durant les sessio
 2. **Aucun test automatisé n'a jamais été exécuté sur ce projet.** À mettre en place.
 3. Le module `CourseResource` (ressources par cours) est codé mais non exploité en usage réel — `AcademicResource` (bibliothèque indépendante) est le système réellement utilisé.
 4. Modules "Bientôt disponible" affichés sur le tableau de bord étudiant (Examens, Projets, Community) — cartes visibles mais non cliquables, honnête sur ce qui n'existe pas encore.
+5. **RÉSOLU le 03/08/2026** : la base `smarteco_academy` s'était retrouvée entièrement vide (migrations jamais appliquées). Résolu par migrate + db:seed. Le vrai programme académique (curriculum) a été retrouvé et rendu permanent via `RealCurriculumSeeder` — voir `docs/DECISIONS.md`.
+6. Les **packs** créés manuellement par Ali (prix, activation) ne sont pas capturés dans un seeder au-delà des valeurs par défaut de `PackSeeder` (250 DH semestre) — si la base est de nouveau réinitialisée, les prix réels devront être réajustés manuellement.
 
 ## Prochaine action recommandée
 Demander à Ali quelle est sa priorité : (a) commencer un nouveau module (Community, Projets, ou Examens), (b) mettre en place la synchronisation multi-PC reportée, (c) mettre en place une suite de tests automatisés, ou (d) autre chose. Ne pas décider à sa place.
-
-
-
-## Veille d’emploi
-
-Les fondations MySQL et Eloquent sont opérationnelles.
-
-Éléments disponibles :
-
-- six tables MySQL ;
-- six modèles Eloquent ;
-- factories ;
-- relations ;
-- Policy de propriété ;
-- contraintes anti-doublons ;
-- tests MySQL réussis.
-
-Non encore développé :
-
-- interface utilisateur ;
-- récupération externe des offres ;
-- moteur de scoring ;
-- Queue et Scheduler ;
-- notifications ;
-- résumé quotidien.
-
-## Veille d’emploi
-
-Les fondations MySQL et Eloquent du module sont opérationnelles.
-
-Disponible :
-
-- six tables MySQL ;
-- six modèles Eloquent ;
-- six factories ;
-- relations Eloquent ;
-- contraintes anti-doublons ;
-- Policy de propriété ;
-- tests MySQL ;
-- suppression en cascade.
-
-Non développé :
-
-- interface de gestion des veilles ;
-- importation réelle des offres ;
-- moteur de scoring ;
-- Laravel Queue ;
-- Laravel Scheduler ;
-- notifications ;
-- résumé quotidien.
