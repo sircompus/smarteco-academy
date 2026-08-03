@@ -5,6 +5,8 @@ Dernière mise à jour : 02/08/2026, par Claude.
 ## Branche stable
 `develop` — c'est **la seule branche de travail réelle**. `main` existe mais est quasiment vide, ne jamais y travailler.
 
+**Point de restauration créé le 03/08/2026** : tag `v1-stable` + branche `backup/avant-nouvelle-implementation`, sur le commit juste après la restauration complète de la base de données et le tri du curriculum. Si une nouvelle implémentation casse quelque chose, revenir ici avec `git checkout v1-stable`.
+
 ## Branche de travail actuelle
 `develop` (pas de branche séparée par tâche — voir `AGENTS.md` pour la raison).
 
