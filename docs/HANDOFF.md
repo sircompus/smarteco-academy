@@ -58,3 +58,26 @@ Prochaine action exacte :
 
 Créer le CRUD des veilles d’emploi avec routes, contrôleur,
 Form Requests, vues et tests d’autorisation.
+
+
+## Transmission — TASK-015
+
+Les fondations du système de veille d’emploi sont opérationnelles.
+
+Branche : `feature/job-watch-foundation`
+
+Éléments terminés :
+
+- six tables MySQL ;
+- six modèles Eloquent ;
+- relations ;
+- factories ;
+- Policy ;
+- tests MySQL ;
+- contraintes d’unicité ;
+- suppressions en cascade.
+
+Prochaine action exacte :
+
+Créer `TASK-016` pour le CRUD des veilles d’emploi :
+routes, contrôleur, Form Requests, vues et tests.
