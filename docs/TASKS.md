@@ -317,3 +317,64 @@ Critères de validation :
 
 Prochaine action exacte : examiner le chargement des routes et le layout
 étudiant avant de générer le contrôleur et les vues.
+
+
+## TASK-017 — Moteur local de correspondance des offres
+
+Statut : EN COURS
+
+Priorité : P1
+
+Branche : `feature/job-watch-matching`
+
+Dépendances :
+
+- TASK-015 — Fondations du module
+- TASK-016 — CRUD des veilles
+
+Objectif :
+
+Calculer une correspondance entre une veille d’emploi et les offres déjà
+présentes dans `job_offers`, puis enregistrer le résultat dans `job_matches`.
+
+Fonctionnalités prévues :
+
+- normaliser les intitulés, localisations et compétences ;
+- calculer un score d’intitulé ;
+- calculer un score de localisation ;
+- calculer un score de contrat ;
+- calculer un score de mode de travail ;
+- calculer un score de compétences ;
+- appliquer les mots-clés inclus et exclus ;
+- produire un score final de 0 à 100 ;
+- enregistrer les compétences trouvées et manquantes ;
+- créer ou mettre à jour une seule correspondance par veille et par offre ;
+- ignorer les offres inactives ou expirées ;
+- filtrer les résultats avec `minimum_score`.
+
+Fichiers prévus :
+
+- `app/Services/JobWatch/JobMatchingService.php`
+- `app/Services/JobWatch/JobTextNormalizer.php`
+- `app/Actions/JobWatch/MatchJobOffer.php`
+- `tests/Unit/JobWatch/JobTextNormalizerTest.php`
+- `tests/Feature/JobWatch/JobMatchingServiceTest.php`
+- documentation du projet
+
+Hors périmètre :
+
+- API externes ;
+- scraping ;
+- Scheduler ;
+- Queue ;
+- notifications ;
+- intelligence artificielle externe.
+
+Critères de validation :
+
+- le score final reste compris entre 0 et 100 ;
+- un mot-clé exclu peut rejeter une offre ;
+- les doublons dans `job_matches` sont impossibles ;
+- un nouveau calcul met à jour la correspondance existante ;
+- seules les offres valides sont évaluées ;
+- les tests utilisent MySQL `laravel_testing`.
