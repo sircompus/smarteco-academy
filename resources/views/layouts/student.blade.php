@@ -207,6 +207,31 @@
 
                     Mon CV & Portfolio
                 </a>
+
+                {{-- Veille d'emploi --}}
+                <a
+                    href="{{ route('student.job-watches.index') }}"
+                    class="{{ request()->routeIs('student.job-watches.*')
+                        ? 'bg-indigo-50 text-indigo-700'
+                        : 'text-gray-700 hover:bg-gray-100' }}
+                        flex items-center rounded-lg px-4 py-3 text-sm font-medium transition"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 17v-2a4 4 0 014-4h4m0 0l-3-3m3 3l-3 3M5 5h6a2 2 0 012 2v2M5 5a2 2 0 00-2 2v10a2 2 0 002 2h6"
+                        />
+                    </svg>
+
+                    Veille d'emploi
+                </a>
             </div>
 
             <p class="mb-3 mt-8 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">

@@ -1,0 +1,2 @@
+﻿external_id;title;company;location;description;requirements;contract_type;remote_mode;experience_level;salary_min;salary_max;salary_currency;url;published_at;expires_at;skills
+ma-001;Développeur Laravel;Entreprise marocaine;Casablanca;Développement d'applications web;Laravel PHP MySQL;CDI;Hybride;Junior;8000;12000;MAD;https://exemple.ma/offres/ma-001;2026-08-04;2026-09-04;Laravel|PHP|MySQL

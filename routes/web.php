@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'formations' => 'student.trainings.index',
                 'cv-ats' => 'student.cv.edit',
                 'portfolio' => 'student.cv.edit',
+                'job-watch' => 'student.job-watches.index',
             ],
         ]);
     })->name('student.dashboard');

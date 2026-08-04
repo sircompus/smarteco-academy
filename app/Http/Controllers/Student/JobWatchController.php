@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Actions\JobWatch\RunJobWatch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobWatch\StoreJobWatchRequest;
 use App\Http\Requests\JobWatch\UpdateJobWatchRequest;
@@ -87,12 +88,45 @@ class JobWatchController extends Controller
         $jobWatch->load([
             'cvProfile',
             'keywords',
-            'matches.jobOffer.source',
+            'matches' => function ($query): void {
+                $query
+                    ->with('jobOffer.source')
+                    ->orderByDesc('score')
+                    ->orderByDesc('id');
+            },
         ]);
 
         return view('student.job-watches.show', [
             'jobWatch' => $jobWatch,
         ]);
+    }
+
+    public function run(
+        JobWatch $jobWatch,
+        RunJobWatch $runJobWatch
+    ): RedirectResponse {
+        Gate::authorize('update', $jobWatch);
+
+        if ($jobWatch->status === 'disabled') {
+            return back()->with(
+                'error',
+                'Cette veille est désactivée et ne peut pas être lancée.'
+            );
+        }
+
+        $statistics = $runJobWatch->execute($jobWatch);
+
+        return redirect()
+            ->route('student.job-watches.show', $jobWatch)
+            ->with(
+                'success',
+                sprintf(
+                    'Recherche terminée : %d offre(s) analysée(s), '
+                    .'%d correspondance(s) trouvée(s).',
+                    $statistics['analyzed'],
+                    $statistics['matched']
+                )
+            );
     }
 
     public function edit(
@@ -262,10 +296,15 @@ class JobWatchController extends Controller
                 ];
             })
             ->filter(
-                fn (array $item): bool => $item['normalized_keyword'] !== ''
+                fn (array $item): bool => (
+                    $item['normalized_keyword'] !== ''
+                )
             )
             ->unique(
-                fn (array $item): string => $item['type'].'|'.$item['normalized_keyword']
+                fn (array $item): string => (
+                    $item['type'].'|'
+                    .$item['normalized_keyword']
+                )
             )
             ->values()
             ->all();
@@ -287,7 +326,9 @@ class JobWatchController extends Controller
             )
             ->filter()
             ->unique(
-                fn (string $value): string => Str::lower(Str::ascii($value))
+                fn (string $value): string => (
+                    Str::lower(Str::ascii($value))
+                )
             )
             ->values()
             ->all();

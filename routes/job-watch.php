@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Student\ImportMoroccoJobOffersController;
+use App\Http\Controllers\Student\JobMatchStatusController;
 use App\Http\Controllers\Student\JobWatchController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,11 +18,28 @@ Route::middleware(['auth', 'verified'])
         Route::post('/', [JobWatchController::class, 'store'])
             ->name('store');
 
+        Route::post('/{jobWatch}/run', [
+            JobWatchController::class,
+            'run',
+        ])->name('run');
+
+        Route::post('/{jobWatch}/import-morocco', [
+            ImportMoroccoJobOffersController::class,
+            '__invoke',
+        ])->name('import-morocco');
+
+        Route::patch('/{jobWatch}/matches/{jobMatch}/status', [
+            JobMatchStatusController::class,
+            '__invoke',
+        ])->name('matches.status');
+
         Route::get('/{jobWatch}', [JobWatchController::class, 'show'])
             ->name('show');
 
-        Route::get('/{jobWatch}/edit', [JobWatchController::class, 'edit'])
-            ->name('edit');
+        Route::get('/{jobWatch}/edit', [
+            JobWatchController::class,
+            'edit',
+        ])->name('edit');
 
         Route::match(['put', 'patch'], '/{jobWatch}', [
             JobWatchController::class,
