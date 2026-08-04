@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'cv-ats' => 'student.cv.edit',
                 'portfolio' => 'student.cv.edit',
                 'job-watch' => 'student.job-watches.index',
+                'community' => 'student.community.index',
             ],
         ]);
     })->name('student.dashboard');
@@ -79,3 +80,4 @@ require __DIR__.'/registration.php';
 require __DIR__.'/training.php';
 require __DIR__.'/cv.php';
 require __DIR__.'/job-watch.php';
+require __DIR__.'/community.php';
