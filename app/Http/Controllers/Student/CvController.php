@@ -10,10 +10,12 @@ use App\Models\CvLanguage;
 use App\Models\CvProfile;
 use App\Models\CvSkill;
 use App\Models\PortfolioProject;
+use App\Models\SkillSuggestion;
 use App\Services\AtsScoreService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -75,11 +77,31 @@ class CvController extends Controller
             'website_url' => ['nullable', 'url', 'max:255'],
             'cv_template' => ['required', 'in:classique,moderne'],
             'portfolio_template' => ['required', 'in:elegant'],
-            'photo' => ['nullable', 'image', 'max:4096'],
+            'photo' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:4096',
+            ],
+            'remove_photo' => ['nullable', 'boolean'],
         ]);
 
+        if (
+            ($request->boolean('remove_photo')
+                || $request->hasFile('photo'))
+            && $profile->photo_path
+        ) {
+            Storage::disk('public')->delete(
+                $profile->photo_path
+            );
+
+            $data['photo_path'] = null;
+        }
+
         if ($request->hasFile('photo')) {
-            $data['photo_path'] = $request->file('photo')->store('cv-photos', 'public');
+            $data['photo_path'] = $request
+                ->file('photo')
+                ->store('cv-photos', 'public');
         }
 
         $profile->update($data);
@@ -223,7 +245,7 @@ class CvController extends Controller
 
         $count = 0;
 
-        $categoriesByName = \App\Models\SkillSuggestion::pluck('category', 'name');
+        $categoriesByName = SkillSuggestion::pluck('category', 'name');
 
         foreach ($namesToAdd->unique() as $name) {
             if (in_array(mb_strtolower($name), $existingNames, true)) {
@@ -393,12 +415,26 @@ class CvController extends Controller
 
     // --- Rendus imprimables ---
 
-    public function showCv(): View
+    public function showCv(Request $request): View
     {
         $profile = $this->currentProfile();
-        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications']);
+        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications', 'projects']);
 
-        $view = $profile->cv_template === 'moderne' ? 'student.cv.templates.moderne' : 'student.cv.templates.classique';
+        $requestedTemplate = $request
+            ->string('template')
+            ->toString();
+
+        $template = in_array(
+            $requestedTemplate,
+            ['classique', 'moderne'],
+            true
+        )
+            ? $requestedTemplate
+            : $profile->cv_template;
+
+        $view = $template === 'moderne'
+            ? 'student.cv.templates.moderne'
+            : 'student.cv.templates.classique';
 
         return view($view, ['profile' => $profile]);
     }
@@ -406,7 +442,7 @@ class CvController extends Controller
     public function showAts(): View
     {
         $profile = $this->currentProfile();
-        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications']);
+        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications', 'projects']);
 
         return view('student.cv.templates.ats', ['profile' => $profile]);
     }

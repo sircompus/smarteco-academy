@@ -19,7 +19,16 @@
 
                 <input type="file" name="image" accept="image/*" class="w-full text-xs">
                 <input name="title" value="{{ $project->title }}" placeholder="Titre du projet" class="w-full rounded-lg border-gray-300" required>
-                <textarea name="description" rows="2" placeholder="Description" class="w-full rounded-lg border-gray-300">{{ $project->description }}</textarea>
+                @include('student.cv._text-counter', [
+                    'name' => 'description',
+                    'value' => $project->description,
+                    'rows' => 2,
+                    'placeholder' => 'Présente le besoin, ta contribution et le résultat.',
+                    'help' => 'Explique brièvement ce que tu as réalisé et avec quels outils.',
+                    'context' => 'project-'.$project->id,
+                    'minWords' => 15,
+                    'maxWords' => 80,
+                ])
                 <input name="tags" value="{{ $project->tags }}" placeholder="Tags séparés par virgule" class="w-full rounded-lg border-gray-300">
                 <input name="project_url" value="{{ $project->project_url }}" placeholder="Lien du projet" class="w-full rounded-lg border-gray-300">
                 <input name="repo_url" value="{{ $project->repo_url }}" placeholder="Lien du code (optionnel)" class="w-full rounded-lg border-gray-300">
@@ -46,7 +55,16 @@
         @csrf
         <input type="file" name="image" accept="image/*" class="w-full text-xs">
         <input name="title" placeholder="Titre du projet" class="w-full rounded-lg border-gray-300" required>
-        <textarea name="description" rows="2" placeholder="Description" class="w-full rounded-lg border-gray-300"></textarea>
+        @include('student.cv._text-counter', [
+            'name' => 'description',
+            'value' => old('description', ''),
+            'rows' => 2,
+            'placeholder' => 'Présente le besoin, ta contribution et le résultat.',
+            'help' => 'Explique brièvement ce que tu as réalisé et avec quels outils.',
+            'context' => 'project-new',
+            'minWords' => 15,
+            'maxWords' => 80,
+        ])
         <input name="tags" placeholder="Tags séparés par virgule (ex : Excel, Marketing)" class="w-full rounded-lg border-gray-300">
         <input name="project_url" placeholder="Lien du projet" class="w-full rounded-lg border-gray-300">
         <input name="repo_url" placeholder="Lien du code (optionnel)" class="w-full rounded-lg border-gray-300">

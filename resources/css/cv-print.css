@@ -1,0 +1,292 @@
+/*
+|--------------------------------------------------------------------------
+| SmartEco Academy — CV typography and A4 print rules
+|--------------------------------------------------------------------------
+| Typography requested:
+| - Times New Roman
+| - body: 12 pt
+| - subtitles: 14 pt
+| - section titles: 16 pt
+| - candidate name: 20 pt
+| - line spacing: 1.5
+| - narrative first-line indent: 1.25 cm
+*/
+
+:root {
+    color-scheme: light;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+.cv-print-body {
+    background: #e5e7eb;
+    color: #111827;
+    font-family: "Times New Roman", Times, serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.cv-toolbar {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    padding: 1.25rem;
+}
+
+.cv-toolbar button {
+    border-radius: 0.65rem;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+    padding: 0.75rem 1.1rem;
+}
+
+.cv-toolbar__primary {
+    background: #4f46e5;
+    border: 1px solid #4f46e5;
+    color: #ffffff;
+}
+
+.cv-toolbar__secondary {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+}
+
+.cv-print-shell {
+    padding: 0 1.5rem 2rem;
+}
+
+.cv-page {
+    background: #ffffff;
+    box-sizing: border-box;
+    color: #111827;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    margin: 0 auto;
+    min-height: 297mm;
+    overflow: visible;
+    width: 210mm;
+    box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.12),
+        0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.cv-page--padded {
+    padding: 14mm 15mm;
+}
+
+.cv-name {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20pt;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.cv-title {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16pt;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.cv-subtitle {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14pt;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cv-body-text {
+    font-size: 12pt;
+    line-height: 1.5;
+}
+
+.cv-description {
+    display: block;
+    font-size: 12pt;
+    line-height: 1.5;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    text-align: justify;
+    text-indent: 1.25cm !important;
+    white-space: pre-line;
+}
+
+.cv-contact {
+    font-size: 12pt;
+    line-height: 1.5;
+}
+
+.cv-meta {
+    font-size: 12pt;
+    line-height: 1.5;
+}
+
+.cv-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.cv-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.cv-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.cv-url {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.cv-photo {
+    border: 1px solid #d1d5db;
+    display: block;
+    height: 42mm;
+    object-fit: cover;
+    width: 35mm;
+}
+
+.cv-photo--round {
+    border-radius: 9999px;
+    height: 38mm;
+    width: 38mm;
+}
+
+.cv-screen-only {
+    display: block;
+}
+
+.cv-print-body a {
+    color: inherit;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 900px) {
+    .cv-print-shell {
+        overflow-x: auto;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .cv-page {
+        min-width: 210mm;
+    }
+}
+
+@media print {
+    html,
+    body {
+        background: #ffffff !important;
+        height: auto;
+        width: auto;
+    }
+
+    .cv-toolbar,
+    .cv-screen-only {
+        display: none !important;
+    }
+
+    .cv-print-shell {
+        padding: 0;
+    }
+
+    .cv-page {
+        box-shadow: none;
+        margin: 0;
+        min-height: auto;
+        width: auto;
+    }
+
+    .cv-page--padded {
+        padding: 0;
+    }
+
+    .cv-section,
+    .cv-entry,
+    .cv-avoid-break {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    a[href]::after {
+        content: none !important;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| CV Phase 8 — Pagination et qualité d’impression
+|--------------------------------------------------------------------------
+*/
+
+.cv-page p,
+.cv-page li {
+    orphans: 3;
+    widows: 3;
+}
+
+.cv-title,
+.cv-subtitle {
+    break-after: avoid-page;
+    page-break-after: avoid;
+}
+
+.cv-title + *,
+.cv-subtitle + * {
+    break-before: avoid-page;
+    page-break-before: avoid;
+}
+
+.cv-entry {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+}
+
+.cv-entry > :first-child {
+    break-after: avoid-page;
+    page-break-after: avoid;
+}
+
+.cv-section {
+    break-inside: auto;
+    page-break-inside: auto;
+}
+
+.cv-section > .cv-title:first-child {
+    break-after: avoid-page;
+    page-break-after: avoid;
+}
+
+@media print {
+    .cv-page {
+        overflow: visible !important;
+    }
+
+    .cv-page,
+    .cv-page * {
+        box-sizing: border-box;
+    }
+
+    .cv-description {
+        hyphens: auto;
+        overflow-wrap: break-word;
+    }
+
+    .cv-photo {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

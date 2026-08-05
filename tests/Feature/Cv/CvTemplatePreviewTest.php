@@ -1,0 +1,124 @@
+<?php
+
+namespace Tests\Feature\Cv;
+
+use App\Models\CvProfile;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
+use Tests\TestCase;
+
+class CvTemplatePreviewTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_builder_displays_visual_template_cards(): void
+    {
+        [$user] = $this->verifiedUserWithProfile(
+            'classique'
+        );
+
+        $this->actingAs($user)
+            ->get(route('student.cv.edit'))
+            ->assertOk()
+            ->assertSee(
+                'data-cv-template-selector',
+                false
+            )
+            ->assertSeeText('Classique')
+            ->assertSeeText('Moderne')
+            ->assertSeeText('ATS')
+            ->assertSeeText('Aperçu instantané')
+            ->assertSeeText('Prévisualiser la version ATS')
+            ->assertSeeText('Ouvrir en grand');
+    }
+
+    public function test_classic_preview_can_be_opened_without_saving(): void
+    {
+        [$user, $profile] = $this->verifiedUserWithProfile(
+            'moderne'
+        );
+
+        $this->actingAs($user)
+            ->get(
+                route(
+                    'student.cv.download.cv',
+                    ['template' => 'classique']
+                )
+            )
+            ->assertOk()
+            ->assertSee(
+                'data-cv-template="classique"',
+                false
+            );
+
+        $this->assertSame(
+            'moderne',
+            $profile->fresh()->cv_template
+        );
+    }
+
+    public function test_modern_preview_can_be_opened_without_saving(): void
+    {
+        [$user, $profile] = $this->verifiedUserWithProfile(
+            'classique'
+        );
+
+        $this->actingAs($user)
+            ->get(
+                route(
+                    'student.cv.download.cv',
+                    ['template' => 'moderne']
+                )
+            )
+            ->assertOk()
+            ->assertSee(
+                'data-cv-template="moderne"',
+                false
+            );
+
+        $this->assertSame(
+            'classique',
+            $profile->fresh()->cv_template
+        );
+    }
+
+    public function test_unknown_preview_uses_saved_template(): void
+    {
+        [$user] = $this->verifiedUserWithProfile(
+            'classique'
+        );
+
+        $this->actingAs($user)
+            ->get(
+                route(
+                    'student.cv.download.cv',
+                    ['template' => 'inconnu']
+                )
+            )
+            ->assertOk()
+            ->assertSee(
+                'data-cv-template="classique"',
+                false
+            );
+    }
+
+    private function verifiedUserWithProfile(
+        string $template
+    ): array {
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $profile = CvProfile::query()->create([
+            'uuid' => (string) Str::uuid(),
+            'user_id' => $user->id,
+            'full_name' => $user->name,
+            'email' => $user->email,
+            'cv_template' => $template,
+            'portfolio_template' => 'elegant',
+        ]);
+
+        return [$user, $profile];
+    }
+}

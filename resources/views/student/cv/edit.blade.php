@@ -25,6 +25,11 @@
         </div>
     @endif
 
+    @include('student.cv._builder-overview', ['profile' => $profile])
+    @include('student.cv._print-quality', [
+        'profile' => $profile,
+        'targetUser' => $targetUser ?? null,
+    ])
     {{-- Actions rapides : téléchargements + partage --}}
     <section id="exports" class="rounded-2xl bg-white p-6 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -138,12 +143,7 @@
             @csrf
             @method('PATCH')
 
-            <div class="md:col-span-2 flex items-center gap-4">
-                @if ($profile->photo_url)
-                    <img src="{{ $profile->photo_url }}" class="h-16 w-16 rounded-full object-cover" alt="Photo">
-                @endif
-                <input type="file" name="photo" accept="image/*" class="text-sm">
-            </div>
+            @include('student.cv._photo-field', ['profile' => $profile])
 
             <div>
                 <label class="text-sm font-medium">Nom complet</label>
@@ -170,14 +170,18 @@
                 <input name="address" value="{{ old('address', $profile->address) }}" class="mt-1 block w-full rounded-lg border-gray-300">
             </div>
 
-            <div class="md:col-span-2">
-                <label class="text-sm font-medium">Résumé professionnel</label>
-                <textarea name="summary" rows="4" class="mt-1 block w-full rounded-lg border-gray-300" placeholder="Laisse vide pour une génération automatique basée sur ton profil (formations, expériences, compétences)">{{ old('summary', $profile->summary) }}</textarea>
-                <p class="mt-1 text-xs text-gray-400">
-                    Si tu laisses ce champ vide, un résumé sera généré automatiquement à partir de tes formations,
-                    expériences et compétences sur ton CV et ton portfolio (rien n'est enregistré tant que tu n'écris pas le tien).
-                </p>
-            </div>
+            @include('student.cv._text-counter', [
+                'name' => 'summary',
+                'value' => old('summary', $profile->summary),
+                'rows' => 4,
+                'label' => 'Résumé professionnel',
+                'placeholder' => 'Présente ton profil, tes compétences principales et ton objectif professionnel.',
+                'help' => 'Ce résumé apparaît dans le CV et le portfolio. Laisse-le vide seulement pour utiliser le résumé automatique.',
+                'context' => 'summary',
+                'wrapperClass' => 'md:col-span-2',
+                'minWords' => 30,
+                'maxWords' => 150,
+            ])
 
             <div>
                 <label class="text-sm font-medium">LinkedIn</label>
@@ -194,13 +198,11 @@
                 <input name="website_url" value="{{ old('website_url', $profile->website_url) }}" class="mt-1 block w-full rounded-lg border-gray-300">
             </div>
 
-            <div>
-                <label class="text-sm font-medium">Modèle de CV</label>
-                <select name="cv_template" class="mt-1 block w-full rounded-lg border-gray-300">
-                    <option value="classique" @selected($profile->cv_template === 'classique')>Classique</option>
-                    <option value="moderne" @selected($profile->cv_template === 'moderne')>Moderne</option>
-                </select>
-            </div>
+            @include('student.cv._template-selector', [
+                'profile' => $profile,
+                'targetUser' => $targetUser ?? null,
+                'storeParams' => $storeParams,
+            ])
 
             <div>
                 <label class="text-sm font-medium">Modèle de portfolio</label>
@@ -209,11 +211,7 @@
                 </select>
             </div>
 
-            <div class="md:col-span-2">
-                <button class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
-                    Enregistrer
-                </button>
-            </div>
+            @include('student.cv._save-bar')
         </form>
     </section>
 

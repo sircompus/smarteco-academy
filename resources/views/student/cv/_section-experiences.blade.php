@@ -20,7 +20,17 @@
                     <input type="date" name="end_date" value="{{ $experience->end_date?->format('Y-m-d') }}" class="rounded-lg border-gray-300">
                 </div>
 
-                <textarea name="description" rows="3" placeholder="Missions, réalisations..." class="rounded-lg border-gray-300 md:col-span-2">{{ $experience->description }}</textarea>
+                @include('student.cv._text-counter', [
+                    'name' => 'description',
+                    'value' => $experience->description,
+                    'rows' => 3,
+                    'placeholder' => 'Décris tes missions et tes résultats concrets.',
+                    'help' => 'Privilégie les actions réalisées, les outils utilisés et les résultats obtenus.',
+                    'context' => 'experience-'.$experience->id,
+                    'wrapperClass' => 'md:col-span-2',
+                    'minWords' => 10,
+                    'maxWords' => 80,
+                ])
 
                 <label class="flex items-center gap-2 text-sm">
                     <input type="checkbox" name="is_current" value="1" @checked($experience->is_current)>
@@ -57,7 +67,17 @@
             <input type="date" name="end_date" class="rounded-lg border-gray-300">
         </div>
 
-        <textarea name="description" rows="3" placeholder="Missions, réalisations..." class="rounded-lg border-gray-300 md:col-span-2"></textarea>
+        @include('student.cv._text-counter', [
+            'name' => 'description',
+            'value' => old('description', ''),
+            'rows' => 3,
+            'placeholder' => 'Décris tes missions et tes résultats concrets.',
+            'help' => 'Privilégie les actions réalisées, les outils utilisés et les résultats obtenus.',
+            'context' => 'experience-new',
+            'wrapperClass' => 'md:col-span-2',
+            'minWords' => 10,
+            'maxWords' => 80,
+        ])
 
         <label class="flex items-center gap-2 text-sm">
             <input type="checkbox" name="is_current" value="1">

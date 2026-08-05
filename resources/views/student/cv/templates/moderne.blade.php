@@ -1,130 +1,252 @@
-@extends($layout ?? 'layouts.student')
+@extends('layouts.cv-print')
 
-@section('title', 'Mon CV')
-@section('page-title', 'Mon CV — Modèle moderne')
-
-@push('styles')
-    <style>
-        @media print {
-            @page { size: A4; margin: 0mm; }
-        }
-    </style>
-@endpush
+@section('title', 'CV moderne — '.$profile->full_name)
+@section('page-margin', '0mm')
+@section('cv-body-class', 'cv-template-moderne')
 
 @section('content')
-    <div class="mb-6 flex justify-center print:hidden">
-        <button onclick="window.print()" class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white">
-            Imprimer / Enregistrer en PDF
-        </button>
-    </div>
-
-    <div class="mx-auto grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-gray-200 bg-white text-sm print:mx-0 print:max-w-none print:rounded-none print:border-0 print:shadow-none">
-
-        {{-- Colonne latérale --}}
-        <div class="col-span-1 bg-indigo-600 p-6 text-white">
+    <article
+        class="cv-page grid grid-cols-[32%_68%] overflow-hidden bg-white"
+        data-cv-template="moderne"
+    >
+        <aside class="bg-indigo-700 p-[11mm] text-white">
             @if ($profile->photo_url)
-                <img src="{{ $profile->photo_url }}" class="h-24 w-24 rounded-full border-4 border-white/30 object-cover">
+                <img
+                    src="{{ $profile->photo_url }}"
+                    alt="Photo de {{ $profile->full_name }}"
+                    class="cv-photo cv-photo--round border-4 border-white/30"
+                >
             @endif
 
-            <h1 class="mt-4 text-lg font-extrabold leading-tight">{{ $profile->full_name }}</h1>
+            <h1 class="cv-name mt-5 text-white">
+                {{ $profile->full_name }}
+            </h1>
+
             @if ($profile->headline)
-                <p class="mt-1 text-xs text-indigo-100">{{ $profile->headline }}</p>
+                <p class="cv-subtitle mt-2 text-indigo-100">
+                    {{ $profile->headline }}
+                </p>
             @endif
 
-            <div class="mt-6 space-y-1 text-xs text-indigo-100">
-                @if ($profile->email) <p>{{ $profile->email }}</p> @endif
-                @if ($profile->phone) <p>{{ $profile->phone }}</p> @endif
-                @if ($profile->address) <p>{{ $profile->address }}</p> @endif
-                @if ($profile->linkedin_url) <p class="break-all">{{ $profile->linkedin_url }}</p> @endif
-            </div>
+            <section class="cv-section mt-7">
+                <h2 class="cv-title text-white">
+                    Contact
+                </h2>
+
+                <div class="cv-contact mt-2 space-y-1 text-indigo-50">
+                    @if ($profile->email)
+                        <p class="cv-url">{{ $profile->email }}</p>
+                    @endif
+
+                    @if ($profile->phone)
+                        <p>{{ $profile->phone }}</p>
+                    @endif
+
+                    @if ($profile->address)
+                        <p>{{ $profile->address }}</p>
+                    @endif
+
+                    @if ($profile->linkedin_url)
+                        <p class="cv-url">{{ $profile->linkedin_url }}</p>
+                    @endif
+
+                    @if ($profile->github_url)
+                        <p class="cv-url">{{ $profile->github_url }}</p>
+                    @endif
+
+                    @if ($profile->website_url)
+                        <p class="cv-url">{{ $profile->website_url }}</p>
+                    @endif
+                </div>
+            </section>
 
             @if ($profile->skills->isNotEmpty())
-                <div class="mt-6">
-                    <h2 class="text-xs font-bold uppercase tracking-wide text-white">Compétences</h2>
+                <section class="cv-section mt-7">
+                    <h2 class="cv-title text-white">
+                        Compétences
+                    </h2>
 
                     @php
-                        $skillsByCategory = $profile->skills->groupBy(fn ($s) => $s->category ?: 'Autres');
+                        $skillsByCategory = $profile->skills->groupBy(
+                            fn ($skill) => $skill->category ?: 'Autres'
+                        );
                     @endphp
 
                     @foreach ($skillsByCategory as $category => $categorySkills)
-                        <p class="mt-3 text-[10px] font-semibold uppercase text-indigo-200">{{ $category }}</p>
+                        <p class="cv-subtitle mt-3 text-indigo-100">
+                            {{ $category }}
+                        </p>
 
-                        <div class="mt-1 space-y-2">
+                        <ul class="cv-body-text mt-1 space-y-1 text-indigo-50">
                             @foreach ($categorySkills as $skill)
-                                <div>
-                                    <p class="text-xs text-indigo-100">{{ $skill->name }}</p>
-                                    <div class="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
-                                        <div class="h-full bg-white" style="width: {{ $skill->level_percent }}%"></div>
-                                    </div>
-                                </div>
+                                <li>• {{ $skill->name }}</li>
                             @endforeach
-                        </div>
+                        </ul>
                     @endforeach
-                </div>
+                </section>
             @endif
 
             @if ($profile->languages->isNotEmpty())
-                <div class="mt-6">
-                    <h2 class="text-xs font-bold uppercase tracking-wide text-white">Langues</h2>
-                    <ul class="mt-2 space-y-1 text-xs text-indigo-100">
-                        @foreach ($profile->languages as $lang)
-                            <li>{{ $lang->name }} : {{ $lang->level_label }}</li>
+                <section class="cv-section mt-7">
+                    <h2 class="cv-title text-white">
+                        Langues
+                    </h2>
+
+                    <ul class="cv-body-text mt-2 space-y-1 text-indigo-50">
+                        @foreach ($profile->languages as $language)
+                            <li>
+                                {{ $language->name }} :
+                                {{ $language->level_label }}
+                            </li>
                         @endforeach
                     </ul>
-                </div>
+                </section>
             @endif
-        </div>
+        </aside>
 
-        {{-- Colonne principale --}}
-        <div class="col-span-2 p-6">
+        <div class="p-[11mm] text-gray-800">
             @if (filled($profile->effective_summary))
-                <div>
-                    <h2 class="text-sm font-bold uppercase tracking-wide text-indigo-600">Profil</h2>
-                    <p class="mt-2 leading-6 text-gray-700">{{ $profile->effective_summary }}</p>
-                </div>
+                <section class="cv-section">
+                    <h2 class="cv-title uppercase tracking-wider text-indigo-700">
+                        Profil
+                    </h2>
+
+                    <p class="cv-description mt-2">
+                        {{ \App\Support\CvTextFormatter::clean($profile->effective_summary) }}
+                    </p>
+                </section>
             @endif
 
             @if ($profile->experiences->isNotEmpty())
-                <div class="mt-6">
-                    <h2 class="text-sm font-bold uppercase tracking-wide text-indigo-600">Expérience</h2>
-                    <div class="mt-2 space-y-4">
-                        @foreach ($profile->experiences as $exp)
-                            <div class="border-l-2 border-indigo-100 pl-3">
-                                <p class="font-semibold text-gray-900">{{ $exp->position }}</p>
-                                <p class="text-xs text-gray-500">{{ $exp->company }} · {{ $exp->start_date?->format('m/Y') }} – {{ $exp->is_current ? 'Présent' : $exp->end_date?->format('m/Y') }}</p>
-                                @if ($exp->description)
-                                    <p class="mt-1 text-gray-700">{{ $exp->description }}</p>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+                <section class="mt-6">
+                    <h2 class="cv-title cv-section uppercase tracking-wider text-indigo-700">
+                        Expérience
+                    </h2>
+
+                    @foreach ($profile->experiences as $experience)
+                        <div class="cv-entry mt-3 border-l-2 border-indigo-100 pl-3">
+                            <p class="cv-subtitle text-gray-950">
+                                {{ $experience->position }}
+                            </p>
+
+                            <p class="cv-meta text-gray-600">
+                                {{ $experience->company }}
+                                ·
+                                {{ $experience->start_date?->format('m/Y') }}
+                                –
+                                {{ $experience->is_current
+                                    ? 'Présent'
+                                    : $experience->end_date?->format('m/Y') }}
+                            </p>
+
+                            @if ($experience->location)
+                                <p class="cv-meta text-gray-600">
+                                    {{ $experience->location }}
+                                </p>
+                            @endif
+
+                            @if ($experience->description)
+                                <p class="cv-description mt-1">
+                                    {{ \App\Support\CvTextFormatter::clean($experience->description) }}
+                                </p>
+                            @endif
+                        </div>
+                    @endforeach
+                </section>
             @endif
 
             @if ($profile->educations->isNotEmpty())
-                <div class="mt-6">
-                    <h2 class="text-sm font-bold uppercase tracking-wide text-indigo-600">Formation</h2>
-                    <div class="mt-2 space-y-3">
-                        @foreach ($profile->educations as $edu)
-                            <div class="border-l-2 border-indigo-100 pl-3">
-                                <p class="font-semibold text-gray-900">{{ $edu->degree }}</p>
-                                <p class="text-xs text-gray-500">{{ $edu->institution }} · {{ $edu->start_date?->format('Y') }} – {{ $edu->is_current ? 'Présent' : $edu->end_date?->format('Y') }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+                <section class="mt-6">
+                    <h2 class="cv-title cv-section uppercase tracking-wider text-indigo-700">
+                        Formation
+                    </h2>
+
+                    @foreach ($profile->educations as $education)
+                        <div class="cv-entry mt-3 border-l-2 border-indigo-100 pl-3">
+                            <p class="cv-subtitle text-gray-950">
+                                {{ $education->degree ?: $education->field_of_study }}
+                            </p>
+
+                            <p class="cv-meta text-gray-600">
+                                {{ $education->institution }}
+                                ·
+                                {{ $education->start_date?->format('Y') }}
+                                –
+                                {{ $education->is_current
+                                    ? 'Présent'
+                                    : $education->end_date?->format('Y') }}
+                            </p>
+
+                            @if (
+                                $education->degree
+                                && $education->field_of_study
+                            )
+                                <p class="cv-body-text mt-1">
+                                    {{ $education->field_of_study }}
+                                </p>
+                            @endif
+
+                            @if ($education->description)
+                                <p class="cv-description mt-1">
+                                    {{ \App\Support\CvTextFormatter::clean($education->description) }}
+                                </p>
+                            @endif
+                        </div>
+                    @endforeach
+                </section>
+            @endif
+
+            @if ($profile->projects->isNotEmpty())
+                <section class="mt-6">
+                    <h2 class="cv-title cv-section uppercase tracking-wider text-indigo-700">
+                        Projets
+                    </h2>
+
+                    @foreach ($profile->projects as $project)
+                        <div class="cv-entry mt-3 border-l-2 border-indigo-100 pl-3">
+                            <p class="cv-subtitle text-gray-950">
+                                {{ $project->title }}
+                            </p>
+
+                            @if ($project->description)
+                                <p class="cv-description mt-1">
+                                    {{ \App\Support\CvTextFormatter::clean($project->description) }}
+                                </p>
+                            @endif
+
+                            @if ($project->tags)
+                                <p class="cv-body-text mt-1 text-gray-600">
+                                    {{ $project->tags }}
+                                </p>
+                            @endif
+                        </div>
+                    @endforeach
+                </section>
             @endif
 
             @if ($profile->certifications->isNotEmpty())
-                <div class="mt-6">
-                    <h2 class="text-sm font-bold uppercase tracking-wide text-indigo-600">Certifications</h2>
-                    <ul class="mt-2 space-y-1 text-gray-700">
-                        @foreach ($profile->certifications as $cert)
-                            <li>{{ $cert->name }} @if ($cert->issuer) — {{ $cert->issuer }} @endif</li>
+                <section class="cv-section mt-6">
+                    <h2 class="cv-title uppercase tracking-wider text-indigo-700">
+                        Certifications
+                    </h2>
+
+                    <ul class="cv-body-text mt-2 space-y-1">
+                        @foreach ($profile->certifications as $certification)
+                            <li>
+                                {{ $certification->name }}
+
+                                @if ($certification->issuer)
+                                    — {{ $certification->issuer }}
+                                @endif
+
+                                @if ($certification->date_obtained)
+                                    ({{ $certification->date_obtained->format('Y') }})
+                                @endif
+                            </li>
                         @endforeach
                     </ul>
-                </div>
+                </section>
             @endif
         </div>
-    </div>
+    </article>
 @endsection

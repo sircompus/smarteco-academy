@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\CvProfile;
 use App\Models\User;
 use App\Services\AtsScoreService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CvController extends Controller
@@ -43,12 +43,26 @@ class CvController extends Controller
         ]);
     }
 
-    public function showCv(User $user): View
+    public function showCv(Request $request, User $user): View
     {
         $profile = $user->cvProfile()->firstOrFail();
-        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications']);
+        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications', 'projects']);
 
-        $view = $profile->cv_template === 'moderne' ? 'student.cv.templates.moderne' : 'student.cv.templates.classique';
+        $requestedTemplate = $request
+            ->string('template')
+            ->toString();
+
+        $template = in_array(
+            $requestedTemplate,
+            ['classique', 'moderne'],
+            true
+        )
+            ? $requestedTemplate
+            : $profile->cv_template;
+
+        $view = $template === 'moderne'
+            ? 'student.cv.templates.moderne'
+            : 'student.cv.templates.classique';
 
         return view($view, ['profile' => $profile, 'layout' => 'layouts.admin']);
     }
@@ -56,7 +70,7 @@ class CvController extends Controller
     public function showAts(User $user): View
     {
         $profile = $user->cvProfile()->firstOrFail();
-        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications']);
+        $profile->load(['educations', 'experiences', 'skills', 'languages', 'certifications', 'projects']);
 
         return view('student.cv.templates.ats', ['profile' => $profile, 'layout' => 'layouts.admin']);
     }
