@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicLevel;
 use App\Models\AcademicProgram;
 use App\Models\Registration;
+use App\Services\RegistrationEmailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -138,7 +139,8 @@ class RegistrationController extends Controller
 
     public function submit(
         Request $request,
-        Registration $registration
+        Registration $registration,
+        RegistrationEmailService $emailService
     ): RedirectResponse {
         $this->ensureOwner($request, $registration);
 
@@ -185,6 +187,10 @@ class RegistrationController extends Controller
                 'comment' => 'Soumission du dossier par l’étudiant.',
             ]);
         });
+
+        $registration->refresh();
+
+        $emailService->sendSubmitted($registration);
 
         return back()->with(
             'success',

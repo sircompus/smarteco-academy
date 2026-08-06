@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Registration;
 use App\Models\RegistrationDocument;
+use App\Services\RegistrationEmailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +53,8 @@ class RegistrationController extends Controller
 
     public function updateStatus(
         Request $request,
-        Registration $registration
+        Registration $registration,
+        RegistrationEmailService $emailService
     ): RedirectResponse {
         $data = $request->validate([
             'status' => [
@@ -143,11 +145,11 @@ class RegistrationController extends Controller
             ]);
         }
 
-        DB::transaction(function () use (
+        $statusHistory = DB::transaction(function () use (
             $registration,
             $request,
             $data
-        ): void {
+        ) {
             $oldStatus = $registration->status;
 
             $registration->update([
@@ -157,13 +159,28 @@ class RegistrationController extends Controller
                 'decision_reason' => $data['comment'] ?? null,
             ]);
 
-            $registration->histories()->create([
+            return $registration->histories()->create([
                 'from_status' => $oldStatus,
                 'to_status' => $data['status'],
                 'changed_by' => $request->user()->id,
                 'comment' => $data['comment'] ?? null,
             ]);
         });
+
+        $registration->refresh();
+
+        if (in_array($data['status'], [
+            Registration::STATUS_UNDER_REVIEW,
+            Registration::STATUS_INCOMPLETE,
+            Registration::STATUS_ACCEPTED,
+            Registration::STATUS_REJECTED,
+        ], true)) {
+            $emailService->sendStatusChanged(
+                $registration,
+                $statusHistory,
+                $data['status']
+            );
+        }
 
         return back()->with(
             'success',
